@@ -93,19 +93,22 @@ public class SignUp extends AppCompatActivity {
                                             FirebaseUser user=auth.getCurrentUser();
                                             if(user!=null)
                                             {
-                                                String userId=user.getUid();
-                                                Map<String,Object> userData = new HashMap<>();
-                                                userData.put("name",name.getText().toString());
-                                                userData.put("email",email.getText().toString());
-                                                userData.put("mno",mno.getText().toString());
-                                                userData.put("dob",dob.getText().toString());
-
-                                                db.collection("users").document(userId).set(userData)
-                                                        .addOnSuccessListener(aVoid -> {
-                                                            Toast.makeText(SignUp.this,"Successfully Signed Up!",Toast.LENGTH_SHORT).show();
-                                                            Intent i=new Intent(SignUp.this,MainActivity.class);
-                                                            startActivity(i);
-                                                        }).addOnFailureListener(e ->Toast.makeText(SignUp.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
+                                                user.sendEmailVerification().addOnCompleteListener(emailTask ->{
+                                                    if(emailTask.isSuccessful())
+                                                    {
+                                                        Toast.makeText(SignUp.this,"Verification email sent",Toast.LENGTH_SHORT).show();
+                                                        Intent i=new Intent(SignUp.this, Otp.class);
+                                                        i.putExtra("name",name.getText().toString());
+                                                        i.putExtra("email",email.getText().toString());
+                                                        i.putExtra("mno",mno.getText().toString());
+                                                        i.putExtra("dob",dob.getText().toString());
+                                                        startActivity(i);
+                                                    }
+                                                    else
+                                                    {
+                                                        Toast.makeText(SignUp.this, "Error in sending email.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
                                             }
                                         }
                                         else
