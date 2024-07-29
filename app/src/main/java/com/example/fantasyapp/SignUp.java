@@ -2,6 +2,7 @@ package com.example.fantasyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
+
+    private static final String TAG = "SignUpActivity";
 
     EditText name,email,mno,pass,dob;
     Button signup;
@@ -106,6 +109,7 @@ public class SignUp extends AppCompatActivity {
                                                     }
                                                     else
                                                     {
+                                                        Log.e(TAG, "Error in sending email verification", emailTask.getException());
                                                         Toast.makeText(SignUp.this, "Error in sending email.", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
@@ -113,6 +117,7 @@ public class SignUp extends AppCompatActivity {
                                         }
                                         else
                                         {
+                                            Log.e(TAG, "Sign Up Failed", task.getException());
                                             Toast.makeText(SignUp.this, "Sign Up Failed!", Toast.LENGTH_SHORT).show();
                                         }
                                     });

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "723876231528",
-    "project_id": "cricket-fantasy-d65f7",
-    "storage_bucket": "cricket-fantasy-d65f7.appspot.com"
+    "project_number": "184069494848",
+    "project_id": "cricket-fantasy-app-6dbe9",
+    "storage_bucket": "cricket-fantasy-app-6dbe9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:723876231528:android:7dbd6b0a51f3587a5fbedd",
+        "mobilesdk_app_id": "1:184069494848:android:277d55170a0d5087ac27a5",
         "android_client_info": {
           "package_name": "com.example.fantasyapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDn3JKy78N-qoiHHwMBwzgxwmpwrJ2K9mQ"
+          "current_key": "AIzaSyDQBbmB5LltfTz-nLCXaTycmzdNi0mqwcw"
         }
       ],
       "services": {
