@@ -2,6 +2,7 @@ package com.example.fantasyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -54,6 +55,7 @@ public class SignUp extends AppCompatActivity {
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
 
+        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

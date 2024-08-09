@@ -16,6 +16,15 @@
             android:name=".home"
             android:exported="false" />
         <activity
+            android:name=".HomePage"
+            android:exported="false" />
+        <activity
+            android:name=".FantsyPoint"
+            android:exported="false" />
+        <activity
+            android:name=".ProfiePage"
+            android:exported="false" />
+        <activity
             android:name=".splash_demo"
             android:exported="true">
             <intent-filter>

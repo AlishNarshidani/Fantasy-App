@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/contestMenu"
+        android:title="Contests"
+        android:icon="@drawable/contestmenuicon"/>
+    <item
+        android:id="@+id/miniGamesMenu"
+        android:title="Mini Games"
+        android:icon="@drawable/gamesmenuicon"/>
+    <item
+        android:id="@+id/walletMenu"
+        android:title="Wallet"
+        android:icon="@drawable/wallet_icon"
+        />
+    <item
+        android:id="@+id/moreMenu"
+        android:title="More"
+        android:icon="@drawable/baseline_menu_24"/>
+</menu>

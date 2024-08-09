@@ -3,6 +3,7 @@ package com.example.fantasyapp;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         signup=findViewById(R.id.textView2);
         auth=FirebaseAuth.getInstance();
 
+        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,11 +77,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Empty field", Toast.LENGTH_SHORT).show();
                 }
 
+
                 auth.signInWithEmailAndPassword(em,password).addOnCompleteListener(MainActivity.this,task ->{
                     if(task.isSuccessful())
                     {
                         Toast.makeText(MainActivity.this,"Login Successful!",Toast.LENGTH_SHORT).show();
-                        Intent i=new Intent(MainActivity.this, home.class);
+                        Intent i = new Intent(getApplicationContext(), HomePage.class);
                         startActivity(i);
                     }
                     else

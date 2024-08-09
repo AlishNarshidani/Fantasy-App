@@ -74,6 +74,7 @@
                 android:textSize="22dp"
                 android:drawableLeft="@drawable/lock"
                 android:paddingLeft="4dp"
+
                 android:drawablePadding="4dp"
                 android:background="@drawable/custom_edittext"
                 android:hint="Password"
