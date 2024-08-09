@@ -1,11 +1,14 @@
 package com.example.fantasyapp;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +16,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
 
-    EditText mno,pass;
+    EditText email,pass;
     Button login;
     TextView forgot,signup;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +36,19 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        mno=findViewById(R.id.editTextText);
+        email=findViewById(R.id.editTextText);
         pass=findViewById(R.id.editTextText2);
         login=findViewById(R.id.button);
         forgot=findViewById(R.id.textView);
         signup=findViewById(R.id.textView2);
+        auth=FirebaseAuth.getInstance();
 
+        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signup.setPaintFlags(signup.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
                 Intent i=new Intent(MainActivity.this,SignUp.class);
                 startActivity(i);
             }
@@ -47,8 +57,39 @@ public class MainActivity extends AppCompatActivity {
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                forgot.setPaintFlags(forgot.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
                 Intent i=new Intent(MainActivity.this,ForgotPassword.class);
                 startActivity(i);
+            }
+        });
+
+
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String em=email.getText().toString().trim();
+                String password=pass.getText().toString().trim();
+
+                if(em.isEmpty() || password.isEmpty())
+                {
+                    Toast.makeText(MainActivity.this, "Empty field", Toast.LENGTH_SHORT).show();
+                }
+
+
+                auth.signInWithEmailAndPassword(em,password).addOnCompleteListener(MainActivity.this,task ->{
+                    if(task.isSuccessful())
+                    {
+                        Toast.makeText(MainActivity.this,"Login Successful!",Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), HomePage.class);
+                        startActivity(i);
+                    }
+                    else
+                    {
+                        Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
