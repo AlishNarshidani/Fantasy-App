@@ -31,7 +31,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
 
     implementation(libs.appcompat)
@@ -45,4 +44,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-firestore")
+    implementation ("com.etebarian:meow-bottom-navigation:1.1.0")
+    implementation ("androidx.constraintlayout:constraintlayout:2.0.4")
+
 }
