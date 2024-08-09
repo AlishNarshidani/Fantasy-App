@@ -62,20 +62,32 @@ public class home extends AppCompatActivity {
                 try
                 {
                     Log.d("API_RESPONSE", response.toString());
-                    JSONArray matches=response.getJSONArray("data");
-                    for(int i=0;i<matches.length();i++)
+                    if(response.has("data"))
                     {
-                        JSONObject match=matches.getJSONObject(i);
-                        JSONArray teams=match.getJSONArray("teams");
-                        String team1=teams.getString(0);
-                        String team2=teams.getString(1);
-
-                        if(INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2))
+                        JSONArray matches=response.getJSONArray("data");
+                        for(int i=0;i<matches.length();i++)
                         {
-                            String info=team1+" vs "+team2;
-                            matchList.add(info);
+                            JSONObject match=matches.getJSONObject(i);
+                            JSONArray teams=match.getJSONArray("teams");
+                            String team1=teams.getString(0);
+                            String team2=teams.getString(1);
+                            String status=match.getString("status");
+
+                            Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2);
+
+                            if((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started")) {
+                                String info = team1 + " vs " + team2;
+                                matchList.add(info);
+                                Log.d("MATCH_ADDED", "Added match: " + info+" ,"+status);
+                                adapter.notifyItemInserted(matchList.size() - 1);
+                            }
                         }
-                        adapter.notifyDataSetChanged();
+                        Log.d("FINAL_MATCH_LIST", "Matches in list: " + matchList.size());
+                    }
+                    else
+                    {
+                        Log.e("JSON_ERROR2", "No data key in JSON response");
+                        Toast.makeText(home.this, "No 'data' key in JSON response", Toast.LENGTH_SHORT).show();
                     }
                 }
                 catch (JSONException e)
