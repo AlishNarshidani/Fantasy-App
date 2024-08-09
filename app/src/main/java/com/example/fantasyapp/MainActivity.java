@@ -1,6 +1,7 @@
 package com.example.fantasyapp;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                signup.setPaintFlags(signup.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
                 Intent i=new Intent(MainActivity.this,SignUp.class);
                 startActivity(i);
             }
@@ -47,9 +50,13 @@ public class MainActivity extends AppCompatActivity {
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                forgot.setPaintFlags(forgot.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
                 Intent i=new Intent(MainActivity.this,ForgotPassword.class);
                 startActivity(i);
             }
         });
+
+
     }
 }
