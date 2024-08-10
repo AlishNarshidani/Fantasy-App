@@ -68,6 +68,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/profile" />
 
+                    <EditText
+                        android:id="@+id/editTextText8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:text="Name"
+                        tools:layout_editor_absoluteX="146dp"
+                        tools:layout_editor_absoluteY="216dp" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,128 +95,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
                 tools:layout_editor_absoluteX="-16dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="0.3333"
-                        android:background="@drawable/grey_background"
-                        android:elevation="5dp"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="12dp"
-                            android:background="@drawable/circle_background">
-
-                            <ImageView
-                                android:id="@+id/PaymentImage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.615"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/wallet" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <TextView
-                            android:id="@+id/PaymentText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:text="Payment"
-                            android:textAlignment="center"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="0.3333"
-                        android:background="@drawable/grey_background"
-                        android:elevation="5dp"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="12dp"
-                            android:background="@drawable/circle_background">
-
-                            <ImageView
-                                android:id="@+id/settingImage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/settings" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <TextView
-                            android:id="@+id/settingText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:text="Settings"
-                            android:textAlignment="center"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="0.3333"
-                        android:background="@drawable/grey_background"
-                        android:elevation="5dp"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_margin="12dp"
-                            android:background="@drawable/circle_background">
-
-                            <ImageView
-                                android:id="@+id/NotificationImage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/notification" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <TextView
-                            android:id="@+id/NotificationText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:text="Notification"
-                            android:textAlignment="center"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -214,50 +103,15 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1">
 
-                    <View
-                        android:id="@+id/line3"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/rules"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="-1dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="#787878" />
 
-                    <View
-                        android:id="@+id/line2"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/walletText"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="-1dp"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="#787878" />
 
-                    <ImageButton
-                        android:id="@+id/walletButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/line1"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginBottom="11dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_greater_than_vector" />
 
-                    <!-- Button with text -->
 
-                    <!-- ImageButton with vector drawable -->
+
+
 
                     <TextView
-                        android:id="@+id/userProfile"
+                        android:id="@+id/userName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
@@ -266,182 +120,50 @@
                         android:layout_marginStart="11dp"
                         android:layout_marginTop="9dp"
                         android:layout_weight="1"
-                        android:text="User Profile"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <ImageButton
-                        android:id="@+id/userButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginBottom="11dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_greater_than_vector" />
-
-                    <View
-                        android:id="@+id/line1"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/userProfile"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="-31dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="#787878" />
-
-                    <TextView
-                        android:id="@+id/walletText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/line1"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="0dp"
-                        android:autoSizeMaxTextSize="13sp"
-                        android:text="Wallet"
+                        android:text="Name"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/rules"
+                        android:id="@+id/emailText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/line2"
+                        android:layout_below="@+id/userName"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="0dp"
                         android:autoSizeMaxTextSize="13sp"
-                        android:text="Point System"
+                        android:text="Email"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
-                    <ImageButton
-                        android:id="@+id/rulesButton"
+                    <TextView
+                        android:id="@+id/genderText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/line2"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginTop="2dp"
-
-                        android:layout_marginBottom="11dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_greater_than_vector" />
-
-                    <View
-                        android:id="@+id/line4"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/terms"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="-31dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="#787878" />
+                        android:layout_below="@+id/emailText"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="0dp"
+                        android:autoSizeMaxTextSize="13sp"
+                        android:text="Gender"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
 
                     <TextView
                         android:id="@+id/terms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/line3"
+                        android:layout_below="@+id/genderText"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="0dp"
                         android:autoSizeMaxTextSize="13sp"
-                        android:text="Terms  &amp; Service"
+                        android:text="Birth Date"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
-                    <ImageButton
-                        android:id="@+id/termsButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/line3"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginTop="2dp"
-
-                        android:layout_marginBottom="11dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_greater_than_vector" />
-
-                    <TextView
-                        android:id="@+id/Contect"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/line4"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="0dp"
-                        android:autoSizeMaxTextSize="13sp"
-                        android:text="Contect us"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <ImageButton
-                        android:id="@+id/contectButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/line4"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginTop="2dp"
-
-                        android:layout_marginBottom="11dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_greater_than_vector" />
-
-                    <View
-                        android:id="@+id/line5"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/Contect"
-                        android:layout_alignParentEnd="true"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="-31dp"
-                        android:layout_marginEnd="9dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="#787878" />
-
-                    <TextView
-                        android:id="@+id/logout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/line5"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="0dp"
-                        android:autoSizeMaxTextSize="13sp"
-                        android:text="Logout"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <ImageButton
-                        android:id="@+id/logutButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/line5"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginTop="2dp"
-
-                        android:layout_marginBottom="11dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_greater_than_vector" />
 
                 </RelativeLayout>
 
