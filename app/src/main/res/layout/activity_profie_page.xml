@@ -68,6 +68,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/profile" />
 
+                    <EditText
+                        android:id="@+id/editTextText8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:text="Name"
+                        tools:layout_editor_absoluteX="146dp"
+                        tools:layout_editor_absoluteY="216dp" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
