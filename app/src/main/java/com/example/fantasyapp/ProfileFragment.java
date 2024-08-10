@@ -13,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class ProfileFragment extends Fragment {
 
     ImageButton userButton,walletButton,rulesButton,contectButton,termButton,logoutButton;
+    TextView email, userEmail;
 
 
     @SuppressLint("WrongViewCast")
@@ -32,6 +34,12 @@ public class ProfileFragment extends Fragment {
         contectButton = view.findViewById(R.id.contectButton);
         termButton = view.findViewById(R.id.termsButton);
         logoutButton = view.findViewById(R.id.logutButton);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString("email", "user");
+
+        userEmail = view.findViewById(R.id.textView4);
+        userEmail.setText(email);
 
         // Set listeners or manipulate UI elements
         rulesButton.setOnClickListener(new View.OnClickListener() {
