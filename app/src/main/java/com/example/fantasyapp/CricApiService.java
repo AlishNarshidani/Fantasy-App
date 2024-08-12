@@ -9,7 +9,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
 public class CricApiService {
-    private static final String API_KEY = "";
+    private static final String API_KEY = "41d57022-8e39-4201-b433-c98c8d807385";
     private static final String BASE_URL = "https://api.cricapi.com/v1/";
     private RequestQueue requestQueue;
 
