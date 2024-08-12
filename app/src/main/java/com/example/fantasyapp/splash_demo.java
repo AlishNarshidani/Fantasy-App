@@ -20,9 +20,11 @@ public class splash_demo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_demo);
 
+
         videoView = (VideoView) findViewById(R.id.introVideo);
         String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.cricmania;
         Uri videoUri = Uri.parse(videoPath);
+
         videoView.setVideoURI(videoUri);
         videoView.start();
 
