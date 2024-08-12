@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:elevation="4dp">
 
-    <TextView
-        android:id="@+id/matchTextView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:textSize="20sp"/>
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:backgroundTint="#FFD4C7"
+        android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/team1Logo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/team1ShortName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/matchScore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="20sp"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/team2ShortName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginStart="16dp" />
+
+    <ImageView
+        android:id="@+id/team2Logo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
