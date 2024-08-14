@@ -66,6 +66,16 @@ public class ContestFragment extends Fragment {
                 try
                 {
                     Log.d("API_RESPONSE", response.toString());
+                    String apiStatus=response.getString("status");
+                    Log.d("API_STATUS", apiStatus);
+
+                    if(apiStatus.equals("failure"))
+                    {
+                        cricApiService.changeApiKey();
+                        fetchMatches();
+                        return;
+                    }
+
                     if(response.has("data"))
                     {
                         JSONArray matches=response.getJSONArray("data");
@@ -76,23 +86,34 @@ public class ContestFragment extends Fragment {
                             String team1=teams.getString(0);
                             String team2=teams.getString(1);
                             String status=match.getString("status");
+                            String matchStarted=match.getString("matchStarted");
+                            String matchEnded=match.getString("matchEnded");
 
                             JSONObject teamInfo1 = match.getJSONArray("teamInfo").getJSONObject(0);
                             JSONObject teamInfo2 = match.getJSONArray("teamInfo").getJSONObject(1);
 
-                            String team1ShortName = teamInfo1.getString("shortname");
-                            String team2ShortName = teamInfo2.getString("shortname");
+                            String team1ShortName = teamInfo1.has("shortname") ? teamInfo1.getString("shortname") : "Unknown";
+                            String team2ShortName = teamInfo2.has("shortname") ? teamInfo2.getString("shortname") : "Unknown";
 
                             int team1ImageResId = getTeamImageResId(team1ShortName);
                             int team2ImageResId = getTeamImageResId(team2ShortName);
 
-                            String score = match.getJSONArray("score").getJSONObject(1).getString("r") + "/" +
-                                    match.getJSONArray("score").getJSONObject(1).getString("w") + " (" +
-                                    match.getJSONArray("score").getJSONObject(1).getString("o") + " ov)";
+                            String score = match.getJSONArray("score").getJSONObject(0).getString("r") + "/" +
+                                    match.getJSONArray("score").getJSONObject(0).getString("w") + " (" +
+                                    match.getJSONArray("score").getJSONObject(0).getString("o") + " ov)";
 
                             Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2);
+                            Log.d("MATCH_STATUS", "matchStarted: " + matchStarted + ", matchEnded: " + matchEnded);
 
-                            if((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started")) {
+//                            if((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started")) {
+//                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId, score);
+//                                matchList.add(matchData);
+//                                Log.d("MATCH_ADDED", "Added match: " + team1ShortName + " vs " + team2ShortName + " ," + status);
+//                                adapter.notifyItemInserted(matchList.size() - 1);
+//                            }
+
+                            if(matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result") )
+                            {
                                 Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId, score);
                                 matchList.add(matchData);
                                 Log.d("MATCH_ADDED", "Added match: " + team1ShortName + " vs " + team2ShortName + " ," + status);
