@@ -87,23 +87,24 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Empty field", Toast.LENGTH_SHORT).show();
                     }
 
+                    else {
+                        auth.signInWithEmailAndPassword(em, password).addOnCompleteListener(MainActivity.this, task -> {
+                            if (task.isSuccessful()) {
+                                SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("isLoggedIn", true);
+                                editor.putString("email", email.getText().toString());
+                                editor.apply();
+                                Log.d("email", email.getText().toString());
 
-                    auth.signInWithEmailAndPassword(em, password).addOnCompleteListener(MainActivity.this, task -> {
-                        if (task.isSuccessful()) {
-                            SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("isLoggedIn", true);
-                            editor.putString("email", email.getText().toString());
-                            editor.apply();
-                            Log.d("email", email.getText().toString());
-
-                            Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getApplicationContext(), HomePage.class);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                                Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(getApplicationContext(), HomePage.class);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(MainActivity.this, "Login Failed!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             });
 
