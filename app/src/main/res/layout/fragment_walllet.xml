@@ -6,7 +6,7 @@
     android:background="#FAD7CB"
     tools:context=".WallletFragment">
 
-
+    <include layout="@layout/custom_action_bar"/>
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"

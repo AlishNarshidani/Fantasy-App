@@ -45,6 +45,7 @@ public class ProfileFragment extends Fragment {
         userEmail = view.findViewById(R.id.textView4);
         userEmail.setText(email);
 
+
         // Set listeners or manipulate UI elements
         rulesButton.setOnClickListener(new View.OnClickListener() {
             @Override
