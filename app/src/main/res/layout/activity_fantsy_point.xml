@@ -5,40 +5,53 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FBF2EF"
     tools:context=".FantsyPoint">
 
-    <TextView
-        android:id="@+id/textview1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textview1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fantasy Point System on CricMania:"
+            android:layout_marginTop="5dp"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="8dp"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fantasy Point System on Cric Mania:"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginLeft="5dp">
+        <TextView
+            android:id="@+id/textview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:text="Are you just getting started with Fantasy games? Out Cricmania Cricket fantsy app having an understanding about the points system is the best way to select matches and get started with it. The total points calculated for each match, will be base on information given below. So, pick your game, select your players and map your scorecard as the match results are shown. Also you get understanding on how to play and join contests also you get Player suggestion from our app so play and enjoy."
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textview2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textview1"
-        android:layout_alignParentEnd="true"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="-8dp"
-        android:layout_marginEnd="-3dp"
-        android:layout_marginBottom="4dp"
-        android:text="Are you just getting started with Fantasy games? Out Cricmania Cricket fantsy app having an understanding about the points system is the best way to select matches and get started with it. The total points calculated for each match, will be base on information given below. So, pick your game, select your players and map your scorecard as the match results are shown. Also you get understanding on how to play and join contests also you get Player suggestion from our app so play and enjoy."
-        android:textSize="18sp" />
-
-
-
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_below="@+id/textview2"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/linearLayout2"
         android:orientation="vertical">
 
         <TextView
@@ -46,18 +59,19 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:text="Batting"
-            android:textSize="18sp"
+            android:textSize="24sp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:text="Bowling"
-            android:textSize="18sp"
+            android:textSize="24sp"
+            android:textColor="@color/black"
             android:layout_marginTop="10dp"
             android:textStyle="bold" />
 
-        <!-- Add your categories and points details here -->
 
     </LinearLayout>
 

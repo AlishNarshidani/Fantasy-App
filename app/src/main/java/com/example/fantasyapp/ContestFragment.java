@@ -1,5 +1,6 @@
 package com.example.fantasyapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.graphics.Insets;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -33,6 +35,8 @@ public class ContestFragment extends Fragment {
     ArrayList<Match> matchList;
     CricApiService cricApiService;
 
+
+
     private static final List<String> INTERNATIONAL_TEAMS = Arrays.asList(
             "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland"
     );
@@ -40,6 +44,8 @@ public class ContestFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contest, container, false);
+
+
 
         recyclerView = view.findViewById(R.id.recyclerView);
         matchList = new ArrayList<>();

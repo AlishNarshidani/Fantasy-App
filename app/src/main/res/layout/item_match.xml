@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:backgroundTint="#FFD4C7"
+        android:backgroundTint="#CE9482"
         android:gravity="center_vertical">
 
     <ImageView
