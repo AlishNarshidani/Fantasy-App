@@ -65,13 +65,17 @@ public class Otp extends AppCompatActivity {
                             userData.put("email",email);
                             userData.put("mno",mno);
                             userData.put("dob",dob);
+                            userData.put("deposit money",0);
+                            userData.put("withdrawable money",0);
+                            userData.put("bonus money",100);
 
                             db.collection("users").document(userId).set(userData)
                                     .addOnSuccessListener(aVoid -> {
                                         Toast.makeText(Otp.this,"Successfully Signed Up!",Toast.LENGTH_SHORT).show();
                                         Intent j=new Intent(Otp.this,MainActivity.class);
                                         startActivity(j);
-                                    }).addOnFailureListener(e ->Toast.makeText(Otp.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
+                                    })
+                                    .addOnFailureListener(e ->Toast.makeText(Otp.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
                         }
                     });
                 }
