@@ -19,7 +19,6 @@
         android:layout_width="match_parent"
         app:menu="@menu/bottom_nav_manu"
         android:layout_height="wrap_content"
-        android:background="#FF6A3B"
-   />
+        android:background="@drawable/rounded_bottom_navigation" />
 
 </LinearLayout>
