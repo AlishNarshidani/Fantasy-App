@@ -108,7 +108,7 @@ public class ContestFragment extends Fragment {
                                     match.getJSONArray("score").getJSONObject(0).getString("w") + " (" +
                                     match.getJSONArray("score").getJSONObject(0).getString("o") + " ov)";
 
-                            Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2);
+                            Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2+" "+matches.length());
                             Log.d("MATCH_STATUS", "matchStarted: " + matchStarted + ", matchEnded: " + matchEnded);
 
 //                            if((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started")) {

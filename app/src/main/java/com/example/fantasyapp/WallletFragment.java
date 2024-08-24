@@ -1,8 +1,11 @@
 package com.example.fantasyapp;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,7 +32,7 @@ import java.util.Map;
 
 public class WallletFragment extends Fragment {
 
-    AppCompatButton addcash;
+    AppCompatButton addcash, withdrawcash;
     TextView total_balance_amount, unutilized_balance, winnings_balance, cash_bonus_amount;
     Long fetchedDepositMoney,fetchedWithdrawableMoney,fetchedBonusMoney;
 
@@ -47,6 +50,7 @@ public class WallletFragment extends Fragment {
         unutilized_balance = view.findViewById(R.id.unutilized_balance);
         winnings_balance = view.findViewById(R.id.winnings_balance);
         cash_bonus_amount = view.findViewById(R.id.cash_bonus_amount);
+        withdrawcash = view.findViewById(R.id.withdraw_cash_button);
 
         db=FirebaseFirestore.getInstance();
         auth= FirebaseAuth.getInstance();
@@ -118,6 +122,15 @@ public class WallletFragment extends Fragment {
 
 
 
+        withdrawcash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WithdrawAmount.class);
+                startActivityForResult(intent,1);
+            }
+        });
+
+
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -126,6 +139,16 @@ public class WallletFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1 && resultCode == RESULT_OK)
+        {
+            onResume();
+        }
     }
 
     @Override

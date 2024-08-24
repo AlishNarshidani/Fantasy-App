@@ -1,6 +1,5 @@
 package com.example.fantasyapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,19 +20,15 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.razorpay.Checkout;
-import com.razorpay.PaymentResultListener;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PaymentAmount extends AppCompatActivity implements PaymentResultListener {
+public class WithdrawAmount extends AppCompatActivity {
 
-    AppCompatButton btn500,btn100,btn50,payButton;
-    EditText amount;
-    String amountVal;
+    AppCompatButton btn500,btn100,btn50,withdrawButton;
+    EditText amount, upiId;
+    String amountVal, upiIdStr;
 
     FirebaseAuth auth;
     FirebaseFirestore db;
@@ -44,18 +39,20 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_payment_amount);
+        setContentView(R.layout.activity_withdraw_amount);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+
         btn500 = (AppCompatButton) findViewById(R.id.btn500);
         btn100 = (AppCompatButton) findViewById(R.id.btn100);
         btn50 = (AppCompatButton) findViewById(R.id.btn50);
-        payButton = (AppCompatButton) findViewById(R.id.payButton);
+        withdrawButton = (AppCompatButton) findViewById(R.id.withdrawButton);
         amount = (EditText) findViewById(R.id.amount);
+        upiId = (EditText) findViewById(R.id.upiId);
 
         db=FirebaseFirestore.getInstance();
         auth= FirebaseAuth.getInstance();
@@ -84,60 +81,54 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
             }
         });
 
-        payButton.setOnClickListener(new View.OnClickListener() {
+        withdrawButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 amountVal = amount.getText().toString();
+                upiIdStr = upiId.getText().toString();
 
-                if(amountVal.length() == 0)
+
+                if(amountVal.length() == 0 || upiIdStr.length() == 0)
                 {
-                    amount.setError("Enter Amount");
+                    if(amountVal.length() == 0) {
+                        amount.setError("Enter Amount");
+                    }
+                    if(upiIdStr.length() == 0)
+                    {
+                        upiId.setError("Enter UPI ID");
+                    }
                 }
                 else {
-                    PaymentNow(amountVal);
+                    WithdrawNow(amountVal,new WithdrawCallback(){
+                        @Override
+                        public void onWithdrawComplete(int result) {
+                            if(result==1)
+                            {
+                                Intent resultIntent = new Intent();
+                                setResult(RESULT_OK, resultIntent);
+                                finish();
+                            }
+                        }
+                    });
+
                 }
             }
         });
-    }
-
-    public void PaymentNow(String val)
-    {
-        final Activity activity = this;
-
-        Checkout checkout = new Checkout();
-        checkout.setKeyID("rzp_test_lxZ3tAXnEknadJ");
-        checkout.setImage(R.mipmap.ic_launcher);
-
-        double finalAmount = Double.parseDouble(val)*100;
-
-        try {
-            JSONObject options = new JSONObject();
-
-            options.put("name", "CricMania");
-            options.put("description", "Reference No. #123456");
-            options.put("image", "http://example.com/image/rzp.jpg");
-            //options.put("order_id", "order_DBJOWzybf0sJbb");//from response of step 3.
-            options.put("theme.color", "#3399cc");
-            options.put("currency", "INR");
-            options.put("amount", finalAmount+"");//pass amount in currency subunits
-            options.put("prefill.email", "gaurav.kumar@example.com");
-            options.put("prefill.contact","9988776655");
-//            JSONObject retryObj = new JSONObject();
-//            retryObj.put("enabled", true);
-//            retryObj.put("max_count", 4);
-//            options.put("retry", retryObj);
-
-            checkout.open(activity, options);
-
-        } catch(Exception e) {
-            Log.e("payError", "Error in starting Razorpay Checkout", e);
-        }
 
     }
 
     @Override
-    public void onPaymentSuccess(String s) {
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    public interface WithdrawCallback {
+        void onWithdrawComplete(int result);
+    }
+
+    public void WithdrawNow(String val, WithdrawCallback callback)
+    {
         FirebaseUser user=auth.getCurrentUser();
         String userId=user.getUid();
 
@@ -169,40 +160,45 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
                                 fetchedWithdrawableMoney = document.getLong("withdrawable money");
                                 fetchedBonusMoney = document.getLong("bonus money");
 
-
-
+                                Log.d("Firestore Wallet Data", fetchedDepositMoney + ", " + fetchedWithdrawableMoney + ", " + fetchedBonusMoney);
 
                                 Long amountVal_long = Long.parseLong(amountVal);
-                                Long new_deposit_balance = fetchedDepositMoney + amountVal_long;
 
-                                //update wallet data when money deposited
-                                Map<String,Object> userData = new HashMap<>();
-                                userData.put("deposit money",new_deposit_balance);
-                                Log.d("deposit", "money deposited, new deposit balance: "+new_deposit_balance);
+                                if(fetchedWithdrawableMoney < amountVal_long || amountVal_long == 0)
+                                {
+                                    if(fetchedWithdrawableMoney < amountVal_long) {
+                                        amount.setError("Insufficient Balance, your winnings: ₹" + fetchedWithdrawableMoney);
+                                    }
+                                    else if(amountVal_long == 0) {
+                                        amount.setError("Enter some Amount!");
+                                    }
+                                } else {
 
-                                db.collection("users").document(userId).set(userData, SetOptions.merge())
-                                        .addOnSuccessListener(aVoid -> {
-                                            Toast.makeText(PaymentAmount.this,"Successfully updated wallet !",Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e ->Toast.makeText(PaymentAmount.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
+                                    callback.onWithdrawComplete(1);
 
+                                    Toast.makeText(getApplicationContext(), "Money Will get credited within 3 days", Toast.LENGTH_SHORT).show();
+                                    Long new_withdrawable_balance = fetchedWithdrawableMoney - amountVal_long;
 
+                                    //update wallet data when money deposited
+                                    Map<String, Object> userData = new HashMap<>();
+                                    userData.put("withdrawable money", new_withdrawable_balance);
+                                    Log.d("withdraw", "money withdrawn, new withdraw balance: " + new_withdrawable_balance);
 
-                                Log.d("Firestore Wallet Data", fetchedDepositMoney + ", " + fetchedWithdrawableMoney + ", " + fetchedBonusMoney);
+                                    db.collection("users").document(userId).set(userData, SetOptions.merge())
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(WithdrawAmount.this, "Successfully updated wallet !", Toast.LENGTH_SHORT).show();
+                                            })
+                                            .addOnFailureListener(e -> Toast.makeText(WithdrawAmount.this, "Error Saving User Data!", Toast.LENGTH_SHORT).show());
+
+                                }
+
                             }
                         } else {
-                                Toast.makeText(PaymentAmount.this, "No such document!", Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(WithdrawAmount.this, "No such document!", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(PaymentAmount.this, "Error fetching data!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WithdrawAmount.this, "Error fetching data!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onPaymentError(int i, String s) {
-        Toast.makeText(getApplicationContext(), "Payment Failed!", Toast.LENGTH_SHORT).show();
     }
 }
