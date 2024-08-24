@@ -39,6 +39,7 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
     FirebaseFirestore db;
 
     Long fetchedDepositMoney,fetchedWithdrawableMoney,fetchedBonusMoney;
+    Long amountVal_long;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +173,7 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
 
 
 
-                                Long amountVal_long = Long.parseLong(amountVal);
+                                amountVal_long = Long.parseLong(amountVal);
                                 Long new_deposit_balance = fetchedDepositMoney + amountVal_long;
 
                                 //update wallet data when money deposited
@@ -186,9 +187,29 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
                                         })
                                         .addOnFailureListener(e ->Toast.makeText(PaymentAmount.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
 
-
-
                                 Log.d("Firestore Wallet Data", fetchedDepositMoney + ", " + fetchedWithdrawableMoney + ", " + fetchedBonusMoney);
+
+
+
+                                // Save data in transactions collection
+                                Map<String, Object> transactionData = new HashMap<>();
+                                transactionData.put("userId", userId);
+                                transactionData.put("transactionType", "Deposit");
+                                transactionData.put("amount", amountVal_long);
+                                transactionData.put("transactionStatus", "Completed");
+                                transactionData.put("transactionDate", new com.google.firebase.Timestamp(new java.util.Date()));
+
+
+                                db.collection("transactions")
+                                        .add(transactionData)
+                                        .addOnSuccessListener(documentReference -> {
+                                            String transactionId = documentReference.getId();
+                                            Log.d("transactionId", "transactionId: "+transactionId);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.d("transaction", "failed");
+                                        });
+
                             }
                         } else {
                                 Toast.makeText(PaymentAmount.this, "No such document!", Toast.LENGTH_SHORT).show();
@@ -199,6 +220,7 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
                 });
 
         Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

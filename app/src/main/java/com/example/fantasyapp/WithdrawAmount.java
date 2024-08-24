@@ -34,6 +34,7 @@ public class WithdrawAmount extends AppCompatActivity {
     FirebaseFirestore db;
 
     Long fetchedDepositMoney,fetchedWithdrawableMoney,fetchedBonusMoney;
+    Long amountVal_long;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +163,7 @@ public class WithdrawAmount extends AppCompatActivity {
 
                                 Log.d("Firestore Wallet Data", fetchedDepositMoney + ", " + fetchedWithdrawableMoney + ", " + fetchedBonusMoney);
 
-                                Long amountVal_long = Long.parseLong(amountVal);
+                                amountVal_long = Long.parseLong(amountVal);
 
                                 if(fetchedWithdrawableMoney < amountVal_long || amountVal_long == 0)
                                 {
@@ -189,6 +190,27 @@ public class WithdrawAmount extends AppCompatActivity {
                                                 Toast.makeText(WithdrawAmount.this, "Successfully updated wallet !", Toast.LENGTH_SHORT).show();
                                             })
                                             .addOnFailureListener(e -> Toast.makeText(WithdrawAmount.this, "Error Saving User Data!", Toast.LENGTH_SHORT).show());
+
+
+
+                                    // Save data in transactions collection
+                                    Map<String, Object> transactionData = new HashMap<>();
+                                    transactionData.put("userId", userId);
+                                    transactionData.put("transactionType", "Withdraw");
+                                    transactionData.put("amount", amountVal_long);
+                                    transactionData.put("transactionStatus", "Pending");
+                                    transactionData.put("transactionDate", new com.google.firebase.Timestamp(new java.util.Date()));
+
+
+                                    db.collection("transactions")
+                                            .add(transactionData)
+                                            .addOnSuccessListener(documentReference -> {
+                                                String transactionId = documentReference.getId();
+                                                Log.d("transactionId", "transactionId: "+transactionId);
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.d("transaction", "failed");
+                                            });
 
                                 }
 

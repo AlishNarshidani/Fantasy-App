@@ -101,7 +101,7 @@
                         android:layout_marginTop="9dp"
                         android:text="Name:"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -130,7 +130,7 @@
                         android:layout_marginTop="9dp"
                         android:text="Email:"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -162,7 +162,7 @@
                         android:layout_marginBottom="15dp"
                         android:text="Birth Date:"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView

@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,6 +37,8 @@ public class WallletFragment extends Fragment {
     TextView total_balance_amount, unutilized_balance, winnings_balance, cash_bonus_amount;
     Long fetchedDepositMoney,fetchedWithdrawableMoney,fetchedBonusMoney;
 
+    CardView transactionHistoryCardView;
+
     FirebaseAuth auth;
     FirebaseFirestore db;
 
@@ -51,6 +54,7 @@ public class WallletFragment extends Fragment {
         winnings_balance = view.findViewById(R.id.winnings_balance);
         cash_bonus_amount = view.findViewById(R.id.cash_bonus_amount);
         withdrawcash = view.findViewById(R.id.withdraw_cash_button);
+        transactionHistoryCardView = view.findViewById(R.id.transactionHistory);
 
         db=FirebaseFirestore.getInstance();
         auth= FirebaseAuth.getInstance();
@@ -129,6 +133,17 @@ public class WallletFragment extends Fragment {
                 startActivityForResult(intent,1);
             }
         });
+
+
+
+        transactionHistoryCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), TransactionHistory.class);
+                startActivity(i);
+            }
+        });
+
 
 
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main), (v, insets) -> {
