@@ -2,9 +2,13 @@ package com.example.fantasyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -101,17 +105,42 @@ public class WithdrawAmount extends AppCompatActivity {
                     }
                 }
                 else {
+
+                    withdrawButton.setEnabled(false);
+
                     WithdrawNow(amountVal,new WithdrawCallback(){
                         @Override
                         public void onWithdrawComplete(int result) {
                             if(result==1)
                             {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //Make toast for withdraw success
+                                        // Inflate the custom layout
+                                        LayoutInflater inflater = getLayoutInflater();
+                                        View layout = inflater.inflate(R.layout.custom_toast_withdraw, findViewById(R.id.custom_toast_container));
+
+                                        TextView amountText = layout.findViewById(R.id.toast_amount);
+                                        amountText.setText("₹" + amountVal);
+
+                                        Toast toast = new Toast(getApplicationContext());
+                                        toast.setDuration(Toast.LENGTH_LONG);
+                                        toast.setView(layout);
+                                        toast.setGravity(Gravity.CENTER,0,0);
+                                        toast.show();
+
+                                    }
+                                },2000);
+
                                 Intent resultIntent = new Intent();
                                 setResult(RESULT_OK, resultIntent);
                                 finish();
                             }
                         }
                     });
+
+                    //withdrawButton.setEnabled(true);
 
                 }
             }
@@ -177,7 +206,7 @@ public class WithdrawAmount extends AppCompatActivity {
 
                                     callback.onWithdrawComplete(1);
 
-                                    Toast.makeText(getApplicationContext(), "Money Will get credited within 3 days", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getApplicationContext(), "Money Will get credited within 3 days", Toast.LENGTH_SHORT).show();
                                     Long new_withdrawable_balance = fetchedWithdrawableMoney - amountVal_long;
 
                                     //update wallet data when money deposited
@@ -187,7 +216,7 @@ public class WithdrawAmount extends AppCompatActivity {
 
                                     db.collection("users").document(userId).set(userData, SetOptions.merge())
                                             .addOnSuccessListener(aVoid -> {
-                                                Toast.makeText(WithdrawAmount.this, "Successfully updated wallet !", Toast.LENGTH_SHORT).show();
+                                                //Toast.makeText(WithdrawAmount.this, "Successfully updated wallet !", Toast.LENGTH_SHORT).show();
                                             })
                                             .addOnFailureListener(e -> Toast.makeText(WithdrawAmount.this, "Error Saving User Data!", Toast.LENGTH_SHORT).show());
 
@@ -200,6 +229,7 @@ public class WithdrawAmount extends AppCompatActivity {
                                     transactionData.put("amount", amountVal_long);
                                     transactionData.put("transactionStatus", "Pending");
                                     transactionData.put("transactionDate", new com.google.firebase.Timestamp(new java.util.Date()));
+                                    transactionData.put("UPI id",upiIdStr);
 
 
                                     db.collection("transactions")

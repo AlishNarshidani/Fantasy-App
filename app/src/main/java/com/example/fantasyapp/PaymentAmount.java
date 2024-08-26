@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -183,7 +186,7 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
 
                                 db.collection("users").document(userId).set(userData, SetOptions.merge())
                                         .addOnSuccessListener(aVoid -> {
-                                            Toast.makeText(PaymentAmount.this,"Successfully updated wallet !",Toast.LENGTH_SHORT).show();
+                                            //Toast.makeText(PaymentAmount.this,"Successfully updated wallet !",Toast.LENGTH_SHORT).show();
                                         })
                                         .addOnFailureListener(e ->Toast.makeText(PaymentAmount.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
 
@@ -219,8 +222,24 @@ public class PaymentAmount extends AppCompatActivity implements PaymentResultLis
                     }
                 });
 
-        Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast_withdraw, findViewById(R.id.custom_toast_container));
 
+        TextView amountText = layout.findViewById(R.id.toast_amount);
+        amountText.setText("₹" + amountVal);
+
+        TextView transaction_type = layout.findViewById(R.id.toast_text);
+        transaction_type.setText("Deposit");
+
+        TextView subText = layout.findViewById(R.id.toast_subtext);
+        subText.setText("Money Deposited Successfully");
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.setGravity(Gravity.CENTER,0,0);
+        toast.show();
     }
 
     @Override
