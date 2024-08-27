@@ -45,15 +45,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="180dp"
                             android:padding="10dp"
-                            android:src="@drawable/custom_button"
-                            android:scaleType="centerCrop"
-                            android:layout_marginBottom="8dp"/>
+                            android:src="@drawable/minesgameicon"
+                            android:scaleType="centerCrop"/>
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/minesGridGameBtn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:elevation="5dp"
                             android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:shadowColor="#494949"
@@ -74,14 +77,15 @@
                             android:layout_height="180dp"
                             android:padding="10dp"
                             android:src="@drawable/custom_button"
-                            android:scaleType="centerCrop"
-                            android:layout_marginBottom="8dp"/>
+                            android:scaleType="centerCrop"/>
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:elevation="5dp"
                             android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:shadowColor="#494949"
@@ -112,14 +116,15 @@
                             android:layout_height="180dp"
                             android:padding="10dp"
                             android:src="@drawable/custom_button"
-                            android:scaleType="centerCrop"
-                            android:layout_marginBottom="8dp"/>
+                            android:scaleType="centerCrop"/>
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:elevation="5dp"
                             android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
                             android:shadowColor="#494949"
@@ -140,16 +145,17 @@
                             android:layout_height="180dp"
                             android:padding="10dp"
                             android:src="@drawable/custom_button"
-                            android:scaleType="centerCrop"
-                            android:layout_marginBottom="8dp"/>
+                            android:scaleType="centerCrop"/>
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:elevation="5dp"
                             android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
                             android:shadowColor="#494949"
                             android:text="10 Rs"
                             android:textStyle="bold" />
