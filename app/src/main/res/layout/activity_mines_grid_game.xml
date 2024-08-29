@@ -76,6 +76,7 @@
         android:layout_gravity="center">
 
         <ImageView
+            android:id="@+id/imageView0"
             android:tag="0"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -87,6 +88,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView1"
             android:tag="1"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -98,6 +100,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView2"
             android:tag="2"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -109,6 +112,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView3"
             android:tag="3"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -120,6 +124,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView4"
             android:tag="4"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -131,6 +136,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView5"
             android:tag="5"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -142,6 +148,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView6"
             android:tag="6"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -153,6 +160,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView7"
             android:tag="7"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -164,6 +172,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView8"
             android:tag="8"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -175,6 +184,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView9"
             android:tag="9"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -186,6 +196,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView10"
             android:tag="10"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -197,6 +208,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView11"
             android:tag="11"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -208,6 +220,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView12"
             android:tag="12"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -219,6 +232,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView13"
             android:tag="13"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -230,6 +244,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView14"
             android:tag="14"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -241,6 +256,7 @@
             android:onClick="onTileClick"/>
 
         <ImageView
+            android:id="@+id/imageView15"
             android:tag="15"
             android:layout_width="0dp"
             android:layout_height="0dp"
