@@ -101,17 +101,17 @@
                         android:layout_marginTop="9dp"
                         android:text="Name:"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/displayName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="9dp"
                         android:text=""
-                        android:textSize="24sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/black" />
                 </LinearLayout>
@@ -130,66 +130,20 @@
                         android:layout_marginTop="9dp"
                         android:text="Email:"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/displayEmail"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="9dp"
                         android:layout_marginEnd="9dp"
                         android:text=""
-                        android:textSize="24sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/black" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:id="@+id/genderText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="9dp"
-                        android:text="Gender:"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <RadioGroup
-                        android:id="@+id/genderGroup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioMale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Male"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black" />
-
-                        <RadioButton
-                            android:id="@+id/radioFemale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:text="Female"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black" />
-                    </RadioGroup>
                 </LinearLayout>
 
                 <LinearLayout
@@ -208,17 +162,17 @@
                         android:layout_marginBottom="15dp"
                         android:text="Birth Date:"
                         android:textColor="@color/black"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/displayDOB"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="9dp"
                         android:text=""
-                        android:textSize="24sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@color/black" />
                 </LinearLayout>
