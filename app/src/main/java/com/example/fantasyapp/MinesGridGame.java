@@ -1,10 +1,12 @@
 package com.example.fantasyapp;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +28,8 @@ public class MinesGridGame extends AppCompatActivity {
     private int trapPosition1;
     private int trapPosition2;
 
+    private int betAmount = 0;
+
 
     public void onTileClick(View view)
     {
@@ -46,7 +50,12 @@ public class MinesGridGame extends AppCompatActivity {
                 triesLeft = 0;
                 fadeImage(img, R.drawable.winnings);
 
-                showGameResult("won");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showGameResult("won");
+                    }
+                },2000);
 
             } else if (tappedImage == trapPosition1 || tappedImage == trapPosition2) {
 
@@ -54,7 +63,12 @@ public class MinesGridGame extends AppCompatActivity {
                 fadeImage(img,R.drawable.minebomb);
                 revealPositions();
 
-                showGameResult("lost");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showGameResult("lost");
+                    }
+                },2000);
 
             } else {
                 fadeImage(img, R.drawable.tryagain);
@@ -63,7 +77,12 @@ public class MinesGridGame extends AppCompatActivity {
                 if(triesLeft == 0)
                 {
                     revealPositions();
-                    showGameResult("lost");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showGameResult("lost");
+                        }
+                    },2000);
                 }
             }
 
@@ -105,7 +124,7 @@ public class MinesGridGame extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                //reset game
+                onResetGame();
             }
         });
 
@@ -114,7 +133,7 @@ public class MinesGridGame extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                //close the game
+                onBackPressed();
             }
         });
 
@@ -123,6 +142,102 @@ public class MinesGridGame extends AppCompatActivity {
         int height = LinearLayout.LayoutParams.WRAP_CONTENT; // Adjust height as needed
         dialog.getWindow().setLayout(width, height);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private void onResetGame()
+    {
+
+        showBetAmountDialog();
+
+    }
+
+
+
+    private void showBetAmountDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_bet_amount, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+        builder.setCancelable(false);
+
+        AlertDialog dialog = builder.create();
+
+        EditText betAmountEditText = dialogView.findViewById(R.id.betAmountEditText);
+        AppCompatButton incrementButton = dialogView.findViewById(R.id.incrementButton);
+        AppCompatButton decrementButton = dialogView.findViewById(R.id.decrementButton);
+        AppCompatButton confirmButton = dialogView.findViewById(R.id.confirmButton);
+        AppCompatButton cancelButton = dialogView.findViewById(R.id.cancelButton);
+
+        // Set the bet amount based on user's input and interaction
+        incrementButton.setOnClickListener(v -> {
+            String betAmountStr = betAmountEditText.getText().toString();
+            betAmount = !betAmountStr.isEmpty() ? Integer.parseInt(betAmountStr) : 0;
+            betAmount += 1;
+            betAmountEditText.setText(String.valueOf(betAmount));
+        });
+
+        decrementButton.setOnClickListener(v -> {
+            String betAmountStr = betAmountEditText.getText().toString();
+            betAmount = !betAmountStr.isEmpty() ? Integer.parseInt(betAmountStr) : 0;
+            if (betAmount > 0) {
+                betAmount -= 1;
+                betAmountEditText.setText(String.valueOf(betAmount));
+            }
+        });
+
+        confirmButton.setOnClickListener(v -> {
+            String betAmountStr = betAmountEditText.getText().toString();
+            if (!betAmountStr.isEmpty() && Integer.parseInt(betAmountStr) > 0) {
+                betAmount = Integer.parseInt(betAmountStr);
+                dialog.dismiss();
+                proceedWithGameReset();
+            } else {
+                //betAmountEditText.setError("Please enter a valid amount");
+                Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        cancelButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            onBackPressed(); // Exit the game if canceled
+        });
+
+        dialog.show();
+    }
+
+
+
+    private void proceedWithGameReset() {
+
+        Toast.makeText(this, "You Placed Bet of: "+betAmount, Toast.LENGTH_SHORT).show();
+
+        triesLeft = 4;
+        prizePosition = (int) (Math.random() * 16);
+        do {
+            trapPosition1 = (int) (Math.random() * 16);
+        } while (trapPosition1 == prizePosition);
+
+        do {
+            trapPosition2 = (int) (Math.random() * 16);
+        } while (trapPosition2 == prizePosition || trapPosition2 == trapPosition1);
+
+        Log.d("prizePosition", "prizePosition: " + prizePosition);
+        Log.d("bombPosition", "bombPosition: " + trapPosition1 + ", " + trapPosition2);
+
+        for (int i = 0; i < 16; i++) {
+            ImageView img = findViewById(getResources().getIdentifier("imageView" + i, "id", getPackageName()));
+            img.setImageResource(0);
+            img.setEnabled(true);
+        }
+
+        updateTriesLeft();
+    }
+
 
 
 
@@ -169,26 +284,11 @@ public class MinesGridGame extends AppCompatActivity {
             return insets;
         });
 
-        triesLeft = 4;
-        prizePosition = (int) (Math.random() * 16);
-        do {
-            trapPosition1 = (int) (Math.random() * 16);
-        } while (trapPosition1 == prizePosition);
-
-        do {
-            trapPosition2 = (int) (Math.random() * 16);
-        } while (trapPosition2 == prizePosition || trapPosition2 == trapPosition1);
-
-
-        Log.d("prizePosition", "prizePosition: "+prizePosition);
-        Log.d("bombPosition", "bombPosition: "+trapPosition1+", "+trapPosition2);
-
 
         rulesTextView = findViewById(R.id.rulesTextView);
         triesLeftTextView = findViewById(R.id.triesLeftTextView);
         title = findViewById(R.id.gameTitle);
 
-        updateTriesLeft();
-
+        onResetGame();
     }
 }
