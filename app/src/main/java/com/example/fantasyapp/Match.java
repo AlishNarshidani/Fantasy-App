@@ -6,13 +6,15 @@ public class Match {
     private int team1ImageResId;
     private int team2ImageResId;
     private String score;
+    private String id;
 
-    public Match(String team1ShortName, String team2ShortName, int team1ImageResId, int team2ImageResId, String score) {
+    public Match(String team1ShortName, String team2ShortName, int team1ImageResId, int team2ImageResId, String score, String id) {
         this.team1ShortName = team1ShortName;
         this.team2ShortName = team2ShortName;
         this.team1ImageResId = team1ImageResId;
         this.team2ImageResId = team2ImageResId;
         this.score = score;
+        this.id=id;
     }
 
     public String getTeam1ShortName() {
@@ -33,5 +35,10 @@ public class Match {
 
     public String getScore() {
         return score;
+    }
+
+    public String getId()
+    {
+        return id;
     }
 }

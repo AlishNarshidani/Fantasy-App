@@ -1,5 +1,7 @@
 package com.example.fantasyapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,11 @@ import java.util.List;
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
 
     private List<Match> matchList;
+    private Context context;
 
-    public MatchAdapter(List<Match> matchList) {
+    public MatchAdapter(Context context,List<Match> matchList) {
         this.matchList = matchList;
+        this.context=context;
     }
 
     @NonNull
@@ -34,6 +38,12 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         holder.matchScore.setText(match.getScore());
         holder.team1Logo.setImageResource(match.getTeam1ImageResId());
         holder.team2Logo.setImageResource(match.getTeam2ImageResId());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent i=new Intent(context,Scorecard.class);
+            i.putExtra("match_id",match.getId());
+            context.startActivity(i);
+        });
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.fantasyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,9 +72,18 @@ public class Otp extends AppCompatActivity {
                                         Toast.makeText(Otp.this,"Successfully Signed Up!",Toast.LENGTH_SHORT).show();
                                         Intent j=new Intent(Otp.this,MainActivity.class);
                                         startActivity(j);
-                                    }).addOnFailureListener(e ->Toast.makeText(Otp.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
+                                    }).addOnFailureListener(e ->{
+                                        Log.e("Otp","Data not saved",e);
+                                        Toast.makeText(Otp.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                        else {
+                            Toast.makeText(Otp.this, "Email not verified!", Toast.LENGTH_SHORT).show();
                         }
                     });
+                }
+                else {
+                    Toast.makeText(Otp.this, "User not found!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
