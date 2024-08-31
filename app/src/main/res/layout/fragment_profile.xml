@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBF2EF"
+    android:background="#FFEDE7"
     tools:context=".ProfileFragment">
 
 
@@ -17,8 +17,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
-
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -249,9 +247,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/line1"
+                        android:layout_above="@id/line2"
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="8dp"
-                        android:layout_marginBottom="11dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:background="?attr/selectableItemBackground"
                         android:padding="10dp"
                         android:src="@drawable/ic_greater_than_vector" />
@@ -267,7 +267,7 @@
                         android:textColor="@color/black"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:layout_marginStart="11dp"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="9dp"
                         android:layout_weight="1"
                         android:text="User Profile"
@@ -281,8 +281,9 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="11dp"
-                        android:layout_marginBottom="11dp"
-
+                        android:layout_marginBottom="-4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_above="@id/line1"
                         android:background="?attr/selectableItemBackground"
                         android:padding="10dp"
                         android:src="@drawable/ic_greater_than_vector" />
@@ -336,8 +337,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="11dp"
                         android:layout_marginTop="2dp"
-
-                        android:layout_marginBottom="11dp"
+                        android:layout_above="@id/line3"
+                        android:layout_marginBottom="2dp"
                         android:background="?attr/selectableItemBackground"
                         android:padding="10dp"
                         android:src="@drawable/ic_greater_than_vector" />
@@ -378,7 +379,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="11dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginBottom="11dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_above="@id/line4"
                         android:background="?attr/selectableItemBackground"
                         android:padding="10dp"
                         android:src="@drawable/ic_greater_than_vector" />
@@ -392,7 +394,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="0dp"
                         android:autoSizeMaxTextSize="13sp"
-                        android:text="Contect us"
+                        android:text="Contact us"
                         android:textColor="@color/black"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -405,8 +407,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="11dp"
                         android:layout_marginTop="2dp"
-
-                        android:layout_marginBottom="11dp"
+                        android:layout_above="@id/line5"
+                        android:layout_marginBottom="2dp"
                         android:background="?attr/selectableItemBackground"
                         android:padding="10dp"
                         android:src="@drawable/ic_greater_than_vector" />
@@ -444,11 +446,11 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/line5"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginStart="11dp"
-                        android:layout_marginTop="2dp"
-
-                        android:layout_marginBottom="11dp"
+                        android:layout_marginTop="-4dp"
                         android:background="?attr/selectableItemBackground"
+                        android:onClick="logout"
                         android:padding="10dp"
                         android:src="@drawable/ic_greater_than_vector" />
 

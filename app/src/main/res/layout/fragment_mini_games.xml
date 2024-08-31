@@ -1,16 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FAD7CB"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:fitsSystemWindows="false"
     tools:context=".miniGamesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Mini Games"
-        android:textSize="36dp"
-        android:gravity="center"/>
+    <include layout="@layout/custom_action_bar"/>
 
-</FrameLayout>
+    <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Row 1 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Game 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="8dp">
+
+                        <ImageView
+                            android:id="@+id/game1"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:padding="10dp"
+                            android:src="@drawable/minesgameicon"
+                            android:scaleType="centerCrop"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/minesGridGameBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:elevation="5dp"
+                            android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:shadowColor="#494949"
+                            android:textStyle="bold"
+                            android:text="10 Rs" />
+                    </LinearLayout>
+
+                    <!-- Game 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/game2"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:padding="10dp"
+                            android:src="@drawable/custom_button"
+                            android:scaleType="centerCrop"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:elevation="5dp"
+                            android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:shadowColor="#494949"
+                            android:textStyle="bold"
+                            android:text="10 Rs"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Row 2 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- Game 3 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="8dp">
+
+                        <ImageView
+                            android:id="@+id/game3"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:padding="10dp"
+                            android:src="@drawable/custom_button"
+                            android:scaleType="centerCrop"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:elevation="5dp"
+                            android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:shadowColor="#494949"
+                            android:textStyle="bold"
+                            android:text="10 Rs"/>
+                    </LinearLayout>
+
+                    <!-- Game 4 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/game4"
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:padding="10dp"
+                            android:src="@drawable/custom_button"
+                            android:scaleType="centerCrop"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:elevation="5dp"
+                            android:padding="10dp"
+                            android:background="@drawable/custom_games_button"
+                            android:textColor="@color/white"
+                            android:shadowColor="#494949"
+                            android:text="10 Rs"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Add more rows as needed -->
+
+            </LinearLayout>
+
+        </ScrollView>
+   </LinearLayout>
+</LinearLayout>

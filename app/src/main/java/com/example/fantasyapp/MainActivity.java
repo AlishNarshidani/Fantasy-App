@@ -87,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Empty field", Toast.LENGTH_SHORT).show();
                     }
 
-                    else
-                    {
+                    else {
                         auth.signInWithEmailAndPassword(em, password).addOnCompleteListener(MainActivity.this, task -> {
                             if (task.isSuccessful()) {
                                 SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
