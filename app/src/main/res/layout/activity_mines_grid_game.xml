@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/minegamebg"
+    tools:context=".MinesGridGame">
+
+
+    <!-- Space for rules and tries left -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/infoLayout">
+
+        <TextView
+            android:id="@+id/gameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/bungee_spice"
+            android:shadowColor="#000000"
+            android:shadowDx="8"
+            android:shadowDy="8"
+            android:shadowRadius="5"
+            android:text="Mines"
+            android:textColor="#F0A200"
+            android:textSize="40sp" />
+
+        <!-- Display rules, tries left, or any other information -->
+        <TextView
+            android:id="@+id/rulesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bungee_spice"
+            android:padding="8dp"
+            android:shadowColor="#000000"
+            android:shadowDx="8"
+            android:shadowDy="8"
+            android:shadowRadius="5"
+            android:text="Rules: Find the prize in 4 attempts, if you find a bomb it's game over!"
+            android:textColor="#F0A200"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/triesLeftTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tries Left: 4"
+            android:fontFamily="@font/bungee_spice"
+            android:shadowColor="#000000"
+            android:shadowDx="8"
+            android:shadowDy="8"
+            android:shadowRadius="5"
+            android:textSize="22sp"
+            android:textColor="#F0A200" />
+
+    </LinearLayout>
+
+    <!-- GridLayout for the game -->
+    <GridLayout
+        android:id="@+id/gameGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/infoLayout"
+        android:layout_alignParentBottom="true"
+        android:columnCount="4"
+        android:rowCount="4"
+        android:padding="8dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:tag="0"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="6"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="7"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="8"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="9"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="10"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="11"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="12"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="13"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="14"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+        <ImageView
+            android:tag="15"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:background="@drawable/custom_tile_background"
+            android:text=""
+            android:onClick="onTileClick"/>
+
+    </GridLayout>
+
+</RelativeLayout>

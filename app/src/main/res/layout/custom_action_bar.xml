@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         app:cardElevation="4dp"
-        android:layout_marginLeft="6dp"
-        android:background="@mipmap/ic_launcher_foreground"
+        android:backgroundTint="@color/white"
+        android:layout_marginStart="6dp"
         app:cardCornerRadius="10dp" >
 
         <ImageView

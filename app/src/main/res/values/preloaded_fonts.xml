@@ -2,5 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/audiowide</item>
+        <item>@font/bungee_spice</item>
+        <item>@font/press_start_2p</item>
     </array>
 </resources>
