@@ -177,7 +177,7 @@ public class MinesGridGame extends AppCompatActivity {
         incrementButton.setOnClickListener(v -> {
             String betAmountStr = betAmountEditText.getText().toString();
             betAmount = !betAmountStr.isEmpty() ? Integer.parseInt(betAmountStr) : 0;
-            betAmount += 1;
+            betAmount += 10;
             betAmountEditText.setText(String.valueOf(betAmount));
         });
 
@@ -185,7 +185,7 @@ public class MinesGridGame extends AppCompatActivity {
             String betAmountStr = betAmountEditText.getText().toString();
             betAmount = !betAmountStr.isEmpty() ? Integer.parseInt(betAmountStr) : 0;
             if (betAmount > 0) {
-                betAmount -= 1;
+                betAmount -= 10;
                 betAmountEditText.setText(String.valueOf(betAmount));
             }
         });
