@@ -2,9 +2,9 @@ package com.example.fantasyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,46 +38,50 @@ public class Otp extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        instruction=findViewById(R.id.textView3);
-        verify=findViewById(R.id.button4);
-        auth=FirebaseAuth.getInstance();
-        db=FirebaseFirestore.getInstance();
+        instruction = findViewById(R.id.textView3);
+        verify = findViewById(R.id.button4);
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseUser user=auth.getCurrentUser();
-                if(user!=null)
-                {
-                    user.reload().addOnCompleteListener(task ->{
-                        if(user.isEmailVerified())
-                        {
-                            Intent i=getIntent();
-                            String name=i.getStringExtra("name");
-                            String email=i.getStringExtra("email");
-                            String mno=i.getStringExtra("mno");
-                            String dob=i.getStringExtra("dob");
+                FirebaseUser user = auth.getCurrentUser();
+                if (user != null) {
+                    user.reload().addOnCompleteListener(task -> {
+                        if (user.isEmailVerified()) {
+                            Intent i = getIntent();
+                            String name = i.getStringExtra("name");
+                            String email = i.getStringExtra("email");
+                            String mno = i.getStringExtra("mno");
+                            String dob = i.getStringExtra("dob");
 
-                            String userId=user.getUid();
+                            String userId = user.getUid();
 
-                            Map<String,Object> userData = new HashMap<>();
-                            userData.put("name",name);
-                            userData.put("email",email);
-                            userData.put("mno",mno);
-                            userData.put("dob",dob);
-                            userData.put("deposit money",0);
-                            userData.put("withdrawable money",0);
-                            userData.put("bonus money",100);
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("name", name);
+                            userData.put("email", email);
+                            userData.put("mno", mno);
+                            userData.put("dob", dob);
+                            userData.put("deposit money", 0);
+                            userData.put("withdrawable money", 0);
+                            userData.put("bonus money", 100);
 
                             db.collection("users").document(userId).set(userData)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(Otp.this,"Successfully Signed Up!",Toast.LENGTH_SHORT).show();
-                                        Intent j=new Intent(Otp.this,MainActivity.class);
+                                        Toast.makeText(Otp.this, "Successfully Signed Up!", Toast.LENGTH_SHORT).show();
+                                        Intent j = new Intent(Otp.this, MainActivity.class);
                                         startActivity(j);
-                                    })
-                                    .addOnFailureListener(e ->Toast.makeText(Otp.this,"Error Saving User Data!",Toast.LENGTH_SHORT).show());
+                                    }).addOnFailureListener(e -> {
+                                        Log.e("Otp", "Data not saved", e);
+                                        Toast.makeText(Otp.this, "Error Saving User Data!", Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            Toast.makeText(Otp.this, "Email not verified!", Toast.LENGTH_SHORT).show();
                         }
                     });
+                } else {
+                    Toast.makeText(Otp.this, "User not found!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

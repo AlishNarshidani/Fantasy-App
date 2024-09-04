@@ -20,6 +20,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MinesGridGame extends AppCompatActivity {
 
     private TextView rulesTextView, triesLeftTextView, title;
@@ -29,6 +38,11 @@ public class MinesGridGame extends AppCompatActivity {
     private int trapPosition2;
 
     private int betAmount = 0;
+
+    Long fetchedDepositMoney,fetchedWithdrawableMoney,fetchedBonusMoney,totalMoney;
+
+    FirebaseAuth auth;
+    FirebaseFirestore db;
 
 
     public void onTileClick(View view)
@@ -192,13 +206,14 @@ public class MinesGridGame extends AppCompatActivity {
 
         confirmButton.setOnClickListener(v -> {
             String betAmountStr = betAmountEditText.getText().toString();
+
             if (!betAmountStr.isEmpty() && Integer.parseInt(betAmountStr) > 0) {
                 betAmount = Integer.parseInt(betAmountStr);
                 dialog.dismiss();
-                proceedWithGameReset();
+                checkBalanceAndProceed(betAmount);
             } else {
                 //betAmountEditText.setError("Please enter a valid amount");
-                Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Insufficient Balance", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -208,6 +223,102 @@ public class MinesGridGame extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void checkBalanceAndProceed(int betAmount)
+    {
+        db= FirebaseFirestore.getInstance();
+        auth= FirebaseAuth.getInstance();
+
+        FirebaseUser user=auth.getCurrentUser();
+
+        String userId=user.getUid();
+
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                fetchedDepositMoney = documentSnapshot.getLong("deposit money");
+                fetchedWithdrawableMoney = documentSnapshot.getLong("withdrawable money");
+                fetchedBonusMoney = documentSnapshot.getLong("bonus money");
+
+                if (fetchedBonusMoney == null) fetchedBonusMoney = 0L;
+                if (fetchedDepositMoney == null) fetchedDepositMoney = 0L;
+                if (fetchedWithdrawableMoney == null) fetchedWithdrawableMoney = 0L;
+
+                totalMoney = fetchedDepositMoney+fetchedWithdrawableMoney+fetchedBonusMoney;
+
+                if (totalMoney >= betAmount) {
+
+                    long remainingAmount = betAmount;
+
+                    // Deduct from bonusMoney first
+                    if (fetchedBonusMoney >= remainingAmount) {
+                        fetchedBonusMoney -= remainingAmount;
+                        remainingAmount = 0;
+                    } else {
+                        remainingAmount -= fetchedBonusMoney;
+                        fetchedBonusMoney = 0L;
+                    }
+
+                    // Deduct from depositMoney if needed
+                    if (remainingAmount > 0) {
+                        if (fetchedDepositMoney >= remainingAmount) {
+                            fetchedDepositMoney -= remainingAmount;
+                            remainingAmount = 0;
+                        } else {
+                            remainingAmount -= fetchedDepositMoney;
+                            fetchedDepositMoney = 0L;
+                        }
+                    }
+
+                    // Deduct from withdrawableMoney if needed
+                    if (remainingAmount > 0) {
+                        if (fetchedWithdrawableMoney >= remainingAmount) {
+                            fetchedWithdrawableMoney -= remainingAmount;
+                            remainingAmount = 0;
+                        } else {
+                            fetchedWithdrawableMoney = 0L;
+                        }
+                    }
+
+
+                    Map<String, Object> transactionData = new HashMap<>();
+                    transactionData.put("userId", userId);
+                    transactionData.put("transactionType", "Mines Game Entry");
+                    transactionData.put("amount", betAmount);
+                    transactionData.put("transactionStatus", "Completed");
+                    transactionData.put("transactionDate", new com.google.firebase.Timestamp(new java.util.Date()));
+
+
+                    db.collection("transactions")
+                            .add(transactionData)
+                            .addOnSuccessListener(documentReference -> {
+                                String transactionId = documentReference.getId();
+                                Log.d("transactionId", "transactionId: "+transactionId);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.d("transaction", "failed");
+                            });
+
+
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("bonus money", fetchedBonusMoney);
+                    updates.put("deposit money", fetchedDepositMoney);
+                    updates.put("withdrawable money", fetchedWithdrawableMoney);
+
+                    // Proceed with deducting the amount and resetting the game
+                    userDocRef.update(updates)
+                            .addOnSuccessListener(aVoid -> proceedWithGameReset())
+                            .addOnFailureListener(e -> Toast.makeText(this, "Failed to update balance", Toast.LENGTH_SHORT).show());
+                } else {
+                    onResetGame();
+                    Toast.makeText(this, "Insufficient Balance", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> Toast.makeText(this, "Failed to fetch balance", Toast.LENGTH_SHORT).show());
     }
 
 
