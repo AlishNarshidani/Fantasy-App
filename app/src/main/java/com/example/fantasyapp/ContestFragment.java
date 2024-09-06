@@ -79,6 +79,10 @@ public class ContestFragment extends Fragment {
             cricApiService.getMatches(offset,new CricApiService.DataCallback() {
                 @Override
                 public void onSuccess(JSONObject response) {
+                    if (!isAdded()) {
+                        Log.e("FRAGMENT_DETACHED", "Fragment is detached, not processing data");
+                        return; // Fragment is detached, don't proceed
+                    }
                     Log.d("offset11:","Going into success");
                     try
                     {
