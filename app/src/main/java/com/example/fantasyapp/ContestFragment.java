@@ -1,6 +1,9 @@
 package com.example.fantasyapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.core.graphics.Insets;
@@ -9,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,28 +22,32 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 
 public class ContestFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    MatchAdapter adapter;
-    ArrayList<Match> matchList;
-    CricApiService cricApiService;
-    private Set<String> fetchedMatchIds = new HashSet<>();
-    int count=0;
-
-
+    private ViewPager2 viewPager;
+    private TabLayout tabLayout;
+    private ArrayList<Match> liveMatches = new ArrayList<>();
+    private ArrayList<Match> upcomingMatches = new ArrayList<>();
+    private CricApiService cricApiService;
 
     private static final List<String> INTERNATIONAL_TEAMS = Arrays.asList(
             "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland","United States","Canada"
@@ -49,13 +57,8 @@ public class ContestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contest, container, false);
 
-
-
-        recyclerView = view.findViewById(R.id.recyclerView);
-        matchList = new ArrayList<>();
-        adapter = new MatchAdapter(getContext(),matchList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adapter);
+        viewPager = view.findViewById(R.id.viewPager);
+        tabLayout = view.findViewById(R.id.tabLayout);
 
         cricApiService = new CricApiService(getContext());
         fetchMatches();
@@ -70,8 +73,6 @@ public class ContestFragment extends Fragment {
 
     private void fetchMatches()
     {
-        count=count+1;
-        Log.d("Count:",String.valueOf(count));
         final int[] offsets={0,25,50,75};
         for(int offset:offsets)
         {
@@ -100,6 +101,15 @@ public class ContestFragment extends Fragment {
                             JSONArray matches=response.getJSONArray("data");
                             Log.d("MATCH_COUNT", "Total matches: " + matches.length());
 
+                            Date currentDate=new Date();
+                            Calendar calendar=Calendar.getInstance();
+                            calendar.setTime(currentDate);
+                            calendar.add(Calendar.DAY_OF_YEAR,7);
+                            Date endDate=calendar.getTime();
+
+                            Log.d("DATE",currentDate+"\n"+calendar+"\n"+endDate);
+
+
                             for(int i=0;i<matches.length();i++)
                             {
                                 JSONObject match=matches.getJSONObject(i);
@@ -121,9 +131,23 @@ public class ContestFragment extends Fragment {
                                 String matchEnded=match.getString("matchEnded");
                                 String name=match.getString("name");
                                 String id=match.getString("id");
+                                String date=match.getString("date");
 
-                                JSONObject teamInfo1 = match.getJSONArray("teamInfo").getJSONObject(0);
-                                JSONObject teamInfo2 = match.getJSONArray("teamInfo").getJSONObject(1);
+                                Date matchDate=converToDate(date);
+                                Log.d("MATCH_DATE",String.valueOf(matchDate));
+                                if(matchDate==null)
+                                {
+                                    continue;
+                                }
+
+                                JSONArray teamInfoArray = match.getJSONArray("teamInfo");
+                                if (teamInfoArray.length() < 2) {
+                                    Log.e("TEAM_INFO_ERROR", "teamInfo array does not have enough elements"+i+" "+name);
+                                    continue;
+                                }
+
+                                JSONObject teamInfo1 = teamInfoArray.getJSONObject(0);
+                                JSONObject teamInfo2 = teamInfoArray.getJSONObject(1);
 
                                 String team1ShortName = teamInfo1.has("shortname") ? teamInfo1.getString("shortname") : "Unknown";
                                 String team2ShortName = teamInfo2.has("shortname") ? teamInfo2.getString("shortname") : "Unknown";
@@ -138,12 +162,22 @@ public class ContestFragment extends Fragment {
                                 Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2+" matchStarted: " + matchStarted + ", matchEnded: " + matchEnded+" "+matches.length());
                                 Log.d("MATCH_STATUS", "matchStarted: " + matchStarted + ", matchEnded: " + matchEnded);
 
-                            if((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started") && matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result")) {
-                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId, "LIVE",id);
-                                matchList.add(matchData);
-                                Log.d("MATCH_ADDED", "Added match: " + team1ShortName + " vs " + team2ShortName + " ," + status);
-                                adapter.notifyItemInserted(matchList.size() - 1);
-                            }
+
+
+                                if ((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started") && matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result")) {
+                                    Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id);
+                                    liveMatches.add(matchData);
+                                } else if (matchStarted.equals("false") && matchDate.before(endDate)) {
+                                    Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id);
+                                    upcomingMatches.add(matchData);
+                                }
+
+//                            if((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started") && matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result")) {
+//                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId, "LIVE",id);
+//                                matchList.add(matchData);
+//                                Log.d("MATCH_ADDED", "Added match: " + team1ShortName + " vs " + team2ShortName + " ," + status);
+//                                adapter.notifyItemInserted(matchList.size() - 1);
+//                            }
 
 //                                if(matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result") )
 //                                {
@@ -157,7 +191,7 @@ public class ContestFragment extends Fragment {
 //                                    Log.d("MATCH_FILTERED_OUT", "Filtered out match: " + team1ShortName + " vs " + team2ShortName + " ," + status);
 //                                }
                             }
-                            Log.d("FINAL_MATCH_LIST", "Matches in list: " + matchList.size());
+                            setupViewPager();
                         }
                         else
                         {
@@ -179,6 +213,32 @@ public class ContestFragment extends Fragment {
                     Toast.makeText(getContext(),"Error fetching data",Toast.LENGTH_SHORT).show();
                 }
             });
+
+        }
+    }
+
+    private void setupViewPager() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity(), liveMatches, upcomingMatches);
+        viewPager.setAdapter(adapter);
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("Live Matches");
+                    break;
+                case 1:
+                    tab.setText("Upcoming Matches");
+                    break;
+            }
+        }).attach();
+    }
+
+    private Date converToDate(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            return dateFormat.parse(date);
+        } catch (ParseException e) {
+            Log.e("DATE_PARSE_ERROR", "Error parsing date: " + date, e);
+            return null;
         }
     }
 

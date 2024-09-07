@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
+public class  MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
 
     private List<Match> matchList;
     private Context context;
