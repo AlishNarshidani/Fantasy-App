@@ -41,8 +41,8 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
         holder.itemView.setOnClickListener(v -> {
 
-            Intent i=new Intent(context,Scorecard.class);
-            i.putExtra("match_id",match.getId());
+            Intent i=new Intent(context,JoinedContests.class);
+            i.putExtra("match",match);
             context.startActivity(i);
         });
     }

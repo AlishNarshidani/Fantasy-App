@@ -1,6 +1,8 @@
 package com.example.fantasyapp;
 
-public class Match {
+import java.io.Serializable;
+
+public class Match implements Serializable {
     private String team1ShortName;
     private String team2ShortName;
     private int team1ImageResId;
