@@ -20,6 +20,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class MinesGridGame extends AppCompatActivity {
 
     private TextView rulesTextView, triesLeftTextView, title;
@@ -29,6 +38,12 @@ public class MinesGridGame extends AppCompatActivity {
     private int trapPosition2;
 
     private int betAmount = 0;
+
+    Long fetchedDepositMoney,fetchedWithdrawableMoney,fetchedBonusMoney,totalMoney;
+    int winAmount;
+
+    FirebaseAuth auth;
+    FirebaseFirestore db;
 
 
     public void onTileClick(View view)
@@ -112,8 +127,24 @@ public class MinesGridGame extends AppCompatActivity {
         TextView win_amount = dialogView.findViewById(R.id.win_amount);
 
         if (res.equals("won")) {
+            winAmount = betAmount*3;
             resultImage.setImageResource(R.drawable.gamewin); // Set image for win
-            win_amount.setText("₹40");
+            win_amount.setText("₹"+winAmount);
+
+
+
+            handleWin(winAmount, new OnBalanceUpdateCompleteListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d("handleWin", "onSuccess: added the win amount in wallet");
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+
         } else {
             resultImage.setImageResource(R.drawable.gameoverimg); // Set image for loss
             win_amount.setText("Better Luck Next Time !");
@@ -142,6 +173,74 @@ public class MinesGridGame extends AppCompatActivity {
         int height = LinearLayout.LayoutParams.WRAP_CONTENT; // Adjust height as needed
         dialog.getWindow().setLayout(width, height);
     }
+
+
+
+
+    public interface OnBalanceUpdateCompleteListener {
+        void onSuccess();
+        void onFailure();
+    }
+
+
+
+    private void handleWin(int prizeAmount, OnBalanceUpdateCompleteListener listener)
+    {
+        FirebaseUser user=auth.getCurrentUser();
+        String userId=user.getUid();
+
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
+            if(documentSnapshot.exists()){
+                fetchedWithdrawableMoney = documentSnapshot.getLong("withdrawable money");
+                if (fetchedWithdrawableMoney == null) fetchedWithdrawableMoney = 0L;
+
+                long updatedWithdrawableMoney = fetchedWithdrawableMoney + prizeAmount;
+
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("withdrawable money", updatedWithdrawableMoney);
+
+                userDocRef.update(updates)
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("handleWin", "successfully updated wallet");
+                            addTransactionRecord(userId,winAmount,"Completed","Mines Game Win",listener);
+                        })
+                        .addOnFailureListener(e -> {});
+            }
+
+        }).addOnFailureListener(e -> {});
+    }
+
+
+
+
+    private void addTransactionRecord(String userId, int amount, String status, String transactionType, OnBalanceUpdateCompleteListener listener)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> transactionData = new HashMap<>();
+        transactionData.put("userId", userId);
+        transactionData.put("transactionType", transactionType);
+        transactionData.put("amount", amount);
+        transactionData.put("transactionStatus", status);
+        transactionData.put("transactionDate", new com.google.firebase.Timestamp(new java.util.Date()));
+
+        db.collection("transactions")
+                .add(transactionData)
+                .addOnSuccessListener(documentReference -> {
+                    String transactionId = documentReference.getId();
+                    Log.d("transactionId", "transactionId: "+transactionId);
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("transaction", "failed");
+                });
+
+    }
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -177,7 +276,7 @@ public class MinesGridGame extends AppCompatActivity {
         incrementButton.setOnClickListener(v -> {
             String betAmountStr = betAmountEditText.getText().toString();
             betAmount = !betAmountStr.isEmpty() ? Integer.parseInt(betAmountStr) : 0;
-            betAmount += 1;
+            betAmount += 10;
             betAmountEditText.setText(String.valueOf(betAmount));
         });
 
@@ -185,20 +284,21 @@ public class MinesGridGame extends AppCompatActivity {
             String betAmountStr = betAmountEditText.getText().toString();
             betAmount = !betAmountStr.isEmpty() ? Integer.parseInt(betAmountStr) : 0;
             if (betAmount > 0) {
-                betAmount -= 1;
+                betAmount -= 10;
                 betAmountEditText.setText(String.valueOf(betAmount));
             }
         });
 
         confirmButton.setOnClickListener(v -> {
             String betAmountStr = betAmountEditText.getText().toString();
+
             if (!betAmountStr.isEmpty() && Integer.parseInt(betAmountStr) > 0) {
                 betAmount = Integer.parseInt(betAmountStr);
                 dialog.dismiss();
-                proceedWithGameReset();
+                checkBalanceAndProceed(betAmount);
             } else {
                 //betAmountEditText.setError("Please enter a valid amount");
-                Toast.makeText(this, "Please enter a valid amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Insufficient Balance", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -208,6 +308,116 @@ public class MinesGridGame extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void checkBalanceAndProceed(int betAmount)
+    {
+        db= FirebaseFirestore.getInstance();
+        auth= FirebaseAuth.getInstance();
+
+        FirebaseUser user=auth.getCurrentUser();
+
+        String userId=user.getUid();
+
+        DocumentReference userDocRef = db.collection("users").document(userId);
+
+        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                fetchedDepositMoney = documentSnapshot.getLong("deposit money");
+                fetchedWithdrawableMoney = documentSnapshot.getLong("withdrawable money");
+                fetchedBonusMoney = documentSnapshot.getLong("bonus money");
+
+                if (fetchedBonusMoney == null) fetchedBonusMoney = 0L;
+                if (fetchedDepositMoney == null) fetchedDepositMoney = 0L;
+                if (fetchedWithdrawableMoney == null) fetchedWithdrawableMoney = 0L;
+
+                totalMoney = fetchedDepositMoney+fetchedWithdrawableMoney+fetchedBonusMoney;
+
+                if (totalMoney >= betAmount) {
+
+                    long remainingAmount = betAmount;
+
+                    // Deduct from bonusMoney first
+                    if (fetchedBonusMoney >= remainingAmount) {
+                        fetchedBonusMoney -= remainingAmount;
+                        remainingAmount = 0;
+                    } else {
+                        remainingAmount -= fetchedBonusMoney;
+                        fetchedBonusMoney = 0L;
+                    }
+
+                    // Deduct from depositMoney if needed
+                    if (remainingAmount > 0) {
+                        if (fetchedDepositMoney >= remainingAmount) {
+                            fetchedDepositMoney -= remainingAmount;
+                            remainingAmount = 0;
+                        } else {
+                            remainingAmount -= fetchedDepositMoney;
+                            fetchedDepositMoney = 0L;
+                        }
+                    }
+
+                    // Deduct from withdrawableMoney if needed
+                    if (remainingAmount > 0) {
+                        if (fetchedWithdrawableMoney >= remainingAmount) {
+                            fetchedWithdrawableMoney -= remainingAmount;
+                            remainingAmount = 0;
+                        } else {
+                            fetchedWithdrawableMoney = 0L;
+                        }
+                    }
+
+                    // can call this method to add transaction and remove the redundant code below to add transaction
+                    // do this once check if added code works
+//
+//                    addTransactionRecord(userId, betAmount,"Mines Game Entry", "Completed", new OnBalanceUpdateCompleteListener() {
+//                        @Override
+//                        public void onSuccess() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onFailure() {
+//
+//                        }
+//                    });
+
+                    Map<String, Object> transactionData = new HashMap<>();
+                    transactionData.put("userId", userId);
+                    transactionData.put("transactionType", "Mines Game Entry");
+                    transactionData.put("amount", betAmount);
+                    transactionData.put("transactionStatus", "Completed");
+                    transactionData.put("transactionDate", new com.google.firebase.Timestamp(new java.util.Date()));
+
+
+                    db.collection("transactions")
+                            .add(transactionData)
+                            .addOnSuccessListener(documentReference -> {
+                                String transactionId = documentReference.getId();
+                                Log.d("transactionId", "transactionId: "+transactionId);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.d("transaction", "failed");
+                            });
+
+
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("bonus money", fetchedBonusMoney);
+                    updates.put("deposit money", fetchedDepositMoney);
+                    updates.put("withdrawable money", fetchedWithdrawableMoney);
+
+                    // Proceed with deducting the amount and resetting the game
+                    userDocRef.update(updates)
+                            .addOnSuccessListener(aVoid -> proceedWithGameReset())
+                            .addOnFailureListener(e -> Toast.makeText(this, "Failed to update balance", Toast.LENGTH_SHORT).show());
+                } else {
+                    onResetGame();
+                    Toast.makeText(this, "Insufficient Balance", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> Toast.makeText(this, "Failed to fetch balance", Toast.LENGTH_SHORT).show());
     }
 
 

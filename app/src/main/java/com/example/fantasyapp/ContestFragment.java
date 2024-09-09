@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -80,6 +82,10 @@ public class ContestFragment extends Fragment {
             cricApiService.getMatches(offset,new CricApiService.DataCallback() {
                 @Override
                 public void onSuccess(JSONObject response) {
+                    if (!isAdded()) {
+                        Log.e("FRAGMENT_DETACHED", "Fragment is detached, not processing data");
+                        return; // Fragment is detached, don't proceed
+                    }
                     Log.d("offset11:","Going into success");
                     try
                     {
@@ -220,16 +226,23 @@ public class ContestFragment extends Fragment {
     private void setupViewPager() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity(), liveMatches, upcomingMatches);
         viewPager.setAdapter(adapter);
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            switch (position) {
-                case 0:
-                    tab.setText("Live Matches");
-                    break;
-                case 1:
-                    tab.setText("Upcoming Matches");
-                    break;
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0:
+                        tab.setCustomView(R.layout.tab_custom_view);
+                        TextView tabText0 = tab.getCustomView().findViewById(R.id.tabText);
+                        tabText0.setText("Live Matches");
+                        break;
+                    case 1:
+                        tab.setCustomView(R.layout.tab_custom_view);
+                        TextView tabText1 = tab.getCustomView().findViewById(R.id.tabText);
+                        tabText1.setText("Upcoming Matches");
+                        break;
             }
-        }).attach();
+        }
+    }).attach();
     }
 
     private Date converToDate(String date) {

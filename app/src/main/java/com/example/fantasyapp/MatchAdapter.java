@@ -40,6 +40,7 @@ public class  MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHo
         holder.team2Logo.setImageResource(match.getTeam2ImageResId());
 
         holder.itemView.setOnClickListener(v -> {
+
             Intent i=new Intent(context,Scorecard.class);
             i.putExtra("match_id",match.getId());
             context.startActivity(i);
