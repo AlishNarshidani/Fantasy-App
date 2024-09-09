@@ -1,5 +1,6 @@
 package com.example.fantasyapp;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -180,6 +181,8 @@ public class Scorecard extends AppCompatActivity {
         ImageView expandCollapseIcon = inningsView.findViewById(R.id.expandCollapseIcon);
         LinearLayout inningsDetails = inningsView.findViewById(R.id.inningsDetails);
 
+        inningsDetails.setVisibility(View.GONE);
+
         inningsName.setText(inningName);
 
         int runs = inningDetail.getInt("r");
@@ -187,7 +190,7 @@ public class Scorecard extends AppCompatActivity {
         double overs = inningDetail.getDouble("o");
         inningsStats.setText(String.format("%d/%d in %.1f overs", runs, wickets, overs));
 
-        inningsName.setOnClickListener(v -> {
+        inningsView.setOnClickListener(v -> {
             if (inningsDetails.getVisibility() == View.GONE) {
                 inningsDetails.setVisibility(View.VISIBLE);
                 expandCollapseIcon.setImageResource(R.drawable.ic_expand_less);
@@ -220,6 +223,11 @@ public class Scorecard extends AppCompatActivity {
             batsmanSixes.setText(batsman.getString("6s"));
             batsmanStrikeRate.setText(batsman.getString("sr"));
             dismissalText.setText(batsman.getString("dismissal-text"));
+
+            if(batsman.getString("dismissal-text").equals("batting") || batsman.getString("dismissal-text").equals("not out"))
+            {
+                batsmanView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+            }
 
             inningsDetails.addView(batsmanView);
         }

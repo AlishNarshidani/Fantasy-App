@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:background="#32FF6A3B"
     android:padding="8dp">
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="5"
         android:text="Bowler"
         android:textStyle="bold"
         android:textSize="14sp" />
