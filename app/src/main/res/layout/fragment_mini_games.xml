@@ -120,6 +120,7 @@
                             android:scaleType="centerCrop"/>
 
                         <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/tictactoeBtn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:elevation="5dp"

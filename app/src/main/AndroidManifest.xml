@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FantasyApp"
         tools:targetApi="31">
         <activity
+            android:name=".ticTacToeGame"
+            android:exported="false" />
+        <activity
             android:name=".JoinedContests"
             android:exported="false" />
         <activity
