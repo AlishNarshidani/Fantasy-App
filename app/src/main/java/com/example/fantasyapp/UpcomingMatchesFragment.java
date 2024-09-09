@@ -23,7 +23,7 @@ public class UpcomingMatchesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upcoming_matches, container, false);
         recyclerView = view.findViewById(R.id.recyclerViewUpcoming);
-        adapter = new MatchAdapter(getContext(), matchList);
+        adapter = new MatchAdapter(getContext(), matchList,false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         return view;

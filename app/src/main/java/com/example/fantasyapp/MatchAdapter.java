@@ -17,10 +17,12 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
     private List<Match> matchList;
     private Context context;
+    private boolean isLive;
 
-    public MatchAdapter(Context context,List<Match> matchList) {
+    public MatchAdapter(Context context,List<Match> matchList,boolean isLive) {
         this.matchList = matchList;
         this.context=context;
+        this.isLive=isLive;
     }
 
     @NonNull
@@ -41,9 +43,18 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
         holder.itemView.setOnClickListener(v -> {
 
-            Intent i=new Intent(context,JoinedContests.class);
-            i.putExtra("match",match);
-            context.startActivity(i);
+            if(isLive)
+            {
+                Intent i=new Intent(context,JoinedContests.class);
+                i.putExtra("match",match);
+                context.startActivity(i);
+            }
+            else
+            {
+                Intent i=new Intent(context,JoinedContests.class);
+                i.putExtra("match",match);
+                context.startActivity(i);
+            }
         });
     }
 

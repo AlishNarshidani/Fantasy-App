@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CricApiService {
-    private static final String API_KEY ="4d14f25c-1065-4354-9ea1-d5b75f9db3cf";
+    private static final String API_KEY ="41d57022-8e39-4201-b433-c98c8d807385";
     private static final String BASE_URL = "https://api.cricapi.com/v1/";
     private RequestQueue requestQueue;
 //    private int currentApiKeyIndex=0;
@@ -67,6 +67,30 @@ public class CricApiService {
     {
         String url=BASE_URL+"match_scorecard?apikey="+API_KEY+"&offset=0"+"&id="+match_id;
         Log.d("API_REQUEST", "Requesting URL: " + url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("API_RESPONSE", "Response: " + response.toString());
+                        callback.onSuccess(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("API_ERROR", "Error: " + error.toString());
+                        callback.onError(error);
+                    }
+                }
+        );
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void getCricScore(String match_id,final DataCallback callback)
+    {
+        String url = BASE_URL+"cricScore?apikey="+API_KEY;
+        Log.d("API_REQUEST", "getCricScore: "+url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
