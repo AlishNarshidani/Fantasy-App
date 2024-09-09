@@ -52,7 +52,10 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:padding="8dp">
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingBottom="8dp">
 
                 <!-- First Vertical Layout: Flag and Team Name -->
                 <LinearLayout
@@ -94,7 +97,7 @@
                         android:id="@+id/team1TotalScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="248/7"
+                        android:text="Yet to Bat"
                         android:textSize="24sp"
                         android:textColor="@color/white"
                         android:textStyle="bold"
@@ -104,7 +107,7 @@
                         android:id="@+id/team1Overs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(50)"
+                        android:text=""
                         android:textSize="16sp"
                         android:textColor="@color/white"
                         android:gravity="center" />
@@ -118,7 +121,10 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:padding="8dp">
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingBottom="8dp">
 
                 <!-- first Vertical Layout: Score and Overs -->
                 <LinearLayout
@@ -133,7 +139,7 @@
                         android:id="@+id/team2TotalScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="248/7"
+                        android:text="Yet to Bat"
                         android:textSize="24sp"
                         android:textColor="@color/white"
                         android:textStyle="bold"
@@ -143,7 +149,7 @@
                         android:id="@+id/team2Overs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(50)"
+                        android:text=""
                         android:textSize="16sp"
                         android:textColor="@color/white"
                         android:gravity="center" />
@@ -183,7 +189,7 @@
             android:id="@+id/matchResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SL won by 110 runs"
+            android:text="Match Result"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
