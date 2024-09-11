@@ -1,6 +1,9 @@
 package com.example.fantasyapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -111,6 +114,7 @@ public class ContestFragment extends Fragment {
                             Date endDate=calendar.getTime();
 
                             Log.d("DATE",currentDate+"\n"+calendar+"\n"+endDate);
+
 
                             for(int i=0;i<matches.length();i++)
                             {

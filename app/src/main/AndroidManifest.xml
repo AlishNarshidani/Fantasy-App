@@ -21,6 +21,9 @@
             android:name=".CreateTeam"
             android:exported="false" />
         <activity
+            android:name=".ticTacToeGame"
+            android:exported="false" />
+        <activity
             android:name=".JoinedContests"
             android:exported="false" />
         <activity

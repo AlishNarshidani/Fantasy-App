@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 public class miniGamesFragment extends Fragment {
 
-    AppCompatButton minesGridGameBtn;
+    AppCompatButton minesGridGameBtn, tictactoeBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,6 +26,7 @@ public class miniGamesFragment extends Fragment {
 
 
         minesGridGameBtn = (AppCompatButton) view.findViewById(R.id.minesGridGameBtn);
+        tictactoeBtn = (AppCompatButton) view.findViewById(R.id.tictactoeBtn);
 
         minesGridGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +35,16 @@ public class miniGamesFragment extends Fragment {
                 startActivity(i);
             }
         });
+
+        tictactoeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ticTacToeGame.class);
+                startActivity(i);
+            }
+        });
+
+
 
 
 
