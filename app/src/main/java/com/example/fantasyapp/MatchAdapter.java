@@ -51,7 +51,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
             }
             else
             {
-                Intent i=new Intent(context,JoinedContests.class);
+                Intent i=new Intent(context,UpcomingContest.class);
                 i.putExtra("match",match);
                 context.startActivity(i);
             }

@@ -236,9 +236,9 @@ public class ContestFragment extends Fragment {
                         TextView tabText1 = tab.getCustomView().findViewById(R.id.tabText);
                         tabText1.setText("Upcoming Matches");
                         break;
+                }
             }
-        }
-    }).attach();
+        }).attach();
     }
 
     private Date converToDate(String date) {

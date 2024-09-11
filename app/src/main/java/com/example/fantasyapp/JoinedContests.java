@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +35,8 @@ public class JoinedContests extends AppCompatActivity {
     TextView team1TotalScore,team2TotalScore;
     TextView team1Overs,team2Overs;
     TextView matchResult;
+    Match match;
+    String match_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,8 @@ public class JoinedContests extends AppCompatActivity {
 
         cricApiService=new CricApiService(this);
 
-        Match match = (Match) getIntent().getSerializableExtra("match");
-        String match_id= match.getId();
+        match = (Match) getIntent().getSerializableExtra("match");
+        match_id= match.getId();
 
         scoreSummary = findViewById(R.id.scoreSummary);
         team1Flag = findViewById(R.id.team1Flag);
@@ -61,7 +64,6 @@ public class JoinedContests extends AppCompatActivity {
         team1Overs = findViewById(R.id.team1Overs);
         team2Overs = findViewById(R.id.team2Overs);
         matchResult = findViewById(R.id.matchResult);
-
 
         team1Flag.setImageResource(match.getTeam1ImageResId());
         team2Flag.setImageResource(match.getTeam2ImageResId());

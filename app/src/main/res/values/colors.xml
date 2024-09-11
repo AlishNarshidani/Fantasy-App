@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FFA500</color>
     <color name="gray">#DDDDDD</color>
+    <color name="appcolor">#FF6A3B</color>
 </resources>

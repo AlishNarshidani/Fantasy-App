@@ -1,0 +1,99 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- Player 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="18dp">
+
+        <!-- Player Image -->
+        <ImageView
+            android:id="@+id/player_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/usericon"
+            android:contentDescription="Player Image"
+            android:layout_gravity="center_vertical"/>
+
+        <!-- Player Name & Country -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="8dp">
+
+            <!-- Player Name -->
+            <TextView
+                android:id="@+id/player_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Philip Salt"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#000"/>
+
+            <!-- Country and Points -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Country -->
+                <TextView
+                    android:id="@+id/player_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ENG"
+                    android:textSize="14sp"
+                    android:background="@drawable/gradient_background"
+                    android:textColor="#000000"
+                    android:paddingHorizontal="6dp"
+                    android:paddingVertical="2dp"
+                    android:layout_marginEnd="8dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Player Credits -->
+        <TextView
+            android:id="@+id/player_credits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_gravity="center_vertical"/>
+
+        <!-- Add Button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginEnd="16dp"
+            android:id="@+id/add_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/baseline_add_circle_outline_24"
+            android:backgroundTint="@color/black"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#A4A2A2"/>
+
+    <!-- Repeat similar blocks for other players as needed -->
+
+</LinearLayout>
