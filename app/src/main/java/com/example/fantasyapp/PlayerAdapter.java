@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder> {
@@ -34,8 +36,12 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     public void onBindViewHolder(@NonNull PlayerAdapter.PlayerViewHolder holder, int position) {
         Player player = playerList.get(position);
         Log.d("role in adapter", "onBindViewHolder: "+player.getRole());
-        //set image after extracting it from link
-        //holder.playerImage.setImageResource(R.id.);
+
+        Picasso.get()
+                .load(player.getPlayerImageUrl())
+                .error(R.drawable.usericon)
+                .into(holder.playerImage);
+
         holder.playerName.setText(player.getPlayerName());
         holder.playerCountry.setText(player.getShortCountryName());
     }

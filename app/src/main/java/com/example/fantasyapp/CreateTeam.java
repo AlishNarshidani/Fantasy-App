@@ -77,8 +77,9 @@ public class CreateTeam extends AppCompatActivity {
                             String playerId = playerObj.getString("id");
                             String playerName = playerObj.getString("name");
                             String role = playerObj.getString("role");
+                            String playerImageUrl = playerObj.getString("playerImg");
 
-                            Player player = new Player(shortCountryName,playerId,playerName,role);
+                            Player player = new Player(shortCountryName,playerId,playerName,role,playerImageUrl);
 
                             if(role.equals("Batsman"))
                             {

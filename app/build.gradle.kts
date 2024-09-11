@@ -53,6 +53,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("com.google.android.material:material:1.12.0")
-    implementation ("org.java-websocket:Java-WebSocket:1.5.2")
-    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation("org.java-websocket:Java-WebSocket:1.5.2")
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.squareup.picasso:picasso:2.8")
 }

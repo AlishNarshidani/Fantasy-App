@@ -7,12 +7,14 @@ public class Player implements Serializable {
     private String playerId;
     private String playerName;
     private String role;
+    private String playerImageUrl;
 
-    public Player(String shortCountryName, String playerId, String playerName, String role) {
+    public Player(String shortCountryName, String playerId, String playerName, String role,String playerImageUrl) {
         this.shortCountryName = shortCountryName;
         this.playerId = playerId;
         this.playerName = playerName;
         this.role = role;
+        this.playerImageUrl = playerImageUrl;
     }
 
     public String getShortCountryName() {
@@ -29,5 +31,9 @@ public class Player implements Serializable {
 
     public String getRole() {
         return role;
+    }
+
+    public String getPlayerImageUrl() {
+        return playerImageUrl;
     }
 }
