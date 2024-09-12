@@ -8,6 +8,7 @@ public class Player implements Serializable {
     private String playerName;
     private String role;
     private String playerImageUrl;
+    private Boolean isSelected = false;
 
     public Player(String shortCountryName, String playerId, String playerName, String role,String playerImageUrl) {
         this.shortCountryName = shortCountryName;
@@ -35,5 +36,13 @@ public class Player implements Serializable {
 
     public String getPlayerImageUrl() {
         return playerImageUrl;
+    }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
     }
 }
