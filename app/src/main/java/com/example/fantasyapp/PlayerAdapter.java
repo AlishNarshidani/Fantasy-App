@@ -1,6 +1,7 @@
 package com.example.fantasyapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -44,6 +46,36 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
         holder.playerName.setText(player.getPlayerName());
         holder.playerCountry.setText(player.getShortCountryName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(player.getSelected())
+                {
+                    player.setSelected(false);
+                    holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                }
+                else {
+                    player.setSelected(true);
+                    holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                }
+            }
+        });
+
+        holder.addRemoveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(player.getSelected())
+                {
+                    player.setSelected(false);
+                    holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                }
+                else {
+                    player.setSelected(true);
+                    holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                }
+            }
+        });
     }
 
     @Override
@@ -54,12 +86,14 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     static class PlayerViewHolder extends RecyclerView.ViewHolder {
         ImageView playerImage;
         TextView playerName, playerCountry;
+        AppCompatButton addRemoveBtn;
 
         public PlayerViewHolder(@NonNull View itemView) {
             super(itemView);
             playerImage = itemView.findViewById(R.id.player_image);
             playerName = itemView.findViewById(R.id.player_name);
             playerCountry = itemView.findViewById(R.id.player_country);
+            addRemoveBtn = itemView.findViewById(R.id.addRemoveBtn);
         }
     }
 }
