@@ -1,7 +1,9 @@
 package com.example.fantasyapp;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -31,6 +33,12 @@ public class ticTacToeGame extends AppCompatActivity {
     private int movesCount = 0;
     TextView resultTextview;
 
+    private TextView timerTextView;
+    private CountDownTimer countDownTimer;
+
+    
+
+
     String sentMove="";
 
     @Override
@@ -44,16 +52,49 @@ public class ticTacToeGame extends AppCompatActivity {
             return insets;
         });
 
+        timerTextView = findViewById(R.id.timerTextView);
         resultTextview = findViewById(R.id.resultTextView);
 
         createWebSocketClient();
         setupButtons();
+
+        startTurnTimer();
+    }
+
+    private void startTurnTimer() {
+        // Cancel any existing timer
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        // Create a new 30-second countdown timer
+        countDownTimer = new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                // Update the timer TextView every second
+                timerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+            }
+
+            public void onFinish() {
+                // Timer finished, disable the buttons and handle turn switching
+                timerTextView.setText("0");
+                Log.i(TAG, "User took too long. Disabling buttons for current player.");
+                disableAllButton();
+                resultTextview.setText("Time out! Wait for your opponent's move.");
+            }
+        }.start();
+    }
+
+    private void stopTurnTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     private void createWebSocketClient() {
         URI uri;
         try {
-            uri = new URI("wss://1ef2-49-36-64-229.ngrok-free.app/ws/game/game_1/?session_key=" + URLEncoder.encode(sessionKey, "UTF-8") + "&user_id=" + URLEncoder.encode(userId, "UTF-8"));
+            uri = new URI("wss://b078-2402-8100-24c2-503a-d8b0-dce5-9ab1-dbdf.ngrok-free.app/ws/game/game_1/?session_key=" + URLEncoder.encode(sessionKey, "UTF-8") + "&user_id=" + URLEncoder.encode(userId, "UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -88,9 +129,17 @@ public class ticTacToeGame extends AppCompatActivity {
                         } else {
                             if(!boxId.equals(sentMove)) {
                                 enableUncheckedBox();
+                                showTimer();  // Show timer for the user whose turn it is
+                                startTurnTimer();
                             }
                             updateButton(boxId, move);
                             checkGameResult();  // Check game result after each move
+
+
+                            // Switch back to User 1's turn
+                            isUserOne = true;
+                            enableUncheckedBox();  // Enable User 1's buttons again
+
                         }
                     });
 
@@ -108,6 +157,8 @@ public class ticTacToeGame extends AppCompatActivity {
             public void onError(Exception ex) {
                 Log.e(TAG, "WebSocket Error: " + ex.getMessage());
             }
+
+
         };
         webSocketClient.connect();
     }
@@ -129,8 +180,14 @@ public class ticTacToeGame extends AppCompatActivity {
             disableButton(boxId);
             updateBoard(boxTag, move);  // Update the board
             movesCount++;
+            pauseTurnTimer();
+            // Switch to the other user's turn
+            isUserOne = false;
+            hideTimer();
+
         }
     }
+
     private String getBoxTag(int boxId) {
         if (boxId == R.id.box1) return "box1";
         if (boxId == R.id.box2) return "box2";
@@ -164,7 +221,6 @@ public class ticTacToeGame extends AppCompatActivity {
             webSocketClient.send(message);
 
             sentMove = boxid;
-
             disableUncheckedBox();
         }
     }
@@ -202,7 +258,7 @@ public class ticTacToeGame extends AppCompatActivity {
         } else {
             // Toggle between User 1 and User 2
             isUserOne = !isUserOne;
-            String currentPlayer = isUserOne ? "User 1's Turn" : "User 2's Turn";
+            String currentPlayer = isUserOne ? "User 2's Turn" : "User 1's Turn";
             resultTextview.setText(currentPlayer);  // Update TextView with the current player's turn
         }
     }
@@ -292,6 +348,37 @@ public class ticTacToeGame extends AppCompatActivity {
                 b.setClickable(true);
             }
         }
+    }
+    private void destroyResources() {
+        // Clean up WebSocket and timer resources
+        if (webSocketClient != null) {
+            webSocketClient.close();
+            webSocketClient = null;
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        isGameOver = true;  // Set game over flag
+    }
+    protected void onDestroy() {
+        super.onDestroy();
+        destroyResources();  // Ensure resources are destroyed when activity is destroyed
+    }
+
+    private void pauseTurnTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();  // Pause the timer for the current user
+        }
+    }
+
+    private void hideTimer() {
+        timerTextView.setVisibility(View.INVISIBLE);  // Hide the timer when it's not the current user's turn
+    }
+
+    private void showTimer() {
+        timerTextView.setVisibility(View.VISIBLE);  // Show the timer for the current user
     }
 
 }
