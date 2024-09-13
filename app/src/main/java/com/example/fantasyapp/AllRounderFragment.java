@@ -21,9 +21,13 @@ public class AllRounderFragment extends Fragment {
     RecyclerView recyclerView;
     PlayerAdapter playerAdapter;
     ArrayList<Player> allRounderList;
+    String team_1;
+    String team_2;
 
-    public AllRounderFragment(ArrayList<Player> allRounderList) {
+    public AllRounderFragment(ArrayList<Player> allRounderList,String team_1,String team_2) {
         this.allRounderList=allRounderList;
+        this.team_1=team_1;
+        this.team_2=team_2;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class AllRounderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_all_rounder, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewLive);
-        playerAdapter = new PlayerAdapter(getContext(), allRounderList);
+        playerAdapter = new PlayerAdapter(getContext(), allRounderList,team_1,team_2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(playerAdapter);
 

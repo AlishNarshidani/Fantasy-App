@@ -30,6 +30,8 @@ public class CreateTeam extends AppCompatActivity {
     Match match;
     String match_id;
 
+    String team_1,team_2;
+
     private ArrayList<Player> batsmanList = new ArrayList<>();
     private ArrayList<Player> bowlerList = new ArrayList<>();
     private ArrayList<Player> wk_BatsmanList = new ArrayList<>();
@@ -48,6 +50,8 @@ public class CreateTeam extends AppCompatActivity {
 
         match = (Match) getIntent().getSerializableExtra("match");
         match_id = match.getId();
+        team_1 = match.getTeam1ShortName();
+        team_2 = match.getTeam2ShortName();
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -124,7 +128,7 @@ public class CreateTeam extends AppCompatActivity {
 
     private void setupViewPager()
     {
-        CreateTeamViewPagerAdapter adapter = new CreateTeamViewPagerAdapter(this,batsmanList,wk_BatsmanList,bowlerList,allRounderList);
+        CreateTeamViewPagerAdapter adapter = new CreateTeamViewPagerAdapter(this,batsmanList,wk_BatsmanList,bowlerList,allRounderList,team_1,team_2);
         viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {

@@ -20,9 +20,13 @@ public class BowlerFragment extends Fragment {
     RecyclerView recyclerView;
     PlayerAdapter playerAdapter;
     ArrayList<Player> bowlerList;
+    String team_1;
+    String team_2;
 
-    public BowlerFragment(ArrayList<Player> bowlerList) {
+    public BowlerFragment(ArrayList<Player> bowlerList,String team_1,String team_2) {
         this.bowlerList=bowlerList;
+        this.team_1=team_1;
+        this.team_2=team_2;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class BowlerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bowler, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewLive);
-        playerAdapter = new PlayerAdapter(getContext(), bowlerList);
+        playerAdapter = new PlayerAdapter(getContext(), bowlerList,team_1,team_2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(playerAdapter);
 

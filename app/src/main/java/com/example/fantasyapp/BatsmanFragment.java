@@ -21,9 +21,13 @@ public class BatsmanFragment extends Fragment {
     RecyclerView recyclerView;
     PlayerAdapter playerAdapter;
     ArrayList<Player> batsmanList;
+    String team_1;
+    String team_2;
 
-    public BatsmanFragment(ArrayList<Player> batsmanList) {
+    public BatsmanFragment(ArrayList<Player> batsmanList,String team_1,String team_2) {
         this.batsmanList=batsmanList;
+        this.team_1=team_1;
+        this.team_2=team_2;
 
         Log.d("size of array", "BatsmanFragment: "+batsmanList.size());
     }
@@ -35,7 +39,7 @@ public class BatsmanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_batsman, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewLive);
-        playerAdapter = new PlayerAdapter(getContext(), batsmanList);
+        playerAdapter = new PlayerAdapter(getContext(), batsmanList,team_1,team_2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(playerAdapter);
 

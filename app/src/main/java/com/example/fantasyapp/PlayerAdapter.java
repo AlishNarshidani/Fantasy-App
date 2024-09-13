@@ -21,9 +21,13 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
     private List<Player> playerList;
     private Context context;
+    String team_1;
+    String team_2;
 
-    public PlayerAdapter(Context context, List<Player> playerList) {
+    public PlayerAdapter(Context context, List<Player> playerList,String team_1,String team_2) {
         this.context=context;
+        this.team_1=team_1;
+        this.team_2=team_2;
         this.playerList=playerList;
     }
 
@@ -45,7 +49,17 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
                 .into(holder.playerImage);
 
         holder.playerName.setText(player.getPlayerName());
-        holder.playerCountry.setText(player.getShortCountryName());
+        String teamName = player.getShortCountryName();
+
+        if (teamName.equals(team_1)) {
+            holder.playerCountry.setBackgroundResource(R.drawable.verified_background);  // Set background for Team 1
+        } else if (teamName.equals(team_2)) {
+            holder.playerCountry.setBackgroundResource(R.drawable.gradient_background);  // Set background for Team 2
+        } else {
+            holder.playerCountry.setBackgroundResource(R.drawable.gradient_background);  // Default background color
+        }
+
+        holder.playerCountry.setText(teamName);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
