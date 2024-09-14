@@ -137,10 +137,14 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         previewTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PreviewTeam.class);
-                intent.putExtra("selectedPlayers",selectedPlayers);
-                //intent.putParcelableArrayListExtra("selectedPlayers", selectedPlayers);
-                startActivity(intent);
+                if(selectedPlayers.size() == 11) {
+                    Intent intent = new Intent(getApplicationContext(), PreviewTeam.class);
+                    intent.putExtra("selectedPlayers", selectedPlayers);
+                    //intent.putParcelableArrayListExtra("selectedPlayers", selectedPlayers);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(CreateTeam.this, "Select 11 Players", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

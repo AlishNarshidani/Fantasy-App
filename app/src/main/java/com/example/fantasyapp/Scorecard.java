@@ -25,8 +25,6 @@ public class Scorecard extends AppCompatActivity {
 
     private CricApiService cricApiService;
     private LinearLayout inningsContainer;
-    private TextView team1Name, team2Name, team1TotalScore, team2TotalScore, team1Overs, team2Overs, matchResult, contestStatus;
-    private ImageView team1Flag, team2Flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +37,6 @@ public class Scorecard extends AppCompatActivity {
             return insets;
         });
         inningsContainer= findViewById(R.id.inningsContainer);
-
-        team1Name = findViewById(R.id.team1Name);
-        team2Name = findViewById(R.id.team2Name);
-        team1TotalScore = findViewById(R.id.team1TotalScore);
-        team2TotalScore = findViewById(R.id.team2TotalScore);
-        team1Overs = findViewById(R.id.team1Overs);
-        team2Overs = findViewById(R.id.team2Overs);
-
-        matchResult = findViewById(R.id.matchResult);
-        contestStatus = findViewById(R.id.contestStatus);
 
         cricApiService=new CricApiService(this);
         String match_id=getIntent().getStringExtra("match_id");
