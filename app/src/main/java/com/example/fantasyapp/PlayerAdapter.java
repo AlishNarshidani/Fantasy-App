@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -24,11 +25,19 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     String team_1;
     String team_2;
 
+
+    private OnPlayerSelectedListener listener;
+
     public PlayerAdapter(Context context, List<Player> playerList,String team_1,String team_2) {
         this.context=context;
         this.team_1=team_1;
         this.team_2=team_2;
         this.playerList=playerList;
+
+        if (context instanceof OnPlayerSelectedListener) {
+            listener = (OnPlayerSelectedListener) context;
+        }
+
     }
 
     @NonNull
@@ -62,35 +71,72 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         holder.playerCountry.setText(teamName);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if(player.getSelected())
                 {
                     player.setSelected(false);
+                    onPlayerDeselected(player);
+                    Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
                     holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 }
                 else {
-                    player.setSelected(true);
-                    holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                    if(listener.getTotalSelectedPlayers() < listener.getMaxPlayers()) {
+                        player.setSelected(true);
+                        onPlayerSelected(player);
+                        Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
+                        holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                    } else {
+                        Toast.makeText(context, "You can only select up to 11 players", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
 
         holder.addRemoveBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 if(player.getSelected())
                 {
                     player.setSelected(false);
+                    onPlayerDeselected(player);
+                    Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
                     holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 }
                 else {
-                    player.setSelected(true);
-                    holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                    if(listener.getTotalSelectedPlayers() < listener.getMaxPlayers()) {
+                        player.setSelected(true);
+                        onPlayerSelected(player);
+                        Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
+                        holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                    } else {
+                        Toast.makeText(context, "You can only select up to 11 players", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
     }
+
+
+
+    private void onPlayerSelected(Player player) {
+        if (listener != null) {
+            listener.onPlayerSelected(player);
+        }
+        Log.d("PlayerAdapter", "Player selected: " + player.getPlayerName());
+        //updateTabTitle(); // Call to update tab title
+    }
+
+    private void onPlayerDeselected(Player player) {
+        if (listener != null) {
+            listener.onPlayerDeselected(player);
+        }
+        //updateTabTitle(); // Call to update tab title
+    }
+
+
 
     @Override
     public int getItemCount() {
