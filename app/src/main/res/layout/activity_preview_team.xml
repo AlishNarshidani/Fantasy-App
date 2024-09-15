@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/winnings_gradient_background"
+    android:background="@drawable/home4"
     tools:context=".PreviewTeam">
 
         <LinearLayout
@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:text="WICKET KEEPERS"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:paddingBottom="8dp"
                 android:textColor="#FFFFFF" />
 
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="BATSMEN"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:paddingBottom="8dp"
                 android:textColor="#FFFFFF" />
 
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="ALL-ROUNDERS"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:paddingBottom="8dp"
                 android:textColor="#FFFFFF" />
 
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="BOWLERS"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:paddingBottom="8dp"
                 android:textColor="#FFFFFF" />
 
