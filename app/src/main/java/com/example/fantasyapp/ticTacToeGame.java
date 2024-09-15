@@ -2,10 +2,15 @@ package com.example.fantasyapp;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,15 +36,21 @@ public class ticTacToeGame extends AppCompatActivity {
     private String sessionKey = "your_session_key"; // Replace with actual session key
     private String userId = "your_user_id";
     private int movesCount = 0;
-    TextView resultTextview;
+    private int userCount = 0;
+
+    private TextView resultTextview;
+
+    private TextView loadingMessage;
+    private View gameBoard;
+    private View loadingScreen;
+    private ProgressBar loadingSpinner;
 
     private TextView timerTextView;
     private CountDownTimer countDownTimer;
 
-    
-
-
     String sentMove="";
+
+    int noMoveCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +63,22 @@ public class ticTacToeGame extends AppCompatActivity {
             return insets;
         });
 
+        noMoveCounter = 0;
+
         timerTextView = findViewById(R.id.timerTextView);
         resultTextview = findViewById(R.id.resultTextView);
 
+        loadingMessage = findViewById(R.id.loadingMessage);
+        loadingSpinner = findViewById(R.id.loadingSpinner);
+        gameBoard = findViewById(R.id.gameBoard);  // This should be your layout containing the Tic-Tac-Toe board
+        loadingScreen = findViewById(R.id.loadingScreen);  // Your loading screen layout
+
+        // Initially show the loading screen
+        showLoadingScreen();
+
+
         createWebSocketClient();
         setupButtons();
-
-        startTurnTimer();
     }
 
     private void startTurnTimer() {
@@ -81,6 +101,9 @@ public class ticTacToeGame extends AppCompatActivity {
                 Log.i(TAG, "User took too long. Disabling buttons for current player.");
                 disableAllButton();
                 resultTextview.setText("Time out! Wait for your opponent's move.");
+                sendMessage("no move","no move");
+                noMoveCounter++;
+                sentMove = "no move";
             }
         }.start();
     }
@@ -94,7 +117,7 @@ public class ticTacToeGame extends AppCompatActivity {
     private void createWebSocketClient() {
         URI uri;
         try {
-            uri = new URI("wss://b078-2402-8100-24c2-503a-d8b0-dce5-9ab1-dbdf.ngrok-free.app/ws/game/game_1/?session_key=" + URLEncoder.encode(sessionKey, "UTF-8") + "&user_id=" + URLEncoder.encode(userId, "UTF-8"));
+            uri = new URI("wss://a713-2402-8100-31fd-3d40-815a-49c5-236b-97cf.ngrok-free.app/ws/game/game_1/?session_key=" + URLEncoder.encode(sessionKey, "UTF-8") + "&user_id=" + URLEncoder.encode(userId, "UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -112,36 +135,111 @@ public class ticTacToeGame extends AppCompatActivity {
                 Log.i(TAG, "Message received: " + message);
 
                 try {
+
+
+
                     JSONObject jsonMessage = new JSONObject(message);
-                    String boxId = jsonMessage.getString("boxid");
-                    String move = jsonMessage.getString("move");
 
-                    runOnUiThread(() -> {
-                        if (move.equals("You win!")) {
-                            if(resultTextview.getText().toString().equals("You win!"))
-                            {
-                                Log.d("you win", "onMessage: you win");
+                    // Handle user count update
+                    if (jsonMessage.has("user_count")) {
+                        userCount = jsonMessage.getInt("user_count");
+                        runOnUiThread(() -> {
+                            if (userCount == 2) {
+                                hideLoadingScreen();  // Only hide the loading screen when two users are present
+                            } else {
+                                loadingMessage.setText("Waiting for another player...");  // Show waiting message
                             }
-                            else {
-                                resultTextview.setText("You lost!");
-                                disableAllButton();
-                            }
-                        } else {
-                            if(!boxId.equals(sentMove)) {
-                                enableUncheckedBox();
-                                showTimer();  // Show timer for the user whose turn it is
-                                startTurnTimer();
-                            }
-                            updateButton(boxId, move);
-                            checkGameResult();  // Check game result after each move
+                        });
+                    }
+
+                    // Handle the game moves
+                    if (jsonMessage.has("boxid") && jsonMessage.has("move")) {
+                        String boxId = jsonMessage.getString("boxid");
+                        String move = jsonMessage.getString("move");
+
+                        runOnUiThread(() -> {
+                                    if(noMoveCounter >=2)
+                                    {
+                                        onBackPressed();
+                                    }
+                                    if (move.equals("You win!")) {
+                                        if(resultTextview.getText().toString().equals("You win!"))
+                                        {
+                                            Log.d("you win", "onMessage: you win");
+                                        }
+                                        else {
+                                            resultTextview.setText("You lost!");
+                                            disableAllButton();
+                                        }
+                                    } else if (move.equals("no move") && !move.equals(sentMove)) {
+                                        showTimer();  // Show timer for the user whose turn it is
+                                        startTurnTimer();
+                                        enableUncheckedBox();
+                                        resultTextview.setText("Your's turn");
+                                        sentMove="";
+
+                                    } else if (move.equals("no move") && move.equals(sentMove)) {
+                                        disableAllButton();
+                                        sentMove="";
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                resultTextview.setText("opponents's turn");
+                                            }
+                                        },1000);
+
+                                    } else {
+                                        if(!boxId.equals(sentMove)) {
+                                            enableUncheckedBox();
+                                            showTimer();  // Show timer for the user whose turn it is
+                                            startTurnTimer();
+                                        }
+                                        updateButton(boxId, move);
+                                        checkGameResult();  // Check game result after each move
 
 
-                            // Switch back to User 1's turn
-                            isUserOne = true;
-                            enableUncheckedBox();  // Enable User 1's buttons again
+                                        // Switch back to User 1's turn
+                                        isUserOne = true;
+                                          // Enable User 1's buttons again
 
-                        }
-                    });
+                                    }
+                        });
+                    }
+
+
+
+//                    JSONObject jsonMessage = new JSONObject(message);
+//                    String boxId = jsonMessage.getString("boxid");
+//                    String move = jsonMessage.getString("move");
+//
+//
+//                    runOnUiThread(() -> {
+//                        if (move.equals("You win!")) {
+//                            if(resultTextview.getText().toString().equals("You win!"))
+//                            {
+//                                Log.d("you win", "onMessage: you win");
+//                            }
+//                            else {
+//                                resultTextview.setText("You lost!");
+//                                disableAllButton();
+//                            }
+//                        } else {
+//                            if(!boxId.equals(sentMove)) {
+//                                enableUncheckedBox();
+//                                showTimer();  // Show timer for the user whose turn it is
+//                                startTurnTimer();
+//                            }
+//                            updateButton(boxId, move);
+//                            checkGameResult();  // Check game result after each move
+//
+//
+//                            // Switch back to User 1's turn
+//                            isUserOne = true;
+//                            enableUncheckedBox();  // Enable User 1's buttons again
+//
+//                        }
+//                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -258,7 +356,7 @@ public class ticTacToeGame extends AppCompatActivity {
         } else {
             // Toggle between User 1 and User 2
             isUserOne = !isUserOne;
-            String currentPlayer = isUserOne ? "User 2's Turn" : "User 1's Turn";
+            String currentPlayer = isUserOne ? "opponent's Turn" : "your's Turn";
             resultTextview.setText(currentPlayer);  // Update TextView with the current player's turn
         }
     }
@@ -349,23 +447,6 @@ public class ticTacToeGame extends AppCompatActivity {
             }
         }
     }
-    private void destroyResources() {
-        // Clean up WebSocket and timer resources
-        if (webSocketClient != null) {
-            webSocketClient.close();
-            webSocketClient = null;
-        }
-
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
-
-        isGameOver = true;  // Set game over flag
-    }
-    protected void onDestroy() {
-        super.onDestroy();
-        destroyResources();  // Ensure resources are destroyed when activity is destroyed
-    }
 
     private void pauseTurnTimer() {
         if (countDownTimer != null) {
@@ -381,4 +462,19 @@ public class ticTacToeGame extends AppCompatActivity {
         timerTextView.setVisibility(View.VISIBLE);  // Show the timer for the current user
     }
 
+    private void showLoadingScreen() {
+        loadingScreen.setVisibility(View.VISIBLE);  // Show loading screen
+        gameBoard.setVisibility(View.GONE);         // Hide the game board
+    }
+
+    private void hideLoadingScreen() {
+        startTurnTimer();
+        loadingScreen.setVisibility(View.GONE);     // Hide loading screen
+        gameBoard.setVisibility(View.VISIBLE);      // Show the game board
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

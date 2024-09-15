@@ -10,171 +10,200 @@
     android:background="@drawable/tic_tac_toe_background"
     tools:context=".ticTacToeGame">
 
-    <LinearLayout
-        android:id="@+id/timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <RelativeLayout
+        android:id="@+id/loadingScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <!-- Timer TextView -->
+        <ProgressBar
+            android:id="@+id/loadingSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
         <TextView
-            android:id="@+id/timerTextView"
+            android:id="@+id/loadingMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:padding="4dp"
-            android:layout_marginTop="30dp"
-            android:text="30"
-            android:textColor="#FF1100"
-            android:textSize="24sp" />
-    </LinearLayout>
+            android:text="wait for opponent joined..."
+            android:layout_below="@id/loadingSpinner"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="16dp"/>
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/gameBox"
-        android:layout_width="317dp"
-        android:layout_height="342dp"
-        android:background="@drawable/blue_background"
-        android:orientation="vertical"
-        android:padding="16dp">
-        <!-- Tic-Tac-Toe Board using LinearLayouts -->
-        <!-- Row 1 -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box1"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="#26E6FF"
-                android:textSize="48sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box2"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="48sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="#26E6FF"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box3"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="48sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="#26E6FF"/>
-        </LinearLayout>
-
-        <!-- Row 2 -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box4"
-                style="@style/MaterialAlertDialog.Material3.Title.Text"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:background="#26E6FF"
-                android:textColor="@color/black"
-                android:textSize="48sp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box5"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="48sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="#26E6FF"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box6"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="48sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="#26E6FF"/>
-        </LinearLayout>
-
-        <!-- Row 3 -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box7"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="48sp"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="#26E6FF"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box8"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="48sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="#26E6FF"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/box9"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:textSize="48sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:background="#26E6FF"/>
-        </LinearLayout>
-    </LinearLayout>
-    <!-- Result TextView -->
-    <TextView
-        android:id="@+id/resultTextView"
-        android:layout_width="wrap_content"
+        android:id="@+id/gameBoard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <LinearLayout
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
+            <!-- Timer TextView -->
+            <TextView
+                android:id="@+id/timerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:layout_marginTop="30dp"
+                android:text="30"
+                android:textColor="#FF1100"
+                android:textSize="24sp" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/gameBox"
+            android:layout_width="317dp"
+            android:layout_height="342dp"
+            android:layout_gravity="center"
+            android:background="@drawable/blue_background"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <!-- Tic-Tac-Toe Board using LinearLayouts -->
+            <!-- Row 1 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box1"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="#26E6FF"
+                    android:textSize="48sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box2"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="#26E6FF"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box3"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="#26E6FF"/>
+            </LinearLayout>
+
+            <!-- Row 2 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box4"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:background="#26E6FF"
+                    android:textColor="@color/black"
+                    android:textSize="48sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box5"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="#26E6FF"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box6"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="#26E6FF"/>
+            </LinearLayout>
+
+            <!-- Row 3 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box7"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textSize="48sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="#26E6FF"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box8"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textSize="48sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:background="#26E6FF"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/box9"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:textSize="48sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:background="#26E6FF"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!-- Result TextView -->
+        <TextView
+            android:id="@+id/resultTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>
