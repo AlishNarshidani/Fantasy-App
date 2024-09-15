@@ -44,6 +44,12 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
     private ArrayList<Player> wk_BatsmanList = new ArrayList<>();
     private ArrayList<Player> allRounderList = new ArrayList<>();
 
+
+    private int wkCount = 0;
+    private int batsmanCount = 0;
+    private int allRounderCount = 0;
+    private int bowlerCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +184,26 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             selectedPlayers.add(player);
             Log.d("onPlayerSelected", "onPlayerSelected: "+player.getPlayerName());
             Log.d("count", "onPlayerSelected: "+selectedPlayers.size());
+
+            if(player.getRole().equals("Batsman"))
+            {
+                batsmanCount++;
+                tabLayout.getTabAt(1).setText("WK(" + batsmanCount + ")");
+
+            } else if (player.getRole().equals("Bowler")) {
+                bowlerCount++;
+                tabLayout.getTabAt(3).setText("WK(" + bowlerCount + ")");
+
+            } else if (player.getRole().equals("WK-Batsman")) {
+                wkCount++;
+                tabLayout.getTabAt(0).setText("WK(" + wkCount + ")");
+
+            } else {
+                allRounderCount++;
+                tabLayout.getTabAt(2).setText("WK(" + allRounderCount + ")");
+            }
+
+
         } else {
             Log.d("count", "onPlayerSelected: "+selectedPlayers.size());
             //Toast.makeText(this, "You can only select 11 players", Toast.LENGTH_SHORT).show();
@@ -187,6 +213,26 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
     @Override
     public void onPlayerDeselected(Player player) {
         selectedPlayers.remove(player);
+        Log.d("onPlayerDeselected", "onPlayerDeselected: "+player.getPlayerName());
+        Log.d("count", "onPlayerDeselected: "+selectedPlayers.size());
+
+        if(player.getRole().equals("Batsman"))
+        {
+            batsmanCount--;
+            tabLayout.getTabAt(1).setText("WK(" + batsmanCount + ")");
+
+        } else if (player.getRole().equals("Bowler")) {
+            bowlerCount--;
+            tabLayout.getTabAt(3).setText("WK(" + bowlerCount + ")");
+
+        } else if (player.getRole().equals("WK-Batsman")) {
+            wkCount--;
+            tabLayout.getTabAt(0).setText("WK(" + wkCount + ")");
+
+        } else {
+            allRounderCount--;
+            tabLayout.getTabAt(2).setText("WK(" + allRounderCount + ")");
+        }
     }
 
     @Override
