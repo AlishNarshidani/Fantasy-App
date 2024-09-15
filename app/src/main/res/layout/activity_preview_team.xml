@@ -1,15 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/winnings_gradient_background"
     tools:context=".PreviewTeam">
 
-    <TextView
-        android:id="@+id/teamDisp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <LinearLayout
+            android:id="@+id/mainLayout"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Category: Wicket Keepers -->
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WICKET KEEPERS"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"
+                android:textColor="#FFFFFF" />
+
+            <LinearLayout
+                android:id="@+id/wicketKeepersLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Category: Batsmen -->
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BATSMEN"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"
+                android:textColor="#FFFFFF" />
+
+            <LinearLayout
+                android:id="@+id/batsmanLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Category: All-Rounders -->
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ALL-ROUNDERS"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"
+                android:textColor="#FFFFFF" />
+
+            <LinearLayout
+                android:id="@+id/allRoundersLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Category: Bowlers -->
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BOWLERS"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingBottom="8dp"
+                android:textColor="#FFFFFF" />
+
+            <LinearLayout
+                android:id="@+id/bowlersLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
+</LinearLayout>
