@@ -1,12 +1,15 @@
 package com.example.fantasyapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -22,13 +25,19 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CreateTeam extends AppCompatActivity {
+public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedListener {
 
     TabLayout tabLayout;
     ViewPager2 viewPager;
     CricApiService cricApiService;
     Match match;
     String match_id;
+
+    String team_1,team_2;
+
+    AppCompatButton previewTeam;
+
+    private ArrayList<Player> selectedPlayers = new ArrayList<>();
 
     private ArrayList<Player> batsmanList = new ArrayList<>();
     private ArrayList<Player> bowlerList = new ArrayList<>();
@@ -48,9 +57,12 @@ public class CreateTeam extends AppCompatActivity {
 
         match = (Match) getIntent().getSerializableExtra("match");
         match_id = match.getId();
+        team_1 = match.getTeam1ShortName();
+        team_2 = match.getTeam2ShortName();
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
+        previewTeam = findViewById(R.id.previewTeam);
 
         cricApiService = new CricApiService(this);
         cricApiService.getSquads(match_id, new CricApiService.DataCallback() {
@@ -120,13 +132,28 @@ public class CreateTeam extends AppCompatActivity {
 
             }
         });
+
+
+        previewTeam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selectedPlayers.size() == 11) {
+                    Intent intent = new Intent(getApplicationContext(), PreviewTeam.class);
+                    intent.putExtra("selectedPlayers", selectedPlayers);
+                    //intent.putParcelableArrayListExtra("selectedPlayers", selectedPlayers);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(CreateTeam.this, "Select 11 Players", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void setupViewPager()
     {
-        CreateTeamViewPagerAdapter adapter = new CreateTeamViewPagerAdapter(this,batsmanList,wk_BatsmanList,bowlerList,allRounderList);
+        CreateTeamViewPagerAdapter adapter = new CreateTeamViewPagerAdapter(this,batsmanList,wk_BatsmanList,bowlerList,allRounderList,team_1,team_2);
         viewPager.setAdapter(adapter);
-
+        viewPager.setOffscreenPageLimit(1);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
@@ -143,5 +170,32 @@ public class CreateTeam extends AppCompatActivity {
                         break;
                 }
         }).attach();
+    }
+
+    @Override
+    public void onPlayerSelected(Player player) {
+        if (selectedPlayers.size() < 11) {
+            selectedPlayers.add(player);
+            Log.d("onPlayerSelected", "onPlayerSelected: "+player.getPlayerName());
+            Log.d("count", "onPlayerSelected: "+selectedPlayers.size());
+        } else {
+            Log.d("count", "onPlayerSelected: "+selectedPlayers.size());
+            //Toast.makeText(this, "You can only select 11 players", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onPlayerDeselected(Player player) {
+        selectedPlayers.remove(player);
+    }
+
+    @Override
+    public int getTotalSelectedPlayers() {
+        return selectedPlayers.size();
+    }
+
+    @Override
+    public int getMaxPlayers() {
+        return 11;
     }
 }

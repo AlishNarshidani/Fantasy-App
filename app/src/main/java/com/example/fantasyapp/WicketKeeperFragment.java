@@ -21,9 +21,13 @@ public class WicketKeeperFragment extends Fragment {
     RecyclerView recyclerView;
     PlayerAdapter playerAdapter;
     ArrayList<Player> wk_BatsmanList;
+    String team_1;
+    String team_2;
 
-    public WicketKeeperFragment(ArrayList<Player> wk_BatsmanList) {
+    public WicketKeeperFragment(ArrayList<Player> wk_BatsmanList,String team_1,String team_2) {
         this.wk_BatsmanList=wk_BatsmanList;
+        this.team_1=team_1;
+        this.team_2=team_2;
 
         Log.d("size of array", "WicketKeeperFragment: "+wk_BatsmanList.size());
     }
@@ -35,7 +39,7 @@ public class WicketKeeperFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wicket_keeper, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerViewLive);
-        playerAdapter = new PlayerAdapter(getContext(), wk_BatsmanList);
+        playerAdapter = new PlayerAdapter(getContext(), wk_BatsmanList,team_1,team_2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(playerAdapter);
 
