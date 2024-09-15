@@ -89,115 +89,17 @@ public class PreviewTeam extends AppCompatActivity {
             }
         }
 
+        addPlayersToLayout(wk_BatsmanList,wicketKeepersLayout);
+        addPlayersToLayout(batsmanList,batsmanLayout);
+        addPlayersToLayout(allRounderList,allRoundersLayout);
+        addPlayersToLayout(bowlerList,bowlersLayout);
+    }
 
-        if(wk_BatsmanList.size()!=0)
+    private void addPlayersToLayout(ArrayList<Player> players, LinearLayout parentLayout)
+    {
+        if(players.size()!=0)
         {
-            int rowCount = (int) Math.ceil(wk_BatsmanList.size() / 4.0);
-
-            for(int i=0;i<rowCount;i++)
-            {
-                LinearLayout rowLayout = new LinearLayout(this);
-                rowLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                for(int j=i*4; j<(i+1)*4 && j<wk_BatsmanList.size(); j++)
-                {
-
-                    Player player = wk_BatsmanList.get(j);
-
-                    // Inflate or create the player view (e.g., an ImageView with a TextView)
-                    View playerView = LayoutInflater.from(this).inflate(R.layout.item_player_view, rowLayout, false);
-
-                    // Set the player image and name
-                    ImageView playerImage = playerView.findViewById(R.id.playerImage);
-                    TextView playerName = playerView.findViewById(R.id.playerName);
-
-                    Picasso.get()
-                            .load(player.getPlayerImageUrl())
-                            .error(R.drawable.usericon)
-                            .into(playerImage);
-                    playerName.setText(player.getPlayerName());
-
-                    rowLayout.addView(playerView);
-                }
-
-                wicketKeepersLayout.addView(rowLayout);
-
-            }
-        }
-
-        if(batsmanList.size()!=0)
-        {
-            int rowCount = (int) Math.ceil(batsmanList.size() / 4.0);
-
-            for(int i=0;i<rowCount;i++)
-            {
-                LinearLayout rowLayout = new LinearLayout(this);
-                rowLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                for(int j=i*4; j<(i+1)*4 && j<batsmanList.size(); j++)
-                {
-
-                    Player player = batsmanList.get(j);
-
-                    // Inflate or create the player view (e.g., an ImageView with a TextView)
-                    View playerView = LayoutInflater.from(this).inflate(R.layout.item_player_view, rowLayout, false);
-
-                    // Set the player image and name
-                    ImageView playerImage = playerView.findViewById(R.id.playerImage);
-                    TextView playerName = playerView.findViewById(R.id.playerName);
-
-                    Picasso.get()
-                            .load(player.getPlayerImageUrl())
-                            .error(R.drawable.usericon)
-                            .into(playerImage);
-                    playerName.setText(player.getPlayerName());
-
-                    rowLayout.addView(playerView);
-                }
-
-                batsmanLayout.addView(rowLayout);
-
-            }
-        }
-
-        if(allRounderList.size()!=0)
-        {
-            int rowCount = (int) Math.ceil(allRounderList.size() / 4.0);
-
-            for(int i=0;i<rowCount;i++)
-            {
-                LinearLayout rowLayout = new LinearLayout(this);
-                rowLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                for(int j=i*4; j<(i+1)*4 && j<allRounderList.size(); j++)
-                {
-
-                    Player player = allRounderList.get(j);
-
-                    // Inflate or create the player view (e.g., an ImageView with a TextView)
-                    View playerView = LayoutInflater.from(this).inflate(R.layout.item_player_view, rowLayout, false);
-
-                    // Set the player image and name
-                    ImageView playerImage = playerView.findViewById(R.id.playerImage);
-                    TextView playerName = playerView.findViewById(R.id.playerName);
-
-                    Picasso.get()
-                            .load(player.getPlayerImageUrl())
-                            .error(R.drawable.usericon)
-                            .into(playerImage);
-                    playerName.setText(player.getPlayerName());
-
-                    rowLayout.addView(playerView);
-                }
-
-                allRoundersLayout.addView(rowLayout);
-
-            }
-        }
-
-        if(bowlerList.size()!=0)
-        {
-            int rowCount = (int) Math.ceil(bowlerList.size() / 4.0);
+            int rowCount = (int) Math.ceil(players.size() / 4.0);
 
             for(int i=0;i<rowCount;i++)
             {
@@ -210,10 +112,10 @@ public class PreviewTeam extends AppCompatActivity {
                         1
                 ));
 
-                for(int j=i*4; j<(i+1)*4 && j<bowlerList.size(); j++)
+                for(int j=i*4; j<(i+1)*4 && j<players.size(); j++)
                 {
 
-                    Player player = bowlerList.get(j);
+                    Player player = players.get(j);
 
                     // Inflate or create the player view (e.g., an ImageView with a TextView)
                     View playerView = LayoutInflater.from(this).inflate(R.layout.item_player_view, rowLayout, false);
@@ -231,29 +133,9 @@ public class PreviewTeam extends AppCompatActivity {
                     rowLayout.addView(playerView);
                 }
 
-                bowlersLayout.addView(rowLayout);
+                parentLayout.addView(rowLayout);
 
             }
         }
-
-
-
-
-
-
-
-//        teamDisp = findViewById(R.id.teamDisp);
-//
-//        ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
-//
-//        String ans = "";
-//
-//        if(selectedPlayers != null) {
-//            for (Player player : selectedPlayers) {
-//                ans = ans + player.getPlayerName() + "\n";
-//            }
-//        }
-//
-//        teamDisp.setText(ans);
     }
 }
