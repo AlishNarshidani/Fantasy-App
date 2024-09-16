@@ -48,30 +48,53 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/previewTeam"
+        android:layout_above="@+id/Btns"
         android:layout_below="@+id/tabs"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/previewTeam"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/Btns"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Preview Team"
-        android:backgroundTint="@color/black"
-        android:textColor="@android:color/white"
-        android:elevation="8dp"
-        android:padding="8dp"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/winnings_gradient_background"
-        />
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/previewTeam"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Preview Team"
+            android:backgroundTint="@color/black"
+            android:textColor="@android:color/white"
+            android:elevation="8dp"
+            android:padding="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/winnings_gradient_background"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nextBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Next"
+            android:textColor="@android:color/black"
+            android:elevation="8dp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/verified_background"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

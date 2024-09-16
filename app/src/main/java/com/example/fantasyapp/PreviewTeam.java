@@ -1,5 +1,6 @@
 package com.example.fantasyapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -34,6 +36,8 @@ public class PreviewTeam extends AppCompatActivity {
     ArrayList<Player> allRounderList = new ArrayList<>();
     ArrayList<Player> wk_BatsmanList = new ArrayList<>();
 
+    String team_1,team_2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,9 @@ public class PreviewTeam extends AppCompatActivity {
         bowlersLayout = findViewById(R.id.bowlersLayout);
 
         ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
+        team_1 = getIntent().getStringExtra("team_1");
+        team_2 = getIntent().getStringExtra("team_2");
+
 
 
         if(selectedPlayers!=null)
@@ -128,6 +135,17 @@ public class PreviewTeam extends AppCompatActivity {
                             .load(player.getPlayerImageUrl())
                             .error(R.drawable.usericon)
                             .into(playerImage);
+
+                    if(player.getShortCountryName().equals(team_1)) {
+                        playerName.setBackgroundTintList(ContextCompat.getColorStateList(PreviewTeam.this, R.color.black));
+                        playerName.setTextColor(getResources().getColor(R.color.white));
+                    }
+
+                    else {
+                        playerName.setBackgroundTintList(ContextCompat.getColorStateList(PreviewTeam.this, R.color.white));
+                        playerName.setTextColor(getResources().getColor(R.color.black));
+                    }
+
                     playerName.setText(player.getPlayerName());
 
                     rowLayout.addView(playerView);

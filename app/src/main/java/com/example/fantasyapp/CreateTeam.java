@@ -35,7 +35,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
 
     String team_1,team_2;
 
-    AppCompatButton previewTeam;
+    AppCompatButton previewTeam,nextBtn;
 
     private ArrayList<Player> selectedPlayers = new ArrayList<>();
 
@@ -69,6 +69,9 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         previewTeam = findViewById(R.id.previewTeam);
+        nextBtn = findViewById(R.id.nextBtn);
+
+        nextBtn.setClickable(false);
 
         cricApiService = new CricApiService(this);
         cricApiService.getSquads(match_id, new CricApiService.DataCallback() {
@@ -140,17 +143,35 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         });
 
 
+
+
+
         previewTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(selectedPlayers.size() == 11) {
                     Intent intent = new Intent(getApplicationContext(), PreviewTeam.class);
                     intent.putExtra("selectedPlayers", selectedPlayers);
-                    //intent.putParcelableArrayListExtra("selectedPlayers", selectedPlayers);
+                    intent.putExtra("team_1",team_1);
+                    intent.putExtra("team_2",team_2);
                     startActivity(intent);
                 } else {
                     Toast.makeText(CreateTeam.this, "Select 11 Players", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+
+
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),SelectCapVc.class);
+                intent.putExtra("selectedPlayers",selectedPlayers);
+                intent.putExtra("team_1",team_1);
+                intent.putExtra("team_2",team_2);
+                startActivity(intent);
             }
         });
     }
@@ -204,6 +225,13 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             }
 
 
+            if(selectedPlayers.size() == 11)
+            {
+                nextBtn.setBackgroundResource(R.drawable.gradient_background);
+                nextBtn.setClickable(true);
+            }
+
+
         } else {
             Log.d("count", "onPlayerSelected: "+selectedPlayers.size());
             //Toast.makeText(this, "You can only select 11 players", Toast.LENGTH_SHORT).show();
@@ -232,6 +260,13 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         } else {
             allRounderCount--;
             tabLayout.getTabAt(2).setText("WK(" + allRounderCount + ")");
+        }
+
+
+        if(selectedPlayers.size() < 11)
+        {
+            nextBtn.setBackgroundResource(R.drawable.verified_background);
+            nextBtn.setClickable(false);
         }
     }
 

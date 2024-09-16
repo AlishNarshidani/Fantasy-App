@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FantasyApp"
         tools:targetApi="31">
         <activity
+            android:name=".SelectCapVc"
+            android:exported="false" />
+        <activity
             android:name=".PreviewTeam"
             android:exported="false" />
         <activity
