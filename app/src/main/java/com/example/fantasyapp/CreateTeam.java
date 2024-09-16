@@ -71,7 +71,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         previewTeam = findViewById(R.id.previewTeam);
         nextBtn = findViewById(R.id.nextBtn);
 
-        nextBtn.setClickable(false);
+        nextBtn.setEnabled(false);
 
         cricApiService = new CricApiService(this);
         cricApiService.getSquads(match_id, new CricApiService.DataCallback() {
@@ -228,7 +228,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             if(selectedPlayers.size() == 11)
             {
                 nextBtn.setBackgroundResource(R.drawable.gradient_background);
-                nextBtn.setClickable(true);
+                nextBtn.setEnabled(true);
             }
 
 
@@ -266,7 +266,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         if(selectedPlayers.size() < 11)
         {
             nextBtn.setBackgroundResource(R.drawable.verified_background);
-            nextBtn.setClickable(false);
+            nextBtn.setEnabled(false);
         }
     }
 

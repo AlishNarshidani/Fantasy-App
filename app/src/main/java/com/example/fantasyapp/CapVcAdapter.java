@@ -17,6 +17,8 @@ public class CapVcAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<Player> playerList;
+    private int selectedCaptain = -1;
+    private int selectedViceCaptain = -1;
 
     public CapVcAdapter(Context context, ArrayList<Player> playerList) {
         this.context = context;
@@ -75,6 +77,59 @@ public class CapVcAdapter extends BaseAdapter {
 
         playerCountry.setText(player.getShortCountryName());
 
+        // Set radio button listeners
+        radioCaptainButton.setOnClickListener(v -> {
+            if (selectedViceCaptain == position) {
+                setSelectedViceCaptain(-1); // Unset vice-captain if it was this player
+            }
+            setSelectedCaptain(position);
+        });
+
+        radioViceCaptainButton.setOnClickListener(v -> {
+            if (selectedCaptain == position) {
+                setSelectedCaptain(-1); // Unset captain if it was this player
+            }
+            setSelectedViceCaptain(position);
+        });
+
+        // Set radio button states and colors
+        if (position == selectedCaptain) {
+            radioCaptainButton.setChecked(true);
+            radioCaptainButton.setBackgroundResource(R.drawable.gradient_background);
+        } else {
+            radioCaptainButton.setChecked(false);
+            radioCaptainButton.setBackgroundResource(R.drawable.verified_background);
+        }
+
+        if (position == selectedViceCaptain) {
+            radioViceCaptainButton.setChecked(true);
+            radioViceCaptainButton.setBackgroundResource(R.drawable.gradient_background);
+        } else {
+            radioViceCaptainButton.setChecked(false);
+            radioViceCaptainButton.setBackgroundResource(R.drawable.verified_background);
+        }
+
         return convertView;
     }
+
+
+    // Methods to update captain and vice-captain
+    public void setSelectedCaptain(int position) {
+        selectedCaptain = position;
+        notifyDataSetChanged(); // Refresh the list view to apply changes
+    }
+
+    public void setSelectedViceCaptain(int position) {
+        selectedViceCaptain = position;
+        notifyDataSetChanged(); // Refresh the list view to apply changes
+    }
+
+    public int getSelectedCaptain() {
+        return selectedCaptain;
+    }
+
+    public int getSelectedViceCaptain() {
+        return selectedViceCaptain;
+    }
+
 }
