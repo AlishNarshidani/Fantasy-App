@@ -184,16 +184,16 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
                 switch (position) {
                     case 0:
-                        tab.setText("WK (0)");
+                        tab.setText("WK(0)");
                         break;
                     case 1:
-                        tab.setText("BAT (0)");
+                        tab.setText("BAT(0)");
                         break;
                     case 2:
-                        tab.setText("AR (0)");
+                        tab.setText("AR(0)");
                         break;
                     case 3:
-                        tab.setText("BOWL (0)");
+                        tab.setText("BOWL(0)");
                         break;
                 }
         }).attach();
@@ -209,11 +209,11 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             if(player.getRole().equals("Batsman"))
             {
                 batsmanCount++;
-                tabLayout.getTabAt(1).setText("WK(" + batsmanCount + ")");
+                tabLayout.getTabAt(1).setText("BAT(" + batsmanCount + ")");
 
             } else if (player.getRole().equals("Bowler")) {
                 bowlerCount++;
-                tabLayout.getTabAt(3).setText("WK(" + bowlerCount + ")");
+                tabLayout.getTabAt(3).setText("BOWL(" + bowlerCount + ")");
 
             } else if (player.getRole().equals("WK-Batsman")) {
                 wkCount++;
@@ -221,7 +221,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
 
             } else {
                 allRounderCount++;
-                tabLayout.getTabAt(2).setText("WK(" + allRounderCount + ")");
+                tabLayout.getTabAt(2).setText("AR(" + allRounderCount + ")");
             }
 
 
@@ -247,11 +247,11 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         if(player.getRole().equals("Batsman"))
         {
             batsmanCount--;
-            tabLayout.getTabAt(1).setText("WK(" + batsmanCount + ")");
+            tabLayout.getTabAt(1).setText("BAT(" + batsmanCount + ")");
 
         } else if (player.getRole().equals("Bowler")) {
             bowlerCount--;
-            tabLayout.getTabAt(3).setText("WK(" + bowlerCount + ")");
+            tabLayout.getTabAt(3).setText("BOWL(" + bowlerCount + ")");
 
         } else if (player.getRole().equals("WK-Batsman")) {
             wkCount--;
@@ -259,7 +259,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
 
         } else {
             allRounderCount--;
-            tabLayout.getTabAt(2).setText("WK(" + allRounderCount + ")");
+            tabLayout.getTabAt(2).setText("AR(" + allRounderCount + ")");
         }
 
 

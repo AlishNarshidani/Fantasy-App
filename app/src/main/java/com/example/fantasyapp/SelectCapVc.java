@@ -1,6 +1,7 @@
 package com.example.fantasyapp;
 
 import android.os.Bundle;
+import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +9,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 public class SelectCapVc extends AppCompatActivity {
+
+    ListView listView;
+
+    CapVcAdapter capVcAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +27,13 @@ public class SelectCapVc extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        listView = findViewById(R.id.listView);
+        ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
+
+
+        capVcAdapter = new CapVcAdapter(this,selectedPlayers);
+        listView.setAdapter(capVcAdapter);
+
     }
 }
