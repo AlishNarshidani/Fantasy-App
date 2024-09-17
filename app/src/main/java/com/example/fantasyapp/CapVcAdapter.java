@@ -20,9 +20,17 @@ public class CapVcAdapter extends BaseAdapter {
     private int selectedCaptain = -1;
     private int selectedViceCaptain = -1;
 
-    public CapVcAdapter(Context context, ArrayList<Player> playerList) {
+    public interface OnPlayerSelectionChangedListener {
+        void onCaptainSelected(String captainName);
+        void onViceCaptainSelected(String viceCaptainName);
+    }
+
+    private OnPlayerSelectionChangedListener listener;
+
+    public CapVcAdapter(Context context, ArrayList<Player> playerList, OnPlayerSelectionChangedListener listener) {
         this.context = context;
         this.playerList = playerList;
+        this.listener = listener;
     }
 
     @Override
@@ -79,17 +87,29 @@ public class CapVcAdapter extends BaseAdapter {
 
         // Set radio button listeners
         radioCaptainButton.setOnClickListener(v -> {
-            if (selectedViceCaptain == position) {
-                setSelectedViceCaptain(-1); // Unset vice-captain if it was this player
+            if(listener!=null)
+            {
+                if (selectedViceCaptain == position) {
+                    setSelectedViceCaptain(-1); // Unset vice-captain if it was this player
+                    listener.onViceCaptainSelected("");
+                }
+                setSelectedCaptain(position);
+
+                listener.onCaptainSelected(player.getPlayerName());
             }
-            setSelectedCaptain(position);
         });
 
         radioViceCaptainButton.setOnClickListener(v -> {
-            if (selectedCaptain == position) {
-                setSelectedCaptain(-1); // Unset captain if it was this player
+            if(listener!=null)
+            {
+                if (selectedCaptain == position) {
+                    setSelectedCaptain(-1); // Unset captain if it was this player
+                    listener.onCaptainSelected("");
+                }
+                setSelectedViceCaptain(position);
+
+                listener.onViceCaptainSelected(player.getPlayerName());
             }
-            setSelectedViceCaptain(position);
         });
 
         // Set radio button states and colors

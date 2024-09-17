@@ -49,7 +49,17 @@ public class SelectCapVc extends AppCompatActivity {
         ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
 
 
-        capVcAdapter = new CapVcAdapter(this,selectedPlayers);
+        capVcAdapter = new CapVcAdapter(this, selectedPlayers, new CapVcAdapter.OnPlayerSelectionChangedListener() {
+            @Override
+            public void onCaptainSelected(String captainName) {
+                captainTextView.setText(captainName);
+            }
+
+            @Override
+            public void onViceCaptainSelected(String viceCaptainName) {
+                viceCaptainTextView.setText(viceCaptainName);
+            }
+        });
         listView.setAdapter(capVcAdapter);
 
         saveTeam.setOnClickListener(new View.OnClickListener() {
