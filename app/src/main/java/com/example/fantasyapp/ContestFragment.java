@@ -52,7 +52,8 @@ public class ContestFragment extends Fragment {
     private CricApiService cricApiService;
 
     private static final List<String> INTERNATIONAL_TEAMS = Arrays.asList(
-            "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland","United States","Canada"
+            "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland","United States","Canada",
+            "IND","AUS","ENG","RSA","NZ","PAK","SL","WI","BAN","AFG","IRE","USA","CAN"
     );
 
     @Override
@@ -63,7 +64,8 @@ public class ContestFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tabLayout);
 
         cricApiService = new CricApiService(getContext());
-        fetchMatches();
+        //fetchMatches();
+        fetchMatchesNew();
 
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -71,6 +73,108 @@ public class ContestFragment extends Fragment {
             return insets;
         });
         return view;
+    }
+
+    private void fetchMatchesNew()
+    {
+        cricApiService.getMatchesNew(new CricApiService.DataCallback() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                if (!isAdded()) {
+                    Log.e("FRAGMENT_DETACHED", "Fragment is detached, not processing data");
+                    return; // Fragment is detached, don't proceed
+                }
+                try {
+                    Log.d("API_RESPONSE", response.toString());
+                    String apiStatus=response.getString("status");
+                    Log.d("API_STATUS", apiStatus);
+
+
+                    if(response.has("data"))
+                    {
+                        JSONArray matches=response.getJSONArray("data");
+                        Log.d("MATCH_COUNT", "Total matches: " + matches.length());
+
+                        Date currentDate=new Date();
+                        Calendar calendar=Calendar.getInstance();
+                        calendar.setTime(currentDate);
+                        calendar.add(Calendar.DAY_OF_YEAR,7);
+                        Date endDate=calendar.getTime();
+
+                        Log.d("DATE",currentDate+"\n"+calendar+"\n"+endDate);
+
+                        for(int i=0;i<matches.length();i++)
+                        {
+                            JSONObject match=matches.getJSONObject(i);
+
+
+                            String id = match.getString("id");
+                            String team1=match.getString("t1");
+                            String team2=match.getString("t2");
+                            String ms=match.getString("ms");
+                            String series = match.getString("series");
+                            String dateTimeGMT = match.getString("dateTimeGMT");
+                            String matchType = match.getString("matchType");
+
+
+                            String[] dateTimeArr = dateTimeGMT.split("T");
+                            String date = dateTimeArr[0];
+
+                            Date matchDate=converToDate(date);
+                            Log.d("MATCH_DATE",String.valueOf(matchDate));
+                            if(matchDate==null)
+                            {
+                                continue;
+                            }
+
+                            String team1ShortName = (team1.contains("[") && team1.contains("]")) ? team1.substring(team1.indexOf('[')+1 , team1.indexOf(']')) : "Unknown";
+                            String team2ShortName = (team2.contains("[") && team2.contains("]")) ? team2.substring(team2.indexOf('[')+1 , team2.indexOf(']')) : "Unknown";
+
+                            Log.d("shortName", "team 1: "+team1ShortName+" team 2: "+team2ShortName);
+
+                            int team1ImageResId = getTeamImageResId(team1ShortName);
+                            int team2ImageResId = getTeamImageResId(team2ShortName);
+
+
+                            Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2+" ms: " + ms +" "+matches.length());
+
+
+                            if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("live")) {
+                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id);
+                                liveMatches.add(matchData);
+                            } else if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("fixture") && matchDate.before(endDate)) {
+                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id);
+                                upcomingMatches.add(matchData);
+                            }
+
+
+                        }
+
+
+
+
+                        setupViewPager();
+                    }
+                    else
+                    {
+                        Log.e("JSON_ERROR2", "No data key in JSON response");
+                        Toast.makeText(getContext(), "No 'data' key in JSON response", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+                catch (JSONException e)
+                {
+                    Log.e("JSON_ERROR_SCORECARD", "Error parsing JSON", e);
+                    Toast.makeText(getContext(), "JSON parsing error", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                Log.e("API_ERROR", "Error fetching data", error);
+                Toast.makeText(getContext(),"Error fetching data",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void fetchMatches()
@@ -280,7 +384,7 @@ public class ContestFragment extends Fragment {
             case "ENG":
                 return R.drawable.eng;
             default:
-                return R.drawable.eng;
+                return R.mipmap.ic_launcher;
         }
     }
 }

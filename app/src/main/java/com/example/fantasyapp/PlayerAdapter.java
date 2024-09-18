@@ -70,6 +70,17 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
         holder.playerCountry.setText(teamName);
 
+
+        if(player.getSelected())
+        {
+            holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+            holder.addRemoveBtn.setBackgroundResource(R.drawable.decrement);
+        } else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            holder.addRemoveBtn.setBackgroundResource(R.drawable.baseline_add_circle_outline_24);
+        }
+
+        
         holder.itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -80,6 +91,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
                     onPlayerDeselected(player);
                     Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
                     holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    holder.addRemoveBtn.setBackgroundResource(R.drawable.baseline_add_circle_outline_24);
                 }
                 else {
                     if(listener.getTotalSelectedPlayers() < listener.getMaxPlayers()) {
@@ -87,6 +99,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
                         onPlayerSelected(player);
                         Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
                         holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                        holder.addRemoveBtn.setBackgroundResource(R.drawable.decrement);
                     } else {
                         Toast.makeText(context, "You can only select up to 11 players", Toast.LENGTH_SHORT).show();
                     }
@@ -104,6 +117,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
                     onPlayerDeselected(player);
                     Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
                     holder.itemView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    holder.addRemoveBtn.setBackgroundResource(R.drawable.baseline_add_circle_outline_24);
                 }
                 else {
                     if(listener.getTotalSelectedPlayers() < listener.getMaxPlayers()) {
@@ -111,6 +125,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
                         onPlayerSelected(player);
                         Log.d("selected count", "" +listener.getTotalSelectedPlayers() + " MAX: "+listener.getMaxPlayers());
                         holder.itemView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+                        holder.addRemoveBtn.setBackgroundResource(R.drawable.decrement);
                     } else {
                         Toast.makeText(context, "You can only select up to 11 players", Toast.LENGTH_SHORT).show();
                     }
