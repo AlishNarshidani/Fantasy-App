@@ -42,8 +42,8 @@ public class SelectCapVc extends AppCompatActivity {
             return insets;
         });
 
-        captainTextView = findViewById(R.id.captainTextView);
-        viceCaptainTextView = findViewById(R.id.viceCaptainTextView);
+        captainTextView = findViewById(R.id.captainName);
+        viceCaptainTextView = findViewById(R.id.viceCaptainName);
         saveTeam = findViewById(R.id.saveTeam);
         listView = findViewById(R.id.listView);
         ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
