@@ -21,8 +21,8 @@ public class CapVcAdapter extends BaseAdapter {
     private int selectedViceCaptain = -1;
 
     public interface OnPlayerSelectionChangedListener {
-        void onCaptainSelected(String captainName);
-        void onViceCaptainSelected(String viceCaptainName);
+        void onCaptainSelected(String captainPos);
+        void onViceCaptainSelected(String viceCaptainPos);
     }
 
     private OnPlayerSelectionChangedListener listener;
@@ -95,7 +95,7 @@ public class CapVcAdapter extends BaseAdapter {
                 }
                 setSelectedCaptain(position);
 
-                listener.onCaptainSelected(player.getPlayerName());
+                listener.onCaptainSelected(String.valueOf(position));
             }
         });
 
@@ -108,7 +108,7 @@ public class CapVcAdapter extends BaseAdapter {
                 }
                 setSelectedViceCaptain(position);
 
-                listener.onViceCaptainSelected(player.getPlayerName());
+                listener.onViceCaptainSelected(String.valueOf(position));
             }
         });
 

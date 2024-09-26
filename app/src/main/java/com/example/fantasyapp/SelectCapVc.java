@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,8 @@ public class SelectCapVc extends AppCompatActivity {
     TextView captainTextView, viceCaptainTextView;
     AppCompatButton saveTeam;
 
+    ImageView captainImageView, viceCaptainImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,23 +49,66 @@ public class SelectCapVc extends AppCompatActivity {
 
         captainTextView = findViewById(R.id.captainName);
         viceCaptainTextView = findViewById(R.id.viceCaptainName);
+        captainImageView = findViewById(R.id.captainImage);
+        viceCaptainImageView = findViewById(R.id.viceCaptainImage);
+
         saveTeam = findViewById(R.id.saveTeam);
         listView = findViewById(R.id.listView);
-        ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
 
+        ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
 
         capVcAdapter = new CapVcAdapter(this, selectedPlayers, new CapVcAdapter.OnPlayerSelectionChangedListener() {
             @Override
-            public void onCaptainSelected(String captainName) {
-                captainTextView.setText(captainName);
+            public void onCaptainSelected(String captainPos) {
+                if(!captainPos.isEmpty()) {
+
+                    int capPos = Integer.parseInt(captainPos);
+                    Player player = selectedPlayers.get(capPos);
+
+                    Picasso.get()
+                            .load(player.getPlayerImageUrl())
+                            .error(R.drawable.usericon)
+                            .into(captainImageView);
+
+                    String playerName = player.getPlayerName();
+
+                    captainTextView.setText(playerName);
+                } else {
+
+                    captainImageView.setImageResource(R.drawable.usericon);
+                    captainTextView.setText(captainPos);
+                }
             }
 
             @Override
-            public void onViceCaptainSelected(String viceCaptainName) {
-                viceCaptainTextView.setText(viceCaptainName);
+            public void onViceCaptainSelected(String viceCaptainPos) {
+                if(!viceCaptainPos.isEmpty()) {
+
+                    int vcPos = Integer.parseInt(viceCaptainPos);
+                    Player player = selectedPlayers.get(vcPos);
+
+                    Picasso.get()
+                            .load(player.getPlayerImageUrl())
+                            .error(R.drawable.usericon)
+                            .into(viceCaptainImageView);
+
+                    String playerName = player.getPlayerName();
+
+                    viceCaptainTextView.setText(playerName);
+
+                } else {
+
+                    viceCaptainImageView.setImageResource(R.drawable.usericon);
+                    viceCaptainTextView.setText(viceCaptainPos);
+                }
             }
         });
+
         listView.setAdapter(capVcAdapter);
+
+
+
+
 
         saveTeam.setOnClickListener(new View.OnClickListener() {
             @Override

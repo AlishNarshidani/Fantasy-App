@@ -54,7 +54,7 @@
                 android:layout_width="381dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -70,6 +70,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
+                        android:src="@drawable/usericon"
                         android:scaleType="centerCrop" />
 
                     <TextView
@@ -93,6 +94,7 @@
                         android:gravity="center"
                         android:text="Captain"
                         android:textColor="@color/black"
+                        android:textSize="14sp"
                         android:textStyle="bold"/>
 
                     <!-- captain 2x pints -->
@@ -119,7 +121,7 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="4dp">
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -130,6 +132,7 @@
                     <ImageView
                         android:id="@+id/viceCaptainImage"
                         android:layout_gravity="center_horizontal"
+                        android:src="@drawable/usericon"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:scaleType="centerCrop" />
@@ -155,6 +158,7 @@
                         android:gravity="center"
                         android:text="Vice-Captain"
                         android:textColor="@color/black"
+                        android:textSize="14sp"
                         android:textStyle="bold"/>
 
 
