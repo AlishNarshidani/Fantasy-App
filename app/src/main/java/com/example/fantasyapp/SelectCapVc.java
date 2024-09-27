@@ -1,5 +1,6 @@
 package com.example.fantasyapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +36,8 @@ public class SelectCapVc extends AppCompatActivity {
 
     CapVcAdapter capVcAdapter;
 
+    Match match;
+
 
     private int selectedCaptain = -1;
     private int selectedViceCaptain = -1;
@@ -69,6 +72,7 @@ public class SelectCapVc extends AppCompatActivity {
         listView = findViewById(R.id.listView);
 
         ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
+        match = (Match) getIntent().getSerializableExtra("match");
         match_id = getIntent().getStringExtra("match_id");
 
         capVcAdapter = new CapVcAdapter(this, selectedPlayers, new CapVcAdapter.OnPlayerSelectionChangedListener() {
@@ -127,6 +131,10 @@ public class SelectCapVc extends AppCompatActivity {
         saveTeam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                saveTeam.setClickable(false);
+                saveTeam.setEnabled(false);
+
                 int capPos = capVcAdapter.getSelectedCaptain();
                 int vcPos = capVcAdapter.getSelectedViceCaptain();
 
@@ -154,7 +162,17 @@ public class SelectCapVc extends AppCompatActivity {
                     insertTeamData(selectedPlayers, selectedPlayersExceptCapAndVc, capPos, vcPos, new OnTeamDataInsertionCompletionListener() {
                         @Override
                         public void onSuccess() {
-                            Toast.makeText(SelectCapVc.this, "inserted", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(SelectCapVc.this, "Team Created", Toast.LENGTH_SHORT).show();
+
+
+
+                            Intent intent = new Intent(SelectCapVc.this,UpcomingContest.class);
+                            intent.putExtra("match",match);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+
+                            finish();
                         }
 
                         @Override

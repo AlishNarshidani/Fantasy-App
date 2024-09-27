@@ -168,6 +168,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),SelectCapVc.class);
+                intent.putExtra("match",match);
                 intent.putExtra("match_id",match_id);
                 intent.putExtra("selectedPlayers",selectedPlayers);
                 intent.putExtra("team_1",team_1);
