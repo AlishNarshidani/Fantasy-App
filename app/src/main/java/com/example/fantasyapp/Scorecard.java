@@ -1,5 +1,6 @@
 package com.example.fantasyapp;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,7 @@ public class Scorecard extends AppCompatActivity {
             return insets;
         });
         inningsContainer= findViewById(R.id.inningsContainer);
+
         cricApiService=new CricApiService(this);
         String match_id=getIntent().getStringExtra("match_id");
         fetchScorecard(match_id);
@@ -51,6 +53,8 @@ public class Scorecard extends AppCompatActivity {
                     Log.d("API_STATUS", apiStatus);
 
                     JSONObject data=response.getJSONObject("data");
+
+
                     JSONArray score=data.getJSONArray("score");
                     JSONArray scorecard=data.getJSONArray("scorecard");
                     Log.d("MATCH_DATA","Data:"+data);
@@ -60,6 +64,9 @@ public class Scorecard extends AppCompatActivity {
                         JSONObject inningDetail=score.getJSONObject(i);
                         String inningName=inningDetail.getString("inning");
                         JSONObject scorecardInning=scorecard.getJSONObject(i);
+
+                        //updateTeamsInfo(data,inningDetail);
+
                         addInningsView(inningName,scorecardInning,inningDetail);
                     }
                 } catch (JSONException e) {
@@ -76,12 +83,93 @@ public class Scorecard extends AppCompatActivity {
         });
     }
 
+//    private void updateTeamsInfo(JSONObject data,JSONObject inningDetail) throws JSONException {
+//        team1Flag = findViewById(R.id.team1Flag);
+//        team2Flag = findViewById(R.id.team2Flag);
+//
+//        // Fetch runs, wickets, and overs
+//        int runs = inningDetail.getInt("r");
+//        int wickets = inningDetail.getInt("w");
+//        double overs = inningDetail.getDouble("o");
+//
+//        // Fetch team name (assuming it's within inningDetail or scorecardInning)
+//        String teamName = inningDetail.getString("team");
+//        // Fetch team info from JSON
+//
+//
+//        // Update the TextViews
+//        if (i == 0) {  // First inning (Team 1)
+//
+//
+//            team1Name.setText(teamName);
+//            team1TotalScore.setText(runs + "/" + wickets);
+//            team1Overs.setText("(" + overs+ ")");
+//        } else if (i == 1) {  // Second inning (Team 2)
+//
+//            team2Name.setText(teamName);
+//            team2TotalScore.setText("Score: " + runs + "/" + wickets);
+//            team2Overs.setText("Overs: " + overs);
+//        }
+//
+//        // Set team flags based on team names
+//        if (team1Name.equals("Australia")) {
+//            team1Flag.setImageResource(R.drawable.aus);
+//        } else if (team1Name.equals("Bangladesh")) {
+//            team1Flag.setImageResource(R.drawable.ban);
+//        } else if (team1Name.equals("England")) {
+//            team1Flag.setImageResource(R.drawable.eng);
+//        } else if (team1Name.equals("India")) {
+//            team1Flag.setImageResource(R.drawable.ind);
+//        } else if (team1Name.equals("Ireland")) {
+//            team1Flag.setImageResource(R.drawable.ire);
+//        } else if (team1Name.equals("New Zealand")) {
+//            team1Flag.setImageResource(R.drawable.nz);
+//        } else if (team1Name.equals("Pakistan")) {
+//            team1Flag.setImageResource(R.drawable.pak);
+//        } else if (team1Name.equals("South Africa")) {
+//            team1Flag.setImageResource(R.drawable.rsa);
+//        } else if (team1Name.equals("Sri Lanka")) {
+//            team1Flag.setImageResource(R.drawable.sl);
+//        } else if (team1Name.equals("West Indies")) {
+//            team1Flag.setImageResource(R.drawable.wi);
+//        }
+//
+//        if (team2Name.equals("Australia")) {
+//            team2Flag.setImageResource(R.drawable.aus);
+//        } else if (team2Name.equals("Bangladesh")) {
+//            team2Flag.setImageResource(R.drawable.ban);
+//        } else if (team2Name.equals("England")) {
+//            team2Flag.setImageResource(R.drawable.eng);
+//        } else if (team2Name.equals("India")) {
+//            team2Flag.setImageResource(R.drawable.ind);
+//        } else if (team2Name.equals("Ireland")) {
+//            team2Flag.setImageResource(R.drawable.ire);
+//        } else if (team2Name.equals("New Zealand")) {
+//            team2Flag.setImageResource(R.drawable.nz);
+//        } else if (team2Name.equals("Pakistan")) {
+//            team2Flag.setImageResource(R.drawable.pak);
+//        } else if (team2Name.equals("South Africa")) {
+//            team2Flag.setImageResource(R.drawable.rsa);
+//        } else if (team2Name.equals("Sri Lanka")) {
+//            team2Flag.setImageResource(R.drawable.sl);
+//        } else if (team2Name.equals("West Indies")) {
+//            team2Flag.setImageResource(R.drawable.wi);
+//        }
+//
+//        // Optionally, you can update the match result and contest status here as well
+//        matchResult.setText(data.getString("matchResult"));
+//        contestStatus.setText(data.getString("contestStatus"));
+//    }
+
+
     private void addInningsView(String inningName,JSONObject scorecardInning, JSONObject inningDetail) throws JSONException {
         View inningsView = getLayoutInflater().inflate(R.layout.item_innings, inningsContainer, false);
         TextView inningsName = inningsView.findViewById(R.id.inningsName);
         TextView inningsStats = inningsView.findViewById(R.id.inningsStats);
         ImageView expandCollapseIcon = inningsView.findViewById(R.id.expandCollapseIcon);
         LinearLayout inningsDetails = inningsView.findViewById(R.id.inningsDetails);
+
+        inningsDetails.setVisibility(View.GONE);
 
         inningsName.setText(inningName);
 
@@ -90,7 +178,7 @@ public class Scorecard extends AppCompatActivity {
         double overs = inningDetail.getDouble("o");
         inningsStats.setText(String.format("%d/%d in %.1f overs", runs, wickets, overs));
 
-        inningsName.setOnClickListener(v -> {
+        inningsView.setOnClickListener(v -> {
             if (inningsDetails.getVisibility() == View.GONE) {
                 inningsDetails.setVisibility(View.VISIBLE);
                 expandCollapseIcon.setImageResource(R.drawable.ic_expand_less);
@@ -123,6 +211,11 @@ public class Scorecard extends AppCompatActivity {
             batsmanSixes.setText(batsman.getString("6s"));
             batsmanStrikeRate.setText(batsman.getString("sr"));
             dismissalText.setText(batsman.getString("dismissal-text"));
+
+            if(batsman.getString("dismissal-text").equals("batting") || batsman.getString("dismissal-text").equals("not out"))
+            {
+                batsmanView.setBackgroundColor(Color.parseColor("#DFFFD6"));
+            }
 
             inningsDetails.addView(batsmanView);
         }

@@ -44,7 +44,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.razorpay:checkout:1.6.38")
@@ -52,4 +51,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("com.google.android.material:material:1.12.0")
+    implementation("org.java-websocket:Java-WebSocket:1.5.2")
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.squareup.picasso:picasso:2.8")
+    implementation("com.google.android.gms:play-services-base:18.5.0")
 }

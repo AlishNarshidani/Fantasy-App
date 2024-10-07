@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".Scorecard">
 
+    <!-- ScrollView containing the scoreboard -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,7 +17,8 @@
             android:id="@+id/inningsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:padding="8dp" />
     </ScrollView>
 
 </LinearLayout>

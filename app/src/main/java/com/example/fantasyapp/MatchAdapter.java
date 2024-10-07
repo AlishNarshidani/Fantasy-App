@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
+public class  MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
 
     private List<Match> matchList;
     private Context context;
+    private boolean isLive;
 
-    public MatchAdapter(Context context,List<Match> matchList) {
+    public MatchAdapter(Context context,List<Match> matchList,boolean isLive) {
         this.matchList = matchList;
         this.context=context;
+        this.isLive=isLive;
     }
 
     @NonNull
@@ -40,9 +42,19 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
         holder.team2Logo.setImageResource(match.getTeam2ImageResId());
 
         holder.itemView.setOnClickListener(v -> {
-            Intent i=new Intent(context,Scorecard.class);
-            i.putExtra("match_id",match.getId());
-            context.startActivity(i);
+
+            if(isLive)
+            {
+                Intent i=new Intent(context,JoinedContests.class);
+                i.putExtra("match",match);
+                context.startActivity(i);
+            }
+            else
+            {
+                Intent i=new Intent(context,UpcomingContest.class);
+                i.putExtra("match",match);
+                context.startActivity(i);
+            }
         });
     }
 
