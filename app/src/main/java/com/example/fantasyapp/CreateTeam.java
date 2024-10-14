@@ -151,6 +151,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             public void onClick(View v) {
                 if(selectedPlayers.size() == 11) {
                     Intent intent = new Intent(getApplicationContext(), PreviewTeam.class);
+                    intent.putExtra("caller","CreateTeam");
                     intent.putExtra("selectedPlayers", selectedPlayers);
                     intent.putExtra("team_1",team_1);
                     intent.putExtra("team_2",team_2);

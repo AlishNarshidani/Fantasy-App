@@ -2,6 +2,7 @@ package com.example.fantasyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -13,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class UpcomingContest extends AppCompatActivity {
 
-    AppCompatButton createTeam;
+    AppCompatButton createTeam, viewTeams;
     Match match;
 
     @Override
@@ -29,6 +30,7 @@ public class UpcomingContest extends AppCompatActivity {
 
 
         createTeam = findViewById(R.id.createTeam);
+        viewTeams = findViewById(R.id.viewTeams);
 
         match = (Match) getIntent().getSerializableExtra("match");
 
@@ -36,6 +38,15 @@ public class UpcomingContest extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), CreateTeam.class);
+                i.putExtra("match",match);
+                startActivity(i);
+            }
+        });
+
+        viewTeams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ViewTeams.class);
                 i.putExtra("match",match);
                 startActivity(i);
             }

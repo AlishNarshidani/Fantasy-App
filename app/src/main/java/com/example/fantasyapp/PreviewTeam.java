@@ -12,17 +12,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class PreviewTeam extends AppCompatActivity {
+
+
+    FirebaseFirestore db;
+    FirebaseAuth auth;
 
     LinearLayout wicketKeepersLayout;
     LinearLayout batsmanLayout;
@@ -36,7 +48,11 @@ public class PreviewTeam extends AppCompatActivity {
     ArrayList<Player> allRounderList = new ArrayList<>();
     ArrayList<Player> wk_BatsmanList = new ArrayList<>();
 
+    ArrayList<Player> selectedPlayers = new ArrayList<>();
+
     String team_1,team_2;
+
+    String captainId, viceCaptainId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +71,52 @@ public class PreviewTeam extends AppCompatActivity {
         allRoundersLayout = findViewById(R.id.allRoundersLayout);
         bowlersLayout = findViewById(R.id.bowlersLayout);
 
-        ArrayList<Player> selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
-        team_1 = getIntent().getStringExtra("team_1");
-        team_2 = getIntent().getStringExtra("team_2");
+        db = FirebaseFirestore.getInstance();
+        auth= FirebaseAuth.getInstance();
+
+        String caller = getIntent().getStringExtra("caller");
+
+        if(caller.equals("CreateTeam"))
+        {
+            selectedPlayers.clear();
+            selectedPlayers = (ArrayList<Player>) getIntent().getSerializableExtra("selectedPlayers");
+            team_1 = getIntent().getStringExtra("team_1");
+            team_2 = getIntent().getStringExtra("team_2");
+
+        } else if (caller.equals("ViewTeams")) {
+
+            String teamId = getIntent().getStringExtra("teamId");
+            String matchId = getIntent().getStringExtra("match_id");
+            team_1 = getIntent().getStringExtra("team_1");
+            team_2 = getIntent().getStringExtra("team_2");
+
+            getTeamDetails(matchId, teamId, new TeamFetchCallBack() {
+                @Override
+                public void onSuccess() {
+                    Log.d("gotTeamDetails", "onSuccess: ");
+                    captainId = selectedPlayers.get(0).getPlayerId();
+                    viceCaptainId = selectedPlayers.get(1).getPlayerId();
+                    Log.d("captainId", "onSuccess: "+captainId);
+                    Log.d("captainName", "onSuccess: "+selectedPlayers.get(0).getPlayerName());
+                    Log.d("viceCaptainId", "onSuccess: "+viceCaptainId);
+                    Log.d("viceCaptainName", "onSuccess: "+selectedPlayers.get(1).getPlayerName());
+
+                    dividePlayers();
+                }
+
+                @Override
+                public void onFailure() {
+                    Log.d("gotTeamDetails", "onFailure: ");
+                }
+            });
+        }
 
 
+        dividePlayers();
+    }
 
+    public void dividePlayers()
+    {
         if(selectedPlayers!=null)
         {
             for(Player player : selectedPlayers)
@@ -102,6 +158,98 @@ public class PreviewTeam extends AppCompatActivity {
         addPlayersToLayout(bowlerList,bowlersLayout);
     }
 
+    public interface TeamFetchCallBack {
+        void onSuccess();
+        void onFailure();
+    }
+
+
+    public void getTeamDetails(String match_id, String team_id, TeamFetchCallBack teamFetchCallBack)
+    {
+        String user_id = auth.getUid();
+
+        String documentId = match_id+"_"+user_id+"_"+team_id;
+
+        db.collection("teams")
+                .document(documentId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        if(documentSnapshot.exists())
+                        {
+                            selectedPlayers.clear();
+
+                            // This document matches the current matchId and userId
+                            Map<String, Object> teamData = documentSnapshot.getData();
+
+                            Map<String, Object> captainData = (Map<String, Object>) teamData.get("captain");
+
+                            Player captain = new Player(
+                                    (String) captainData.get("playerCountry"),
+                                    (String) captainData.get("playerId"),
+                                    (String) captainData.get("playerName"),
+                                    (String) captainData.get("playerRole"),
+                                    (String) captainData.get("playerImageUrl")
+                            );
+
+
+
+                            Map<String, Object> viceCaptainData = (Map<String, Object>) teamData.get("viceCaptain");
+                            Player viceCaptain = new Player(
+                                    (String) viceCaptainData.get("playerCountry"),
+                                    (String) viceCaptainData.get("playerId"),
+                                    (String) viceCaptainData.get("playerName"),
+                                    (String) viceCaptainData.get("playerRole"),
+                                    (String) viceCaptainData.get("playerImageUrl")
+                            );
+
+
+
+                            // Extract list of players
+                            List<Map<String, Object>> playersData = (List<Map<String, Object>>) teamData.get("players");
+                            List<Player> players = new ArrayList<>();
+                            for (Map<String, Object> playerData : playersData) {
+                                Player player = new Player(
+                                        (String) playerData.get("playerCountry"),
+                                        (String) playerData.get("playerId"),
+                                        (String) playerData.get("playerName"),
+                                        (String) playerData.get("playerRole"),
+                                        (String) playerData.get("playerImageUrl")
+                                );
+                                players.add(player);
+                            }
+
+
+
+                            // Now you have captain, vice-captain, and the players list
+                            Log.d("captain", "Captain: " + captain.getPlayerName());
+                            Log.d("viceCaptain", "Vice-Captain: " + viceCaptain.getPlayerName());
+
+                            for (Player player : players) {
+                                Log.d("players",player.getPlayerName());
+                            }
+
+                            selectedPlayers.add(captain);
+                            selectedPlayers.add(viceCaptain);
+                            selectedPlayers.addAll(players);
+                        }
+
+
+                        teamFetchCallBack.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Preview Team FirestoreError", "onFailure: ");
+                        teamFetchCallBack.onFailure();
+                    }
+                });
+    }
+
+
     private void addPlayersToLayout(ArrayList<Player> players, LinearLayout parentLayout)
     {
         if(players.size()!=0)
@@ -123,9 +271,24 @@ public class PreviewTeam extends AppCompatActivity {
                 {
 
                     Player player = players.get(j);
+                    String player_id = player.getPlayerId();
+
+                    View playerView;
 
                     // Inflate or create the player view (e.g., an ImageView with a TextView)
-                    View playerView = LayoutInflater.from(this).inflate(R.layout.item_player_view, rowLayout, false);
+                    if(player_id.equals(captainId) || player_id.equals(viceCaptainId))
+                    {
+                        if(player_id.equals(captainId))
+                        {
+                            playerView = LayoutInflater.from(this).inflate(R.layout.item_cap_player_view, rowLayout, false);
+                        } else {
+                            playerView = LayoutInflater.from(this).inflate(R.layout.item_vc_player_view, rowLayout, false);
+                        }
+
+                    } else {
+
+                        playerView = LayoutInflater.from(this).inflate(R.layout.item_player_view, rowLayout, false);
+                    }
 
                     // Set the player image and name
                     ImageView playerImage = playerView.findViewById(R.id.playerImage);
