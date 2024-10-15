@@ -19,6 +19,9 @@
         android:theme="@style/Theme.FantasyApp"
         tools:targetApi="31">
         <activity
+            android:name=".RegisterTeamInContest"
+            android:exported="false" />
+        <activity
             android:name=".ViewTeams"
             android:exported="false" />
         <activity

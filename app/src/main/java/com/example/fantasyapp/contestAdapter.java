@@ -1,10 +1,13 @@
 package com.example.fantasyapp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -59,7 +62,7 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
         int totalSpotsInt = Integer.parseInt(totalSpotsStr);
         int numberOfWinnersInt = Integer.parseInt(numberOfWinnersStr);
 
-        int winPerc = (numberOfWinnersInt/totalSpotsInt)*100;
+        double winPerc = ((double) numberOfWinnersInt /totalSpotsInt)*100;
 
         holder.prizePool.setText("₹"+prizePoolStr);
         holder.firstPrize.setText("₹"+String.valueOf(firstPrizeInt));
@@ -69,6 +72,23 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
         holder.spotsFilledBar.setMax(totalSpotsInt);
         holder.spotsFilledBar.setProgress(numberOfRegisteredTeams, true);
         holder.winningPercentage.setText(String.valueOf(winPerc)+"%");
+
+        holder.contestCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        holder.entryFeesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, RegisterTeamInContest.class);
+                i.putExtra("contest_id",contestIdStr);
+                i.putExtra("match_id",matchIdStr);
+                ((Activity) context).startActivityForResult(i,100);
+            }
+        });
 
     }
 
@@ -82,6 +102,7 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
         TextView prizePool, spotsLeft, totalSpots, firstPrize, winningPercentage;
         AppCompatButton entryFeesBtn;
         ProgressBar spotsFilledBar;
+        LinearLayout contestCard;
 
         public contestViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +114,8 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
 
             entryFeesBtn = itemView.findViewById(R.id.entryFeesBtn);
             spotsFilledBar = itemView.findViewById(R.id.spotsFilledBar);
+
+            contestCard = itemView.findViewById(R.id.contestCard);
         }
     }
 }

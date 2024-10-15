@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
@@ -65,6 +66,7 @@ public class UpcomingContest extends AppCompatActivity {
         match = (Match) getIntent().getSerializableExtra("match");
 
         checkAvailableContests();
+        checkAvailableContests();
 
         createTeam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +108,37 @@ public class UpcomingContest extends AppCompatActivity {
 
                                     // Get contest data as a map and add to the list
                                     Map<String, Object> contestData = document.getData();
-                                    contestsList.add(contestData);
+
+                                    List<String> teamIds = (List<String>) contestData.get("team_ids");
+
+                                    if(teamIds.size() == 0)
+                                    {
+                                        contestsList.add(contestData);
+
+                                    } else {
+
+                                        for(String teamId : teamIds)
+                                        {
+                                            String [] parts = teamId.split("_");
+
+                                            if (parts.length == 3) {
+
+                                                String fetchedMatchId = parts[0];
+                                                String fetchedUserId = parts[1];
+                                                String fetchedTeamId = parts[2];
+
+                                                if(fetchedUserId.equals(auth.getUid()))
+                                                {
+                                                    Log.d("already participated", "onComplete: "+contestData.get("contest_id"));
+                                                }
+                                                else {
+                                                    contestsList.add(contestData);
+                                                }
+
+                                            }
+                                        }
+
+                                    }
                                 }
 
                                 loadContests();
@@ -181,5 +213,16 @@ public class UpcomingContest extends AppCompatActivity {
         adapter = new contestAdapter(UpcomingContest.this,contestsList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            // Refresh the available contests after a successful registration
+            Log.d("contestRefresh", "contestRefresh: ");
+            checkAvailableContests();
+        }
     }
 }
