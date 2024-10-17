@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:id="@+id/contestCard"
     android:background="@drawable/winnings_gradient_background"
     android:padding="12dp"
     android:layout_margin="8dp"
@@ -17,6 +18,7 @@
 
         <!-- Prize Pool -->
         <TextView
+            android:id="@+id/prizePool"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,9 +40,10 @@
 
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/entryFeesBtn"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
-                android:text="50"
+                android:text="₹50"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:background="@drawable/gradient_background" />
@@ -50,7 +53,7 @@
 
     <!-- Progress bar -->
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/spotsFilledBar"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="6dp"
@@ -69,6 +72,7 @@
         android:gravity="center_vertical">
 
         <TextView
+            android:id="@+id/spotsLeft"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -77,6 +81,7 @@
             android:textSize="14sp"/>
 
         <TextView
+            android:id="@+id/totalSpots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="39,68,253 spots"
@@ -106,6 +111,7 @@
                 android:layout_marginEnd="4dp"/>
 
             <TextView
+                android:id="@+id/firstPrize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="₹1 Crore"
@@ -128,9 +134,10 @@
                 android:layout_marginEnd="4dp"/>
 
             <TextView
+                android:id="@+id/winningPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="62%"
+                android:text="6%"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"/>
         </LinearLayout>
@@ -152,7 +159,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upto 20"
+                android:text="only 1 team"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"/>
         </LinearLayout>
