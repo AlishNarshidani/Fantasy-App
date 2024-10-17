@@ -9,14 +9,18 @@ public class Match implements Serializable {
     private int team2ImageResId;
     private String score;
     private String id;
+    private String series;
+    private String matchType;
 
-    public Match(String team1ShortName, String team2ShortName, int team1ImageResId, int team2ImageResId, String score, String id) {
+    public Match(String team1ShortName, String team2ShortName, int team1ImageResId, int team2ImageResId, String score, String id, String series, String matchType) {
         this.team1ShortName = team1ShortName;
         this.team2ShortName = team2ShortName;
         this.team1ImageResId = team1ImageResId;
         this.team2ImageResId = team2ImageResId;
         this.score = score;
         this.id=id;
+        this.series=series;
+        this.matchType=matchType;
     }
 
     public String getTeam1ShortName() {
@@ -42,5 +46,15 @@ public class Match implements Serializable {
     public String getId()
     {
         return id;
+    }
+
+    public String getSeries()
+    {
+        return series;
+    }
+
+    public String getMatchType()
+    {
+        return matchType;
     }
 }

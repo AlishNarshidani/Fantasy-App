@@ -140,10 +140,10 @@ public class ContestFragment extends Fragment {
 
 
                             if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("live")) {
-                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id);
+                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id,series,matchType);
                                 liveMatches.add(matchData);
                             } else if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("fixture") && matchDate.before(endDate)) {
-                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id);
+                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id,series,matchType);
                                 upcomingMatches.add(matchData);
                             }
 
@@ -274,13 +274,13 @@ public class ContestFragment extends Fragment {
 
 
 
-                                if ((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started") && matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result")) {
-                                    Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id);
-                                    liveMatches.add(matchData);
-                                } else if (matchStarted.equals("false") && matchDate.before(endDate)) {
-                                    Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id);
-                                    upcomingMatches.add(matchData);
-                                }
+//                                if ((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started") && matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result")) {
+//                                    Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id,);
+//                                    liveMatches.add(matchData);
+//                                } else if (matchStarted.equals("false") && matchDate.before(endDate)) {
+//                                    Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id);
+//                                    upcomingMatches.add(matchData);
+//                                }
 
 //                            if((INTERNATIONAL_TEAMS.contains(team1) || INTERNATIONAL_TEAMS.contains(team2)) && !status.equals("Match not started") && matchStarted.equals("true") && matchEnded.equals("false") && !status.contains("No result")) {
 //                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId, "LIVE",id);
