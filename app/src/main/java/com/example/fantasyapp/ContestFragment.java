@@ -52,8 +52,8 @@ public class ContestFragment extends Fragment {
     private CricApiService cricApiService;
 
     private static final List<String> INTERNATIONAL_TEAMS = Arrays.asList(
-            "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland","United States","Canada",
-            "IND","AUS","ENG","RSA","NZ","PAK","SL","WI","BAN","AFG","IRE","USA","CAN"
+            "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland",
+            "IND","AUS","ENG","RSA","NZ","PAK","SL","WI","BAN","AFG","IRE"
     );
 
     @Override

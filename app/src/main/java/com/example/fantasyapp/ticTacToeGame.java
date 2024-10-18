@@ -117,7 +117,7 @@ public class ticTacToeGame extends AppCompatActivity {
     private void createWebSocketClient() {
         URI uri;
         try {
-            uri = new URI("wss://a713-2402-8100-31fd-3d40-815a-49c5-236b-97cf.ngrok-free.app/ws/game/game_1/?session_key=" + URLEncoder.encode(sessionKey, "UTF-8") + "&user_id=" + URLEncoder.encode(userId, "UTF-8"));
+            uri = new URI("wss://8c8a-49-36-64-205.ngrok-free.app/ws/game/game_1/?session_key=" + URLEncoder.encode(sessionKey, "UTF-8") + "&user_id=" + URLEncoder.encode(userId, "UTF-8"));
         } catch (Exception e) {
             e.printStackTrace();
             return;

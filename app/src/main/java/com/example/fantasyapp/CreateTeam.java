@@ -246,7 +246,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
 
     private void sendPlayerDataToServer() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:5000/predict";
+        String url = "http://192.168.120.64:5000/predict";
 
         JSONObject playersObject = new JSONObject();
         for (JSONObject playerDetails : entireSquad) {

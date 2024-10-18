@@ -2,6 +2,8 @@ package com.example.fantasyapp;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,24 +74,38 @@ public class AnalysisResult extends AppCompatActivity {
                 String playerName = playersArray.getString(i);
                 String playerImageUrl = playerImages.get(playerName);
 
-                LinearLayout playerLayout = new LinearLayout(this);
-                playerLayout.setOrientation(LinearLayout.VERTICAL);
-                playerLayout.setPadding(8, 8, 8, 8);
+                View playerView = LayoutInflater.from(this).inflate(R.layout.item_player_view, layout, false);
 
-                ImageView playerImageView = new ImageView(this);
-                LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(300, 300);
-                playerImageView.setLayoutParams(imageParams);
-                Picasso.get().load(playerImageUrl).into(playerImageView);
+                // Set the player image and name
+                ImageView playerImageSet = playerView.findViewById(R.id.playerImage);
+                TextView playerNameSet = playerView.findViewById(R.id.playerName);
 
-                TextView playerNameTextView = new TextView(this);
-                playerNameTextView.setText(playerName);
-                playerNameTextView.setPadding(0, 8, 0, 0);
-                playerNameTextView.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+                Picasso.get()
+                        .load(playerImageUrl)
+                        .error(R.drawable.usericon)
+                        .into(playerImageSet);
 
-                playerLayout.addView(playerImageView);
-                playerLayout.addView(playerNameTextView);
+                playerNameSet.setTextColor(getResources().getColor(R.color.white));
+                playerNameSet.setText(playerName);
 
-                layout.addView(playerLayout);
+//                LinearLayout playerLayout = new LinearLayout(this);
+//                playerLayout.setOrientation(LinearLayout.VERTICAL);
+//                playerLayout.setPadding(8, 8, 8, 8);
+//
+//                ImageView playerImageView = new ImageView(this);
+//                LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(300, 300);
+//                playerImageView.setLayoutParams(imageParams);
+//                Picasso.get().load(playerImageUrl).into(playerImageView);
+//
+//                TextView playerNameTextView = new TextView(this);
+//                playerNameTextView.setText(playerName);
+//                playerNameTextView.setPadding(0, 8, 0, 0);
+//                playerNameTextView.setTextAlignment(TextView.TEXT_ALIGNMENT_CENTER);
+//
+//                playerLayout.addView(playerImageView);
+//                playerLayout.addView(playerNameTextView);
+
+                layout.addView(playerView);
 
             } catch (JSONException e) {
                 e.printStackTrace();

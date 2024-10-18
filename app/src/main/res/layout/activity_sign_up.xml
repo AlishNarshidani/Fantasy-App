@@ -125,7 +125,7 @@
                 android:drawablePadding="4dp"
                 android:textSize="22dp"
                 android:hint="DOB(dd/mm/yyyy)"
-                android:inputType="date"
+                android:inputType="text"
                 android:background="@drawable/custom_edittext"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.517"
