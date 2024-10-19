@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CricApiService {
-    private static final String API_KEY ="9168995a-06a6-45d8-817b-9b599cc16d2e";
+    private static final String API_KEY ="4d14f25c-1065-4354-9ea1-d5b75f9db3cf";
     private static final String BASE_URL = "https://api.cricapi.com/v1/";
     private RequestQueue requestQueue;
 //    private int currentApiKeyIndex=0;
@@ -26,6 +26,7 @@ public class CricApiService {
 //        API_KEY.add("590b5a28-b953-48cb-a174-214119f4474c");
 //        API_KEY.add("1dfef163-a179-4b97-ac29-b5b501d156e1");
 //        API_KEY.add("9168995a-06a6-45d8-817b-9b599cc16d2e");
+//        API_KEY.add("beb673a6-f4e7-4847-bcd9-b36af7d775ad");
 
         //alish keys
 //        API_KEY.add("4d14f25c-1065-4354-9ea1-d5b75f9db3cf");
