@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/teampreviewbg"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:id="@+id/topBatsmenHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Batsmen"
+            android:textSize="24sp"
+            android:padding="8dp" />
+
+        <LinearLayout
+            android:id="@+id/topBatsmenLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="8dp" />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:id="@+id/topBowlersHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Bowlers"
+            android:textSize="24sp"
+            android:padding="8dp" />
+
+        <LinearLayout
+            android:id="@+id/topBowlersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="8dp" />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:id="@+id/topAllroundersHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Allrounders"
+            android:textSize="24sp"
+            android:padding="8dp" />
+
+        <LinearLayout
+            android:id="@+id/topAllroundersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="8dp" />
+
+    </LinearLayout>
+</ScrollView>

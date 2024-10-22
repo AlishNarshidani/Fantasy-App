@@ -120,6 +120,7 @@ public class UpcomingContest extends AppCompatActivity {
                                         for(String teamId : teamIds)
                                         {
                                             String [] parts = teamId.split("_");
+                                            Log.d("check", "onComplete: "+parts);
 
                                             if (parts.length == 3) {
 

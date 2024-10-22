@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +18,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -24,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedListener {
 
@@ -33,10 +42,14 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
     Match match;
     String match_id;
 
-    String team_1,team_2;
+    String team_1,team_2,series,matchType;
 
-    AppCompatButton previewTeam,nextBtn;
+    AppCompatButton previewTeam,nextBtn,analysis;
 
+    Spinner countrySpinner;
+    String selectedCountry = null;
+
+    private ArrayList<JSONObject> entireSquad = new ArrayList<>();
     private ArrayList<Player> selectedPlayers = new ArrayList<>();
 
     private ArrayList<Player> batsmanList = new ArrayList<>();
@@ -44,6 +57,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
     private ArrayList<Player> wk_BatsmanList = new ArrayList<>();
     private ArrayList<Player> allRounderList = new ArrayList<>();
 
+    private HashMap<String, String> playerImages = new HashMap<>();
 
     private int wkCount = 0;
     private int batsmanCount = 0;
@@ -65,13 +79,33 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         match_id = match.getId();
         team_1 = match.getTeam1ShortName();
         team_2 = match.getTeam2ShortName();
+        series=match.getSeries();
+        matchType=match.getMatchType();
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         previewTeam = findViewById(R.id.previewTeam);
         nextBtn = findViewById(R.id.nextBtn);
+        analysis=findViewById(R.id.analysis);
+        countrySpinner = findViewById(R.id.countrySpinner);
 
         nextBtn.setEnabled(false);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.cricket_playing_countries, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(adapter);
+
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCountry = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         cricApiService = new CricApiService(this);
         cricApiService.getSquads(match_id, new CricApiService.DataCallback() {
@@ -83,12 +117,24 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
                     Log.d("API_STATUS", apiStatus);
 
                     JSONArray data=response.getJSONArray("data");
+
+                    String country = null;
+                    if (series.contains("tour of")) {
+                        String[] parts = series.split("tour of")[1].trim().split(",");
+                        country = parts[0];
+                    } else {
+                        countrySpinner.setVisibility(View.VISIBLE);
+                        country=selectedCountry;
+                    }
+
                     for(int i=0;i<data.length();i++)
                     {
                         JSONObject teamObj = data.getJSONObject(i);
                         String teamName = teamObj.getString("teamName");
                         String shortCountryName = teamObj.getString("shortname");
                         Log.d("teamName", "Team: "+teamName);
+
+                        String opposition = shortCountryName.equals(team_1) ? team_2 : team_1;
 
                         JSONArray players=teamObj.getJSONArray("players");
 
@@ -101,6 +147,18 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
                             String playerImageUrl = playerObj.getString("playerImg");
 
                             Player player = new Player(shortCountryName,playerId,playerName,role,playerImageUrl);
+
+                            JSONObject playerDetails = new JSONObject();
+                            playerDetails.put("name", playerName);
+                            playerDetails.put("Role", role);
+                            playerDetails.put("opposition", opposition);
+                            if (country != null) {
+                                playerDetails.put("country", country);
+                            }
+                            playerDetails.put("Format", matchType);
+
+                            entireSquad.add(playerDetails);
+                            playerImages.put(playerName, playerImageUrl);
 
                             if(role.equals("Batsman"))
                             {
@@ -177,6 +235,76 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
                 startActivity(intent);
             }
         });
+
+        analysis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendPlayerDataToServer();
+            }
+        });
+    }
+
+    private void sendPlayerDataToServer() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://192.168.120.64:5000/predict";
+
+        JSONObject playersObject = new JSONObject();
+        for (JSONObject playerDetails : entireSquad) {
+            try {
+                String playerName = playerDetails.getString("name");
+                //playerDetails.remove("name");
+                playersObject.put(playerName, playerDetails);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("players", playersObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("API_RESPONSE", response.toString());
+                        Toast.makeText(CreateTeam.this, "Data sent successfully", Toast.LENGTH_SHORT).show();
+                        handleApiResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("API_ERROR", "Error sending data", error);
+                Toast.makeText(CreateTeam.this, "Error sending data", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    private void handleApiResponse(JSONObject response) {
+        try {
+            JSONArray topBatsmen = response.getJSONArray("top_batsmen");
+            JSONArray topBowlers = response.getJSONArray("top_bowlers");
+            JSONArray topAllrounders = response.getJSONArray("top_allrounders");
+
+            JSONObject playerImagesJson = new JSONObject(playerImages);
+
+            Intent intent = new Intent(CreateTeam.this, AnalysisResult.class);
+            intent.putExtra("top_batsmen", topBatsmen.toString());
+            intent.putExtra("top_bowlers", topBowlers.toString());
+            intent.putExtra("top_allrounders", topAllrounders.toString());
+            intent.putExtra("player_images", playerImagesJson.toString());
+
+            startActivity(intent);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error parsing response", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupViewPager()
