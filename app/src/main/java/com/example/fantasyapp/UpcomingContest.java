@@ -111,6 +111,9 @@ public class UpcomingContest extends AppCompatActivity {
 
                                     List<String> teamIds = (List<String>) contestData.get("team_ids");
 
+
+                                    boolean alreadyRegistered = false;
+
                                     if(teamIds.size() == 0)
                                     {
                                         contestsList.add(contestData);
@@ -131,12 +134,16 @@ public class UpcomingContest extends AppCompatActivity {
                                                 if(fetchedUserId.equals(auth.getUid()))
                                                 {
                                                     Log.d("already participated", "onComplete: "+contestData.get("contest_id"));
-                                                }
-                                                else {
-                                                    contestsList.add(contestData);
+
+                                                    alreadyRegistered = true;
+                                                    break;
                                                 }
 
                                             }
+                                        }
+
+                                        if (!alreadyRegistered) {
+                                            contestsList.add(contestData);
                                         }
 
                                     }

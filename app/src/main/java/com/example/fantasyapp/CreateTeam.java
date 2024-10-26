@@ -240,15 +240,17 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             @Override
             public void onClick(View v) {
                 sendPlayerDataToServer();
+                Log.d("SQUAD", "onClick: "+entireSquad);
             }
         });
     }
 
     private void sendPlayerDataToServer() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://192.168.120.64:5000/predict";
+        String url = "http://10.2.2.0/predict";
 
         JSONObject playersObject = new JSONObject();
+        Log.d("ENTIRE_BODY", "sendPlayerDataToServer: "+entireSquad);
         for (JSONObject playerDetails : entireSquad) {
             try {
                 String playerName = playerDetails.getString("name");
@@ -259,12 +261,16 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
             }
         }
 
+        Log.d("PLAYER_OBJECT", "sendPlayerDataToServer: "+playersObject);
+
         JSONObject requestBody = new JSONObject();
         try {
             requestBody.put("players", playersObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.d("REQUEST_BODY", requestBody.toString());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, requestBody,
                 new Response.Listener<JSONObject>() {
