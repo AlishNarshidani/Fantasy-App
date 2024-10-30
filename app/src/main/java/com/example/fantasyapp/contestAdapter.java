@@ -86,6 +86,7 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
                 Intent i = new Intent(context, RegisterTeamInContest.class);
                 i.putExtra("contest_id",contestIdStr);
                 i.putExtra("match_id",matchIdStr);
+                i.putExtra("entryFee",entryFeeStr);
                 ((Activity) context).startActivityForResult(i,100);
             }
         });
