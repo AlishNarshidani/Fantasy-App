@@ -11,12 +11,15 @@
         android:id="@+id/analysis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Analysis"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/appcolor"
-        android:textColor="@android:color/white" />
+        android:padding="10dp"
+        android:background="@drawable/gradient_background"
+        android:fontFamily="@font/bangers"
+        android:text="&lt;&lt; Players Suggestion &gt;&gt; "
+        android:textSize="20dp"
+        android:textColor="@android:color/black" />
 
     <Spinner
         android:id="@+id/countrySpinner"

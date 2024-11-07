@@ -34,7 +34,7 @@ import java.util.Map;
 public class WallletFragment extends Fragment {
 
     AppCompatButton addcash, withdrawcash;
-    TextView total_balance_amount, unutilized_balance, winnings_balance, cash_bonus_amount;
+    TextView total_balance_amount, unutilized_balance, winnings_balance, cash_bonus_amount, profile_name;
     Long fetchedDepositMoney,fetchedWithdrawableMoney,fetchedBonusMoney;
 
     CardView transactionHistoryCardView;
@@ -55,6 +55,7 @@ public class WallletFragment extends Fragment {
         cash_bonus_amount = view.findViewById(R.id.cash_bonus_amount);
         withdrawcash = view.findViewById(R.id.withdraw_cash_button);
         transactionHistoryCardView = view.findViewById(R.id.transactionHistory);
+        profile_name = view.findViewById(R.id.profile_name);
 
         db=FirebaseFirestore.getInstance();
         auth= FirebaseAuth.getInstance();
@@ -92,6 +93,7 @@ public class WallletFragment extends Fragment {
                                 fetchedDepositMoney = document.getLong("deposit money");
                                 fetchedWithdrawableMoney = document.getLong("withdrawable money");
                                 fetchedBonusMoney = document.getLong("bonus money");
+                                String userName = document.getString("name");
 
                                 Long totalMoney = fetchedDepositMoney+fetchedWithdrawableMoney+fetchedBonusMoney;
 
@@ -103,6 +105,8 @@ public class WallletFragment extends Fragment {
                                 winnings_balance.setText("₹" +fetchedWithdrawableMoney.toString());
                                 cash_bonus_amount.setText("₹" +fetchedBonusMoney.toString());
                                 total_balance_amount.setText("₹" + totalMoney);
+
+                                profile_name.setText(userName);
 
                             }
                         } else {

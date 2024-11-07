@@ -180,6 +180,9 @@ public class UpcomingContest extends AppCompatActivity {
         newContest.put("prize_pool", 2400);  // Default prize pool
         newContest.put("max_teams", 50);  // Default max teams allowed
         newContest.put("numberOfWinners",3);
+        newContest.put("Prize1", 1000);
+        newContest.put("Prize2", 800);
+        newContest.put("Prize3", 600);
 
         // Add the contest document to Firestore
 
@@ -218,7 +221,7 @@ public class UpcomingContest extends AppCompatActivity {
 
     public void loadContests()
     {
-        adapter = new contestAdapter(UpcomingContest.this,contestsList);
+        adapter = new contestAdapter(UpcomingContest.this,contestsList, "upcoming",match);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
     }
