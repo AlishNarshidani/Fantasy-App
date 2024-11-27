@@ -10,18 +10,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,6 +50,14 @@ public class JoinedContests extends AppCompatActivity {
     Match match;
     String match_id;
 
+    RecyclerView recyclerView;
+
+    contestAdapter adapter;
+
+    List<Map<String, Object>> contestsList;
+    FirebaseFirestore db;
+    FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +73,14 @@ public class JoinedContests extends AppCompatActivity {
 
         match = (Match) getIntent().getSerializableExtra("match");
         match_id= match.getId();
+
+
+        recyclerView = findViewById(R.id.displayAllParticipatedContestRecyclerView);
+
+        db = FirebaseFirestore.getInstance();
+        auth= FirebaseAuth.getInstance();
+
+        contestsList = new ArrayList<>();
 
         scoreSummary = findViewById(R.id.scoreSummary);
         team1Flag = findViewById(R.id.team1Flag);
@@ -83,6 +111,7 @@ public class JoinedContests extends AppCompatActivity {
         });
 
 
+        checkJoinedContests();
 
         new Timer().schedule(new TimerTask() {
             @Override
@@ -164,5 +193,79 @@ public class JoinedContests extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error fetching data", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    public void checkJoinedContests()
+    {
+        db.collection("contests")
+                .whereEqualTo("match_id",match_id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if(task.isSuccessful())
+                        {
+                            if (!task.getResult().isEmpty()) {
+
+                                contestsList.clear();
+
+                                // At least one public contest is available for the match
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                    // Get contest data as a map and add to the list
+                                    Map<String, Object> contestData = document.getData();
+
+                                    List<String> teamIds = (List<String>) contestData.get("team_ids");
+
+
+                                    if (teamIds.size() != 0){
+
+                                        for(String teamId : teamIds)
+                                        {
+                                            String [] parts = teamId.split("_");
+                                            Log.d("check", "onComplete: "+parts);
+
+                                            if (parts.length == 3) {
+
+                                                String fetchedMatchId = parts[0];
+                                                String fetchedUserId = parts[1];
+                                                String fetchedTeamId = parts[2];
+
+                                                if(fetchedUserId.equals(auth.getUid()))
+                                                {
+                                                    Log.d("participated", "onComplete: "+contestData.get("contest_id"));
+                                                    contestsList.add(contestData);
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+                                }
+
+                                loadContests();
+                                Log.d("Contests", "Fetched contests: " + contestsList);
+
+                            } else {
+                                // No public contest is available for the match
+                                Log.d("NoJoinedContest", "No Joined contests available for the match.");
+                            }
+                        } else {
+                            // Handle the error
+                            Log.d("FirestoreError", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    public void loadContests()
+    {
+        adapter = new contestAdapter(JoinedContests.this,contestsList, "joined",match);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setAdapter(adapter);
     }
 }

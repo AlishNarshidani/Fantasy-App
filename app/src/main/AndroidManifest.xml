@@ -8,7 +8,6 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -20,6 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FantasyApp"
         tools:targetApi="31">
+        <activity
+            android:name=".ViewFullTeamPoints"
+            android:exported="false" />
+        <activity
+            android:name=".TeamRankingsInContest"
+            android:exported="false" />
         <activity
             android:name=".AnalysisResult"
             android:exported="false" />

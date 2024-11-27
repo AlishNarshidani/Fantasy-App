@@ -254,7 +254,7 @@ public class CreateTeam extends AppCompatActivity implements OnPlayerSelectedLis
         for (JSONObject playerDetails : entireSquad) {
             try {
                 String playerName = playerDetails.getString("name");
-//                playerDetails.remove("name");
+                //playerDetails.remove("name");
                 playersObject.put(playerName, playerDetails);
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -22,11 +22,14 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
 
     private Context context;
     private List<Map<String, Object>> contestsList;
+    private String caller;
+    private Match match;
 
-    public contestAdapter(Context context, List<Map<String, Object>> contestsList) {
-
+    public contestAdapter(Context context, List<Map<String, Object>> contestsList, String caller, Match match) {
         this.context = context;
         this.contestsList = contestsList;
+        this.caller = caller;
+        this.match = match;
     }
 
     @NonNull
@@ -49,8 +52,13 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
         List<String> teamIds = (List<String>) contest.get("team_ids");
         String entryFeeStr = contest.get("entry_fee").toString();
         String numberOfWinnersStr = contest.get("numberOfWinners").toString();
+        String firstPrizeStr = contest.get("Prize1").toString();
+        String secondPrizeStr = contest.get("Prize2").toString();
+        String thirdPrizeStr = contest.get("Prize3").toString();
 
-        int firstPrizeInt = Integer.parseInt(prizePoolStr) / 2;
+        int firstPrizeInt = Integer.parseInt(firstPrizeStr);
+        int secondPrizeInt = Integer.parseInt(secondPrizeStr);
+        int thirdPrizeInt = Integer.parseInt(thirdPrizeStr);
 
         int numberOfRegisteredTeams = teamIds != null ? teamIds.size() : 0;
 
@@ -64,10 +72,18 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
 
         double winPerc = ((double) numberOfWinnersInt /totalSpotsInt)*100;
 
+        if(caller.equals("upcoming"))
+        {
+            holder.spotsLeft.setText(String.valueOf(spotsLeftInt)+" spots left");
+            holder.totalSpots.setText("");
+
+        } else if (caller.equals("joined")) {
+            holder.spotsLeft.setText(String.valueOf(totalSpotsInt - spotsLeftInt)+" Participants");
+            holder.totalSpots.setText(totalSpotsStr+" spots");
+        }
+
         holder.prizePool.setText("₹"+prizePoolStr);
         holder.firstPrize.setText("₹"+String.valueOf(firstPrizeInt));
-        holder.spotsLeft.setText(String.valueOf(spotsLeftInt)+" spots left");
-        holder.totalSpots.setText(totalSpotsStr+" spots");
         holder.entryFeesBtn.setText("₹"+entryFeeStr);
         holder.spotsFilledBar.setMax(totalSpotsInt);
         holder.spotsFilledBar.setProgress(numberOfRegisteredTeams, true);
@@ -77,16 +93,43 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
             @Override
             public void onClick(View v) {
 
+
+                if(caller.equals("upcoming")) {
+
+                } else if (caller.equals("joined")) {
+
+                    //view rankings
+                    Intent i = new Intent(context, TeamRankingsInContest.class);
+                    i.putExtra("contest_id", contestIdStr);
+                    i.putExtra("match_id", matchIdStr);
+                    i.putExtra("match",match);
+                    context.startActivity(i);
+
+                }
+
             }
         });
 
         holder.entryFeesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, RegisterTeamInContest.class);
-                i.putExtra("contest_id",contestIdStr);
-                i.putExtra("match_id",matchIdStr);
-                ((Activity) context).startActivityForResult(i,100);
+
+                if(caller.equals("upcoming")) {
+                    Intent i = new Intent(context, RegisterTeamInContest.class);
+                    i.putExtra("contest_id", contestIdStr);
+                    i.putExtra("match_id", matchIdStr);
+                    i.putExtra("entryFee", entryFeeStr);
+                    ((Activity) context).startActivityForResult(i, 100);
+                } else if (caller.equals("joined")) {
+
+                    //view rankings
+                    Intent i = new Intent(context, TeamRankingsInContest.class);
+                    i.putExtra("contest_id", contestIdStr);
+                    i.putExtra("match_id", matchIdStr);
+                    i.putExtra("match",match);
+                    context.startActivity(i);
+
+                }
             }
         });
 
