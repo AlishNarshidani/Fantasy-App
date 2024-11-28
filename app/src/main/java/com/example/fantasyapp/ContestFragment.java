@@ -116,6 +116,7 @@ public class ContestFragment extends Fragment {
                             String series = match.getString("series");
                             String dateTimeGMT = match.getString("dateTimeGMT");
                             String matchType = match.getString("matchType");
+                            String status= match.getString("status");
 
 
                             String[] dateTimeArr = dateTimeGMT.split("T");
@@ -140,13 +141,13 @@ public class ContestFragment extends Fragment {
                             Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2+" ms: " + ms +" "+matches.length());
 
 
-                            if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("live")) {
+                            if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("live") && !status.equals("Match not started")) {
                                 Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id,series,matchType);
                                 liveMatches.add(matchData);
                             } else if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("fixture") && matchDate.before(endDate)) {
                                 Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id,series,matchType);
                                 upcomingMatches.add(matchData);
-                            } else if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("result")) {
+                            } else if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("result") && !status.equals("Match not started")) {
                                 Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId, date, id, series, matchType);
                                 recentMatches.add(matchData);
                             }
