@@ -75,6 +75,13 @@ public class TransactionHistory extends AppCompatActivity {
                             String transactionStatus = document.getString("transactionStatus");
                             double amount = document.getDouble("amount");
 
+                            String matchName = document.getString("matchName");
+
+                            if(matchName!=null)
+                            {
+                                transactionId = matchName;
+                            }
+
                             Log.d("transaction"," transactionId: "+transactionId+" transactionType: "+transactionType+" transactionDate: "+transactionDate+" transactionStatus: "+transactionStatus+" amount: "+amount);
 
                             transactionList.add(new Transaction(transactionType,amount,transactionDate,transactionStatus,transactionId));

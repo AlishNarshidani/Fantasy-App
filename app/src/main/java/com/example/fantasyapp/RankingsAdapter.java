@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,14 @@ public class RankingsAdapter extends RecyclerView.Adapter<RankingsAdapter.Rankin
     private List<List<Object>> rankingsList;
     private Map<String, Integer> pointsMap;
     private Match match;
+    ArrayList<String> prizesList;
 
-    public RankingsAdapter(Context context, List<List<Object>> rankingsList, Map<String, Integer> pointsMap, Match match) {
+    public RankingsAdapter(Context context, List<List<Object>> rankingsList, Map<String, Integer> pointsMap, Match match, ArrayList<String> prizesList) {
         this.context = context;
         this.rankingsList = rankingsList;
         this.pointsMap = pointsMap;
         this.match = match;
+        this.prizesList = prizesList;
     }
 
     @NonNull
@@ -57,6 +60,17 @@ public class RankingsAdapter extends RecyclerView.Adapter<RankingsAdapter.Rankin
         holder.team_rank.setText(String.valueOf(rank));
         holder.user_name.setText(userName +" (" +teamNumber +")");
         holder.team_points.setText(String.valueOf(points));
+
+        int prizeAmount = 0;
+
+        if (rank <= 0 || rank > prizesList.size()) {
+            Log.d("PrizeDistribution", "Invalid rank: " + rank + " for user: " + userId);
+        } else {
+            prizeAmount = Integer.parseInt(prizesList.get(rank - 1));
+        }
+
+        holder.winAmount.setText("Winning ₹" + String.valueOf(prizeAmount));
+
 
         if(caller.equals("myTeam"))
         {
@@ -92,12 +106,14 @@ public class RankingsAdapter extends RecyclerView.Adapter<RankingsAdapter.Rankin
     static class RankingsViewHolder extends RecyclerView.ViewHolder {
 
         TextView team_rank, user_name, team_points;
+        TextView winAmount;
 
         public RankingsViewHolder(@NonNull View itemView) {
             super(itemView);
             team_rank = itemView.findViewById(R.id.team_rank);
             user_name = itemView.findViewById(R.id.user_name);
             team_points = itemView.findViewById(R.id.team_points);
+            winAmount = itemView.findViewById(R.id.winAmount);
         }
     }
 }

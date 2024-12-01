@@ -10,11 +10,14 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     private ArrayList<Match> liveMatches;
     private ArrayList<Match> upcomingMatches;
+    private ArrayList<Match> recentMatches;
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<Match> liveMatches, ArrayList<Match> upcomingMatches) {
+
+    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<Match> liveMatches, ArrayList<Match> upcomingMatches,ArrayList<Match> recentMatches) {
         super(fragmentActivity);
         this.liveMatches = liveMatches;
         this.upcomingMatches = upcomingMatches;
+        this.recentMatches = recentMatches;
     }
 
     @NonNull
@@ -25,6 +28,8 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 return new LiveMatchesFragment(liveMatches);
             case 1:
                 return new UpcomingMatchesFragment(upcomingMatches);
+            case 2:
+                return new RecentMatchesFragment(recentMatches);
             default:
                 return new LiveMatchesFragment(liveMatches);
         }
@@ -32,6 +37,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 }

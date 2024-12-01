@@ -9,21 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
 
-public class UpcomingMatchesFragment extends Fragment {
+public class RecentMatchesFragment extends Fragment {
 
     RecyclerView recyclerView;
     MatchAdapter adapter;
     ArrayList<Match> matchList;
 
-    public UpcomingMatchesFragment(ArrayList<Match> matchList) {
+    public RecentMatchesFragment(ArrayList<Match> matchList) {
         this.matchList = matchList;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_upcoming_matches, container, false);
-        recyclerView = view.findViewById(R.id.recyclerViewUpcoming);
-        adapter = new MatchAdapter(getContext(), matchList,"upcoming");
+        View view = inflater.inflate(R.layout.fragment_recent_matches, container, false);
+        recyclerView = view.findViewById(R.id.recyclerViewRecent);
+        adapter = new MatchAdapter(getContext(), matchList, "recent");
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         return view;

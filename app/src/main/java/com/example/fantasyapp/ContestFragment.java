@@ -49,6 +49,7 @@ public class ContestFragment extends Fragment {
     private TabLayout tabLayout;
     private ArrayList<Match> liveMatches = new ArrayList<>();
     private ArrayList<Match> upcomingMatches = new ArrayList<>();
+    private ArrayList<Match> recentMatches = new ArrayList<>();
     private CricApiService cricApiService;
 
     private static final List<String> INTERNATIONAL_TEAMS = Arrays.asList(
@@ -115,6 +116,7 @@ public class ContestFragment extends Fragment {
                             String series = match.getString("series");
                             String dateTimeGMT = match.getString("dateTimeGMT");
                             String matchType = match.getString("matchType");
+                            String status= match.getString("status");
 
 
                             String[] dateTimeArr = dateTimeGMT.split("T");
@@ -139,12 +141,15 @@ public class ContestFragment extends Fragment {
                             Log.d("MATCH_INFO", "Match: " + team1 + " vs " + team2+" ms: " + ms +" "+matches.length());
 
 
-                            if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("live")) {
+                            if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("live") && !status.equals("Match not started")) {
                                 Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,"LIVE", id,series,matchType);
                                 liveMatches.add(matchData);
                             } else if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("fixture") && matchDate.before(endDate)) {
                                 Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId,date, id,series,matchType);
                                 upcomingMatches.add(matchData);
+                            } else if ((INTERNATIONAL_TEAMS.contains(team1ShortName) || INTERNATIONAL_TEAMS.contains(team2ShortName)) && ms.equals("result") && !status.equals("Match not started")) {
+                                Match matchData = new Match(team1ShortName, team2ShortName, team1ImageResId, team2ImageResId, date, id, series, matchType);
+                                recentMatches.add(matchData);
                             }
 
 
@@ -328,7 +333,7 @@ public class ContestFragment extends Fragment {
     }
 
     private void setupViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity(), liveMatches, upcomingMatches);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity(), liveMatches, upcomingMatches,recentMatches);
         viewPager.setAdapter(adapter);
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -343,6 +348,11 @@ public class ContestFragment extends Fragment {
                         tab.setCustomView(R.layout.tab_custom_view);
                         TextView tabText1 = tab.getCustomView().findViewById(R.id.tabText);
                         tabText1.setText("Upcoming Matches");
+                        break;
+                    case 2:
+                        tab.setCustomView(R.layout.tab_custom_view);
+                        TextView tabText2 = tab.getCustomView().findViewById(R.id.tabText);
+                        tabText2.setText("Recent Matches");
                         break;
                 }
             }

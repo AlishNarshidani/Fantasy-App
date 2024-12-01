@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
@@ -57,10 +59,17 @@ public class ContestRankingsFragment extends Fragment {
 
     Match match;
 
-    public ContestRankingsFragment(ArrayList<String> teamIds, String match_id, Match match) {
+    String caller;
+    String contestId;
+    ArrayList<String> prizesList;
+
+    public ContestRankingsFragment(ArrayList<String> teamIds, String match_id, Match match,String contestId, ArrayList<String> prizesList, String caller) {
         this.teamIds = teamIds;
         this.match_id = match_id;
         this.match = match;
+        this.caller = caller;
+        this.contestId = contestId;
+        this.prizesList = prizesList;
     }
 
     @Override
@@ -350,15 +359,152 @@ public class ContestRankingsFragment extends Fragment {
             }
         }
 
-        adapterOfCurrentUser = new RankingsAdapter(getContext(),myTeams,pointsMap, match);
+        adapterOfCurrentUser = new RankingsAdapter(getContext(),myTeams,pointsMap, match, prizesList);
         recyclerViewRankingsOfCurrentUser.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewRankingsOfCurrentUser.setAdapter(adapterOfCurrentUser);
 
 
-        adapter = new RankingsAdapter(getContext(),finalTeamPointsList,pointsMap, match);
+        adapter = new RankingsAdapter(getContext(),finalTeamPointsList,pointsMap, match, prizesList);
         recyclerViewRankings.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewRankings.setAdapter(adapter);
+
+        if(caller.equals("recent") && pointsMap.size()==22)
+        {
+
+            checkAndDistributePrizes();
+        }
     }
+
+    public void checkAndDistributePrizes()
+    {
+
+        DocumentReference contestDocRef = db.collection("contests").document(contestId);
+
+        db.runTransaction(transaction -> {
+
+            // Step 1: Check if prizes have already been distributed
+            DocumentSnapshot contestSnapshot = transaction.get(contestDocRef);
+
+            if (contestSnapshot.exists()) {
+
+                String prizeDistributed = contestSnapshot.getString("PrizeDistributed");
+
+                if(prizeDistributed.equals("YES")) {
+
+                    Log.d("PrizeDistributed", "Prizes already distributed for contest: " + contestId);
+                    return null;
+
+                }
+
+                // Step 2: Mark prizes as distributed
+                transaction.update(contestDocRef, "PrizeDistributed", "YES");
+
+
+                // Step 3: Distribute prizes
+                for(List<Object> teamDetails : finalTeamPointsList)
+                {
+                    try {
+
+                        int rank = (int) teamDetails.get(4);
+                        String userId = (String) teamDetails.get(2);
+
+                        if (rank <= 0 || rank > prizesList.size()) {
+                            Log.d("PrizeDistribution", "Invalid rank: " + rank + " for user: " + userId);
+                            continue;
+                        }
+
+                        int prizeAmount = Integer.parseInt(prizesList.get(rank - 1));
+                        DocumentReference userDocRef = db.collection("users").document(userId);
+
+                        // Step 4: Increment user's withdrawable money atomically
+                        transaction.update(userDocRef, "withdrawable money", FieldValue.increment(prizeAmount));
+
+                        // Step 5: Create a transaction record for the prize distribution
+                        Map<String, Object> transactionData = new HashMap<>();
+                        transactionData.put("userId", userId);
+                        transactionData.put("transactionType", "Contest Win");
+                        transactionData.put("amount", prizeAmount);
+                        transactionData.put("transactionStatus", "completed");
+                        transactionData.put("transactionDate", new com.google.firebase.Timestamp(new java.util.Date()));
+                        transactionData.put("contestId", contestId);
+                        transactionData.put("matchId", match.getId());
+                        transactionData.put("matchName", match.getTeam1ShortName() + " VS " +match.getTeam2ShortName());
+
+                        transaction.set(db.collection("transactions").document(), transactionData); // Using auto-generated doc ID)
+
+
+
+                    } catch (Exception e) {
+                        Log.d("PrizeDistributionException", "Error processing team details: " + e.getMessage());
+                    }
+                }
+
+
+            } else {
+                Log.d("PrizeDistributed", "Contest document does not exist: " + contestId);
+            }
+
+            return null; // Transaction completed successfully
+
+        }).addOnSuccessListener(aVoid -> {
+            Log.d("PrizeDistributed", "Prizes distributed successfully for contest: " + contestId);
+        }).addOnFailureListener(e -> {
+            Log.d("PrizeDistributed", "Failed to distribute prizes for contest: " + contestId + ", error: " + e.getMessage());
+        });
+
+    }
+
+
+//    public void checkIfPrizeDistributedOrNot()
+//    {
+//        DocumentReference contestDocRef = db.collection("contests").document(contestId);
+//
+//        contestDocRef.get()
+//                .addOnCompleteListener(task -> {
+//
+//                    if(task.isSuccessful()){
+//
+//                        DocumentSnapshot document = task.getResult();
+//
+//                        if(document!=null && document.exists()) {
+//
+//                            // The document exists, get all fields as a Map
+//                            Map<String, Object> fetchUserData = document.getData();
+//
+//                            if (fetchUserData != null) {
+//
+//                                String prizeDistributed = document.get("PrizeDistributed").toString();
+//
+//
+//                                if(prizeDistributed.equals("YES"))
+//                                {
+//                                    Log.d("PrizeDistributed", "Prize Already Distributed");
+//
+//                                } else if(prizeDistributed.equals("NO")) {
+//
+//                                    distributedPrize();
+//
+//                                }
+//
+//
+//                            }
+//
+//                        } else {
+//                            Log.d("error", "No such document!");
+//                            //Toast.makeText(getActivity(), "No such document!", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//                    } else {
+//                        Log.d("error", "Error fetching data!");
+//                    }
+//                });
+//    }
+//
+//
+//    public void distributedPrize()
+//    {
+//
+//    }
 
 
 

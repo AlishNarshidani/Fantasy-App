@@ -13,13 +13,17 @@ public class RankingsViewPagerAdapter extends FragmentStateAdapter {
     private ArrayList<String> teamIds;
     String match_id;
     Match match;
+    String caller;
+    String contestId;
 
-    public RankingsViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<String> prizesList, ArrayList<String> teamIds, String match_id, Match match) {
+    public RankingsViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, ArrayList<String> prizesList, ArrayList<String> teamIds, String match_id, Match match, String contestId, String caller) {
         super(fragmentActivity);
         this.prizesList = prizesList;
         this.teamIds = teamIds;
         this.match_id = match_id;
         this.match = match;
+        this.caller = caller;
+        this.contestId = contestId;
     }
 
     @NonNull
@@ -27,11 +31,11 @@ public class RankingsViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new ContestRankingsFragment(teamIds, match_id, match);
+                return new ContestRankingsFragment(teamIds, match_id, match, contestId, prizesList, caller);
             case 1:
                 return new ContestPrizesDisplay(prizesList);
             default:
-                return new ContestRankingsFragment(teamIds, match_id, match);
+                return new ContestRankingsFragment(teamIds, match_id, match, contestId, prizesList, caller);
         }
     }
 

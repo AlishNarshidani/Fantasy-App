@@ -77,7 +77,7 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
             holder.spotsLeft.setText(String.valueOf(spotsLeftInt)+" spots left");
             holder.totalSpots.setText("");
 
-        } else if (caller.equals("joined")) {
+        } else if (caller.equals("joined") || caller.equals("recent")) {
             holder.spotsLeft.setText(String.valueOf(totalSpotsInt - spotsLeftInt)+" Participants");
             holder.totalSpots.setText(totalSpotsStr+" spots");
         }
@@ -103,12 +103,27 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
                     i.putExtra("contest_id", contestIdStr);
                     i.putExtra("match_id", matchIdStr);
                     i.putExtra("match",match);
+                    i.putExtra("caller","joined");
+                    context.startActivity(i);
+
+                } else if (caller.equals("recent")) {
+
+                    //view ranking and distribute prizes
+                    Intent i = new Intent(context, TeamRankingsInContest.class);
+                    i.putExtra("contest_id", contestIdStr);
+                    i.putExtra("match_id", matchIdStr);
+                    i.putExtra("match",match);
+                    i.putExtra("caller","recent");
                     context.startActivity(i);
 
                 }
 
             }
         });
+
+
+
+
 
         holder.entryFeesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +142,19 @@ public class contestAdapter extends RecyclerView.Adapter<contestAdapter.contestV
                     i.putExtra("contest_id", contestIdStr);
                     i.putExtra("match_id", matchIdStr);
                     i.putExtra("match",match);
+                    i.putExtra("caller","joined");
                     context.startActivity(i);
+
+                } else if (caller.equals("recent")) {
+
+                    //view ranking and distribute prizes
+                    Intent i = new Intent(context, TeamRankingsInContest.class);
+                    i.putExtra("contest_id", contestIdStr);
+                    i.putExtra("match_id", matchIdStr);
+                    i.putExtra("match",match);
+                    i.putExtra("caller","recent");
+                    context.startActivity(i);
+
 
                 }
             }
