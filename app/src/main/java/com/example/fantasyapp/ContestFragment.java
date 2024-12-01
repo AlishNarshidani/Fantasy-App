@@ -54,8 +54,8 @@ public class ContestFragment extends Fragment {
     private static final int LOG_CHUNK_SIZE = 4000;
 
     private static final List<String> INTERNATIONAL_TEAMS = Arrays.asList(
-            "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland",
-            "IND","AUS","ENG","RSA","NZ","PAK","SL","WI","BAN","AFG","IRE"
+            "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland","Ireland Women",
+            "IND","AUS","ENG","RSA","NZ","PAK","SL","WI","BAN","AFG","IRE","IRW"
     );
 
     @Override

@@ -8,19 +8,20 @@
     <ImageView
         android:id="@+id/playerImage"
         android:layout_gravity="center_horizontal"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/playerName"
         android:layout_marginTop="4dp"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
         android:background="@drawable/gradient_background"
         android:padding="3dp"
         android:gravity="center"
+        android:layout_gravity="center"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
         android:maxLines="1"
@@ -30,10 +31,11 @@
     <TextView
         android:id="@+id/playerPoints"
         android:layout_marginTop="2dp"
-        android:layout_width="80dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:padding="3dp"
         android:gravity="center"
+        android:layout_gravity="center"
         android:textColor="#FFFFFF"
         android:textSize="12sp"
         android:maxLines="1"

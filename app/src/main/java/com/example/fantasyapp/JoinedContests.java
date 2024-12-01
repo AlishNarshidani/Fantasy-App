@@ -58,6 +58,8 @@ public class JoinedContests extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseAuth auth;
 
+    String caller;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,7 @@ public class JoinedContests extends AppCompatActivity {
 
         cricApiService=new CricApiService(this);
 
+        caller = getIntent().getStringExtra("caller");
         match = (Match) getIntent().getSerializableExtra("match");
         match_id= match.getId();
 
@@ -123,7 +126,7 @@ public class JoinedContests extends AppCompatActivity {
                     }
                 });
             }
-        },0,120000);
+        },0,600000);
     }
 
     private void fetchMatchScore(String matchId)
@@ -264,7 +267,7 @@ public class JoinedContests extends AppCompatActivity {
 
     public void loadContests()
     {
-        adapter = new contestAdapter(JoinedContests.this,contestsList, "joined",match);
+        adapter = new contestAdapter(JoinedContests.this,contestsList, caller, match);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
     }

@@ -183,6 +183,7 @@ public class UpcomingContest extends AppCompatActivity {
         newContest.put("Prize1", 1000);
         newContest.put("Prize2", 800);
         newContest.put("Prize3", 600);
+        newContest.put("PrizeDistributed", "NO");
 
         // Add the contest document to Firestore
 

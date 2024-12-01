@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CricApiService {
+    //    private static final String API_KEY ="9168995a-06a6-45d8-817b-9b599cc16d2e";
     private static final String PREFS_NAME = "CricApiPrefs";
     private static final String KEY_API_INDEX = "apiKeyIndex";
-    private static final String API_KEY ="beb673a6-f4e7-4847-bcd9-b36af7d775ad";
+//    private static final String API_KEY ="beb673a6-f4e7-4847-bcd9-b36af7d775ad";
     private static final List<String> API_KEYS = new ArrayList<>();
     private static final String BASE_URL = "https://api.cricapi.com/v1/";
     private RequestQueue requestQueue;
@@ -34,11 +35,18 @@ public class CricApiService {
         API_KEYS.add("1dfef163-a179-4b97-ac29-b5b501d156e1");
         API_KEYS.add("9168995a-06a6-45d8-817b-9b599cc16d2e");
         API_KEYS.add("beb673a6-f4e7-4847-bcd9-b36af7d775ad");
+        API_KEYS.add("2f576a1e-bd56-4ec8-b634-7988f9bd3564");
+        API_KEYS.add("9f01dcf0-ed57-4499-9987-70da5e7a06ee");
+        API_KEYS.add("fae457ef-5ee3-481a-a79d-8c8485638743");
+        API_KEYS.add("c8abad4a-038e-49fd-8656-e2fac1397728");
+        API_KEYS.add("19a30b4e-48ad-4f9a-b161-1db01722b60b");
+        API_KEYS.add("19a30b4e-48ad-4f9a-b161-1db01722b60b");
+        API_KEYS.add("b9e2bfd1-c019-446f-9f7c-55f12425c1a9");
 
         //alish keys
-//        API_KEY.add("4d14f25c-1065-4354-9ea1-d5b75f9db3cf");
-//        API_KEY.add("0c312255-0128-406c-b7ad-f3254b1c119e");
-//        API_KEY.add("f2cdef41-001f-4694-9f53-0478fe6a909c");
+        API_KEYS.add("4d14f25c-1065-4354-9ea1-d5b75f9db3cf");
+        API_KEYS.add("0c312255-0128-406c-b7ad-f3254b1c119e");
+        API_KEYS.add("f2cdef41-001f-4694-9f53-0478fe6a909c");
     }
 
     private String getCurrentApiKey() {
@@ -52,7 +60,7 @@ public class CricApiService {
     }
 
     public void getMatches(int offset,final DataCallback callback) {
-        String url = BASE_URL + "currentMatches?apikey=" + API_KEY+"&offset="+offset;
+        String url = BASE_URL + "currentMatches?apikey=" + getCurrentApiKey()+"&offset="+offset;
         Log.d("API_REQUEST", "Requesting URL: " + url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -89,7 +97,7 @@ public class CricApiService {
                                 JSONObject info = response.getJSONObject("info");
                                 int hitsToday = info.getInt("hitsToday");
                                 Log.d("API_HITS_TODAY", "Hits today: " + hitsToday+" "+getCurrentApiKey());
-                                if (hitsToday > 5) {
+                                if (hitsToday > 85) {
                                     changeApiKey();
                                     getMatchesNew(callback); // Retry with new API key
                                     return;
@@ -123,7 +131,7 @@ public class CricApiService {
 
     public void getScorecard(String match_id,final DataCallback callback)
     {
-        String url=BASE_URL+"match_scorecard?apikey="+API_KEY+"&offset=0"+"&id="+match_id;
+        String url=BASE_URL+"match_scorecard?apikey="+getCurrentApiKey()+"&offset=0"+"&id="+match_id;
         Log.d("API_REQUEST", "Requesting URL: " + url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -131,6 +139,20 @@ public class CricApiService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("API_RESPONSE", "Response: " + response.toString());
+                        try {
+                            if (response.has("info")) {
+                                JSONObject info = response.getJSONObject("info");
+                                int hitsToday = info.getInt("hitsToday");
+                                Log.d("API_HITS_TODAY", "Hits today: " + hitsToday+" "+getCurrentApiKey());
+                                if (hitsToday > 85) {
+                                    changeApiKey();
+                                    getMatchesNew(callback); // Retry with new API key
+                                    return;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e("API_ERROR", "Error processing response", e);
+                        }
                         callback.onSuccess(response);
                     }
                 },
@@ -147,7 +169,7 @@ public class CricApiService {
 
     public void getCricScore(String match_id,final DataCallback callback)
     {
-        String url = BASE_URL+"cricScore?apikey="+API_KEY;
+        String url = BASE_URL+"cricScore?apikey="+getCurrentApiKey();
         Log.d("API_REQUEST", "getCricScore: "+url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -155,6 +177,20 @@ public class CricApiService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("API_RESPONSE", "Response: " + response.toString());
+                        try {
+                            if (response.has("info")) {
+                                JSONObject info = response.getJSONObject("info");
+                                int hitsToday = info.getInt("hitsToday");
+                                Log.d("API_HITS_TODAY", "Hits today: " + hitsToday+" "+getCurrentApiKey());
+                                if (hitsToday > 85) {
+                                    changeApiKey();
+                                    getMatchesNew(callback); // Retry with new API key
+                                    return;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e("API_ERROR", "Error processing response", e);
+                        }
                         callback.onSuccess(response);
                     }
                 },
@@ -171,7 +207,7 @@ public class CricApiService {
 
     public void getSquads(String match_id,final DataCallback callback)
     {
-        String url = BASE_URL+"match_squad?apikey="+API_KEY+"&offset=0&id="+match_id;
+        String url = BASE_URL+"match_squad?apikey="+getCurrentApiKey()+"&offset=0&id="+match_id;
         Log.d("API_REQUEST", "getCricScore: "+url);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -180,6 +216,20 @@ public class CricApiService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("API_RESPONSE", "Response: " + response.toString());
+                        try {
+                            if (response.has("info")) {
+                                JSONObject info = response.getJSONObject("info");
+                                int hitsToday = info.getInt("hitsToday");
+                                Log.d("API_HITS_TODAY", "Hits today: " + hitsToday+" "+getCurrentApiKey());
+                                if (hitsToday > 85) {
+                                    changeApiKey();
+                                    getMatchesNew(callback); // Retry with new API key
+                                    return;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e("API_ERROR", "Error processing response", e);
+                        }
                         callback.onSuccess(response);
                     }
                 },
@@ -196,7 +246,7 @@ public class CricApiService {
 
     public void getFantasyPoints(String match_id, final DataCallback callback)
     {
-        String url = BASE_URL+"match_points?apikey="+API_KEY+"&id="+match_id+"&ruleset=0";
+        String url = BASE_URL+"match_points?apikey="+getCurrentApiKey()+"&id="+match_id+"&ruleset=0";
         Log.d("API_REQUEST", "getCricScore: "+url);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -205,6 +255,20 @@ public class CricApiService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("API_RESPONSE", "Response: " + response.toString());
+                        try {
+                            if (response.has("info")) {
+                                JSONObject info = response.getJSONObject("info");
+                                int hitsToday = info.getInt("hitsToday");
+                                Log.d("API_HITS_TODAY", "Hits today: " + hitsToday+" "+getCurrentApiKey());
+                                if (hitsToday > 85) {
+                                    changeApiKey();
+                                    getMatchesNew(callback); // Retry with new API key
+                                    return;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e("API_ERROR", "Error processing response", e);
+                        }
                         callback.onSuccess(response);
                     }
                 },
