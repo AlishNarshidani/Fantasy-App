@@ -1,5 +1,6 @@
 package com.example.fantasyapp;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -14,24 +15,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CricApiService {
-    private static final String API_KEY ="41d57022-8e39-4201-b433-c98c8d807385";
+    private static final String PREFS_NAME = "CricApiPrefs";
+    private static final String KEY_API_INDEX = "apiKeyIndex";
+    private static final String API_KEY ="beb673a6-f4e7-4847-bcd9-b36af7d775ad";
+    private static final List<String> API_KEYS = new ArrayList<>();
     private static final String BASE_URL = "https://api.cricapi.com/v1/";
     private RequestQueue requestQueue;
-//    private int currentApiKeyIndex=0;
+    private int currentApiKeyIndex=0;
+    private SharedPreferences sharedPreferences;
 
     public CricApiService(Context context) {
         requestQueue = Volley.newRequestQueue(context);
-//        API_KEY.add("41d57022-8e39-4201-b433-c98c8d807385");
-//        API_KEY.add("16abc403-2526-4dfa-b554-02c2affffbd4");
-//        API_KEY.add("590b5a28-b953-48cb-a174-214119f4474c");
-//        API_KEY.add("1dfef163-a179-4b97-ac29-b5b501d156e1");
-//        API_KEY.add("9168995a-06a6-45d8-817b-9b599cc16d2e");
-//        API_KEY.add("beb673a6-f4e7-4847-bcd9-b36af7d775ad");
+        sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        currentApiKeyIndex = sharedPreferences.getInt(KEY_API_INDEX, 0);
+        API_KEYS.add("41d57022-8e39-4201-b433-c98c8d807385");
+        API_KEYS.add("16abc403-2526-4dfa-b554-02c2affffbd4");
+        API_KEYS.add("590b5a28-b953-48cb-a174-214119f4474c");
+        API_KEYS.add("1dfef163-a179-4b97-ac29-b5b501d156e1");
+        API_KEYS.add("9168995a-06a6-45d8-817b-9b599cc16d2e");
+        API_KEYS.add("beb673a6-f4e7-4847-bcd9-b36af7d775ad");
 
         //alish keys
 //        API_KEY.add("4d14f25c-1065-4354-9ea1-d5b75f9db3cf");
 //        API_KEY.add("0c312255-0128-406c-b7ad-f3254b1c119e");
 //        API_KEY.add("f2cdef41-001f-4694-9f53-0478fe6a909c");
+    }
+
+    private String getCurrentApiKey() {
+        return API_KEYS.get(currentApiKeyIndex);
+    }
+
+    private void changeApiKey() {
+        currentApiKeyIndex = (currentApiKeyIndex + 1) % API_KEYS.size();
+        sharedPreferences.edit().putInt(KEY_API_INDEX, currentApiKeyIndex).apply();
+        Log.d("API_KEY_CHANGE", "API key changed to: " + getCurrentApiKey());
     }
 
     public void getMatches(int offset,final DataCallback callback) {
@@ -59,7 +76,7 @@ public class CricApiService {
 
     public void getMatchesNew(final DataCallback callback)
     {
-        String url = BASE_URL+"cricScore?apikey="+API_KEY;
+        String url = BASE_URL+"cricScore?apikey="+getCurrentApiKey();
         Log.d("API_REQUEST", "getMatchesNew: "+url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -67,6 +84,20 @@ public class CricApiService {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("API_RESPONSE", "Response: " + response.toString());
+                        try {
+                            if (response.has("info")) {
+                                JSONObject info = response.getJSONObject("info");
+                                int hitsToday = info.getInt("hitsToday");
+                                Log.d("API_HITS_TODAY", "Hits today: " + hitsToday+" "+getCurrentApiKey());
+                                if (hitsToday > 5) {
+                                    changeApiKey();
+                                    getMatchesNew(callback); // Retry with new API key
+                                    return;
+                                }
+                            }
+                        } catch (Exception e) {
+                            Log.e("API_ERROR", "Error processing response", e);
+                        }
                         callback.onSuccess(response);
                     }
                 },

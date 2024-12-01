@@ -51,6 +51,7 @@ public class ContestFragment extends Fragment {
     private ArrayList<Match> upcomingMatches = new ArrayList<>();
     private ArrayList<Match> recentMatches = new ArrayList<>();
     private CricApiService cricApiService;
+    private static final int LOG_CHUNK_SIZE = 4000;
 
     private static final List<String> INTERNATIONAL_TEAMS = Arrays.asList(
             "India", "Australia", "England", "South Africa", "New Zealand", "Pakistan", "Sri Lanka", "West Indies", "Bangladesh", "Afghanistan", "Zimbabwe", "Ireland",
@@ -86,7 +87,7 @@ public class ContestFragment extends Fragment {
                     return; // Fragment is detached, don't proceed
                 }
                 try {
-                    Log.d("API_RESPONSE", response.toString());
+                    logLongMessage("API_RESPONSE", response.toString());
                     String apiStatus=response.getString("status");
                     Log.d("API_STATUS", apiStatus);
 
@@ -366,6 +367,22 @@ public class ContestFragment extends Fragment {
         } catch (ParseException e) {
             Log.e("DATE_PARSE_ERROR", "Error parsing date: " + date, e);
             return null;
+        }
+    }
+
+    public static void logLongMessage(String tag, String message) {
+        if (message.length() > LOG_CHUNK_SIZE) {
+            int chunkCount = message.length() / LOG_CHUNK_SIZE; // integer division
+            for (int i = 0; i <= chunkCount; i++) {
+                int max = LOG_CHUNK_SIZE * (i + 1);
+                if (max >= message.length()) {
+                    Log.d(tag, message.substring(LOG_CHUNK_SIZE * i));
+                } else {
+                    Log.d(tag, message.substring(LOG_CHUNK_SIZE * i, max));
+                }
+            }
+        } else {
+            Log.d(tag, message);
         }
     }
 
