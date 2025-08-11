@@ -111,9 +111,9 @@
 ---
 
 ## Contributors
-- **Mihir Dhami** – Backend Development  
-- **Alish Narsidani** – Frontend Development  
-- **Swapnil Verma** – UI/UX & Game Modules  
+- **Mihir Dhami**
+- **Alish Narsidani**
+- **Swapnil Verma**
 
 ---
 
