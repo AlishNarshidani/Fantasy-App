@@ -1,116 +1,126 @@
-# 🏏 CricMania - Fantasy Cricket App
+# 🏏 CricMania – Fantasy Cricket & Gaming App
 
-## Introduction
-**CricMania** is a feature-rich mobile application designed for cricket enthusiasts to create fantasy teams, join contests, track live scores, and play mini-games for additional rewards. The app ensures secure user access with two-step verification, real-time match data, and a smooth transaction system for deposits, withdrawals, and contest entries. It blends fantasy sports excitement with interactive gaming, delivering a comprehensive cricket experience.
-
----
-
-## Table of Contents
-1. [Features](#features)  
-2. [Tech Stack](#tech-stack)  
-3. [Installation](#installation)  
-4. [Usage](#usage)  
-5. [Modules Overview](#modules-overview)  
-6. [Configuration](#configuration)  
-7. [Screenshots](#screenshots)  
-8. [Future Work](#future-work)  
-9. [Contributors](#contributors)  
-10. [License](#license)  
+> **Build your dream team. Play. Compete. Win.**  
+> The ultimate fantasy cricket experience with live scores, contests, and fun mini-games — all in one app.
 
 ---
 
-## Features
-- **Secure Login & Sign-up** – Two-step verification with Firebase Authentication.
-- **Live Match Scores** – Real-time cricket match data, including ball-by-ball updates.
-- **Fantasy Contests** – Join various contests, select teams, and compete for prizes.
-- **Mini Games** – Tic Tac Toe (Online Multiplayer), Snake & Ladder, and Mines for extra rewards.
-- **Player Suggestions** – AI-powered recommendations based on Historical performance stats.
-- **Transactions & Wallet** – Add funds, withdraw winnings, and view transaction history.
-- **Leaderboard** – Global rankings based on fantasy team performance.
+## 📖 Introduction
+**CricMania** is a next-generation mobile application for cricket lovers.  
+Create fantasy teams, join thrilling contests, track **live scores**, and boost your winnings with **interactive mini-games** like Tic Tac Toe, Snake & Ladder, and Mines.  
+
+We combine **real-time match data**, **secure transactions**, and **AI-powered player suggestions** to deliver a complete cricket gaming ecosystem.
 
 ---
 
-## 🔧 Tech Stack
+## 📚 Table of Contents
+1. [✨ Features](#-features)  
+2. [🛠 Tech Stack](#-tech-stack)  
+3. [⚙ Installation](#-installation)  
+4. [📲 Usage](#-usage)  
+5. [🗂 Modules Overview](#-modules-overview)  
+6. [🔧 Configuration](#-configuration)  
+7. [🖼 Screenshots](#-screenshots)  
+8. [🚀 Future Work](#-future-work)  
+9. [👨‍💻 Contributors](#-contributors)  
+10. [📜 License](#-license)  
+
+---
+
+## ✨ Features
+- 🔐 **Secure Login & Sign-up** – Two-step verification with Firebase Authentication.  
+- 📡 **Live Match Scores** – Real-time cricket updates, ball-by-ball commentary.  
+- 🏆 **Fantasy Contests** – Create teams, compete, and win prizes.  
+- 🎮 **Mini Games** – Tic Tac Toe (Online Multiplayer), Snake & Ladder, Mines.  
+- 🤖 **AI Player Suggestions** – Based on historical performance stats.  
+- 💳 **Wallet & Transactions** – Deposit, withdraw, and track history.  
+- 📊 **Leaderboard** – Global rankings & real-time contest positions.  
+
+---
+
+## 🛠 Tech Stack
 - **Frontend:** Java (Android), XML layouts  
 - **Backend:** Java & Python  
 - **Database:** Firebase Firestore  
 - **Authentication:** Firebase Auth (Email Verification)  
-- **Development Tools:** Android Studio, VS Code, Git  
-- **Payment Gateway:** Razorpay  
+- **Payments:** Razorpay Gateway  
+- **Tools:** Android Studio, VS Code, Git  
 
 ---
 
-## Installation
-1. **Clone the repository**  
-   ```bash
-   git clone https://github.com/AlishNarshidani/Fantasy-App.git
-   cd CricMania
-   ```
+## ⚙ Installation
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/AlishNarshidani/Fantasy-App.git
+cd CricMania
 
-2. **Open in Android Studio**  
-   - Import the project folder.
-   - Sync Gradle files.
+# 2️⃣ Open in Android Studio
+#    - Import the project
+#    - Sync Gradle files
 
-3. **Setup Firebase**  
-   - Create a Firebase project.
-   - Add `google-services.json` to your app’s `/app` directory.
-   - Enable Firebase Authentication and Firestore in the Firebase Console.
+# 3️⃣ Configure Firebase
+#    - Create Firebase project
+#    - Add google-services.json in /app
+#    - Enable Authentication & Firestore
 
-4. **Configure Payment Gateway**  
-   - Add your payment provider credentials in the configuration file.
+# 4️⃣ Configure Payment Gateway
+#    - Add Razorpay credentials in config
 
-5. **Run the App**  
-   - Connect an Android device or start an emulator.
-   - Click **Run** in Android Studio.
-
----
-
-## Usage
-1. **Sign up** with email verification.  
-2. **Create your fantasy team** by selecting 11 real players.  
-3. **Join contests** with an entry fee to compete for prizes.  
-4. **Track live match scores** and see live ranking of your team.  
-5. **Play mini-games** to win extra prize money.  
-6. **Withdraw earnings** securely to your bank or wallet.
+# 5️⃣ Run the app
+#    - Connect Android device or emulator
+#    - Click 'Run' in Android Studio
+```
 
 ---
 
-## Modules Overview
-- **Login & Sign-up Module** – Secure user authentication with profile management.  
-- **Live Score Module** – Fetch and display ongoing match details.  
-- **Join Contest Module** – Contest listing, team selection, and preview features.  
-- **Mini Games Module** – Reward-based interactive games for single and two players.  
-- **Player Suggestion Module** – Performance-based player recommendations.  
-- **Payment Module** – Multi-method transactions with detailed history.
+## 📲 Usage
+### For Players:
+1. Sign up & verify email.  
+2. Create your **fantasy team** with 11 players.  
+3. Join paid/free contests.  
+4. Track live match scores & rankings.  
+5. Play **mini-games** to win extra rewards.  
+6. Withdraw winnings instantly to your bank/wallet.  
 
 ---
 
-## Configuration
-- **Firebase Auth & Firestore** credentials in `google-services.json`  
-- **API Keys** for live scores from cricket data providers  
-- **Payment Gateway** environment variables  
+## 🗂 Modules Overview
+- **👤 Login & Sign-up** – Role-based authentication, profile management.  
+- **📡 Live Score** – Match data updates in real time.  
+- **🏆 Contest Management** – Contest listings, team previews, leaderboard.  
+- **🎮 Mini Games** – Fun, reward-based games.  
+- **🤖 Player Suggestions** – Smart recommendations for better picks.  
+- **💳 Payment System** – Secure multi-method transactions.  
 
 ---
 
-## Screenshots
-*(Include images from your `/screenshots` directory or captured from the app)*  
-1. **User Verification**  
-2. **Live Match Score**  
-3. **Team Selection & Captain/Vice-Captain**  
-4. **Contest & Rankings**  
-5. **Transaction History**  
-6. **Mini Games**  
+## 🔧 Configuration
+- **Firebase**: Add `google-services.json` to `/app`  
+- **Live Score API**: Add API key in configuration  
+- **Razorpay**: Add payment gateway credentials  
 
 ---
 
-## Future Work
-- Expand to other sports like Football and Kabaddi.  
-- Advanced analytics for team and player performance on various pitches.  
-- “Refer & Earn” program to increase user engagement.  
+## 🖼 Screenshots
+| Feature | Preview |
+|---------|---------|
+| **Login & Sign-Up** | ![Login](screenshots/login.png) |
+| **Live Scores** | ![Scores](screenshots/scores.png) |
+| **Team Selection** | ![Team](screenshots/team.png) |
+| **Contests** | ![Contests](screenshots/contests.png) |
+| **Transactions** | ![Transactions](screenshots/transactions.png) |
+| **Mini Games** | ![Games](screenshots/games.png) |
 
 ---
 
-## Contributors
+## 🚀 Future Work
+- ⚽ Support for **Football** & 🏸 **Kabaddi** fantasy leagues.  
+- 📊 Advanced analytics for player performance.  
+- 🤝 Refer & Earn program for users.  
+
+---
+
+## 👨‍💻 Contributors
 - **Alish Narshidani**
 - **Swapnil Verma**
 - **Mihir Dhami**
