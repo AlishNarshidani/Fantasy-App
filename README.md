@@ -43,7 +43,7 @@
 ## Installation
 1. **Clone the repository**  
    ```bash
-   git clone https://github.com/<your-username>/CricMania.git
+   git clone https://github.com/AlishNarshidani/Fantasy-App.git
    cd CricMania
    ```
 
