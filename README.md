@@ -111,7 +111,7 @@
 ---
 
 ## Contributors
-- **Alish Narsidani**
+- **Alish Narshidani**
 - **Swapnil Verma**
 - **Mihir Dhami**
 
