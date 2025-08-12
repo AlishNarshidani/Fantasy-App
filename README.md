@@ -1,4 +1,4 @@
-# CricMania – Cricket Fantasy App
+# 🏏 CricMania - Fantasy Cricket App
 
 ## Introduction
 **CricMania** is a feature-rich mobile application designed for cricket enthusiasts to create fantasy teams, join contests, track live scores, and play mini-games for additional rewards. The app ensures secure user access with two-step verification, real-time match data, and a smooth transaction system for deposits, withdrawals, and contest entries. It blends fantasy sports excitement with interactive gaming, delivering a comprehensive cricket experience.
@@ -23,20 +23,20 @@
 - **Secure Login & Sign-up** – Two-step verification with Firebase Authentication.
 - **Live Match Scores** – Real-time cricket match data, including ball-by-ball updates.
 - **Fantasy Contests** – Join various contests, select teams, and compete for prizes.
-- **Mini Games** – Tic Tac Toe, Snake & Ladder, and Mines for extra rewards.
-- **Player Suggestions** – AI-powered recommendations based on performance stats.
+- **Mini Games** – Tic Tac Toe (Online Multiplayer), Snake & Ladder, and Mines for extra rewards.
+- **Player Suggestions** – AI-powered recommendations based on Historical performance stats.
 - **Transactions & Wallet** – Add funds, withdraw winnings, and view transaction history.
 - **Leaderboard** – Global rankings based on fantasy team performance.
 
 ---
 
-## Tech Stack
+## 🔧 Tech Stack
 - **Frontend:** Java (Android), XML layouts  
 - **Backend:** Java & Python  
 - **Database:** Firebase Firestore  
 - **Authentication:** Firebase Auth (Email Verification)  
 - **Development Tools:** Android Studio, VS Code, Git  
-- **Payment Gateway:** UPI, Wallets, Net Banking, Card Support  
+- **Payment Gateway:** Razorpay  
 
 ---
 
@@ -69,15 +69,15 @@
 1. **Sign up** with email verification.  
 2. **Create your fantasy team** by selecting 11 real players.  
 3. **Join contests** with an entry fee to compete for prizes.  
-4. **Track live match scores** while managing your team.  
-5. **Play mini-games** to win virtual currency.  
+4. **Track live match scores** and see live ranking of your team.  
+5. **Play mini-games** to win extra prize money.  
 6. **Withdraw earnings** securely to your bank or wallet.
 
 ---
 
 ## Modules Overview
 - **Login & Sign-up Module** – Secure user authentication with profile management.  
-- **Live Score Module** – Fetch and display ongoing match details with notifications.  
+- **Live Score Module** – Fetch and display ongoing match details.  
 - **Join Contest Module** – Contest listing, team selection, and preview features.  
 - **Mini Games Module** – Reward-based interactive games for single and two players.  
 - **Player Suggestion Module** – Performance-based player recommendations.  
@@ -111,11 +111,8 @@
 ---
 
 ## Contributors
-- **Mihir Dhami**
 - **Alish Narsidani**
 - **Swapnil Verma**
+- **Mihir Dhami**
 
 ---
-
-## License
-This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
