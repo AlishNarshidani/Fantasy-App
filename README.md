@@ -104,7 +104,7 @@ cd CricMania
 ## 🖼 Screenshots
 | Feature | Preview |
 |---------|---------|
-| **Login & Sign-Up** | ![Login](screenshots/login.png) |
+| **Login & Sign-Up** | <img src="https://github.com/AlishNarshidani/Project_images/blob/main/login_fantasy.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/register_fantasy.png?raw=true" width="200" />  |
 | **Live Scores** | ![Scores](screenshots/scores.png) |
 | **Team Selection** | ![Team](screenshots/team.png) |
 | **Contests** | ![Contests](screenshots/contests.png) |
