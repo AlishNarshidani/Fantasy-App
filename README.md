@@ -105,11 +105,11 @@ cd CricMania
 | Feature | Preview |
 |---------|---------|
 | **Login & Sign-Up** | <img src="https://github.com/AlishNarshidani/Project_images/blob/main/login_fantasy.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/register_fantasy.png?raw=true" width="200" />  |
-| **Live Scores** | ![Scores](screenshots/scores.png) |
-| **Team Selection** | ![Team](screenshots/team.png) |
-| **Contests** | ![Contests](screenshots/contests.png) |
-| **Transactions** | ![Transactions](screenshots/transactions.png) |
-| **Mini Games** | ![Games](screenshots/games.png) |
+| **Live Scores** | <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_live_match_1.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_live_match_2.png?raw=true" width="200" /> |
+| **Team Selection** | <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_team_select_1.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_team_select_2.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_team_select_3.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_team_select_4.png?raw=true" width="200" /> |
+| **Contests** | <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_contest_ranking_1.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_contest_ranking_2.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_contest_ranking_3.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_contest_ranking_4.png?raw=true" width="200" /> |
+| **Transactions** | <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_transaction_1.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_transaction_2.png?raw=true" width="200" /> |
+| **Mini Games** | <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_mini_games_1.png?raw=true" width="200" />  <img src="https://github.com/AlishNarshidani/Project_images/blob/main/fantasy_mini_games_2.png?raw=true" width="200" /> |
 
 ---
 
